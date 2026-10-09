@@ -1,18 +1,17 @@
-.env
-.env.*
+
 !.env.example
-node_modules/
-shots/
-runtime/
+# A pitch deck's screenshots and clips, kept out of git
+# Built page and the mobile wrappers' copies of it
 .DS_Store
 .claude/worktrees/
-
-# Built page and the mobile wrappers' copies of it
+.env
+.env.*
+android/app/src/main/assets/web/
 dist/
 ios/web/
-android/app/src/main/assets/web/
+node_modules/
 play-service-account.json
-xcuserdata/
-
-# A pitch deck's screenshots and clips, kept out of git
+runtime/
+shots/
 tools/pitch/*/media
+xcuserdata/

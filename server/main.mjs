@@ -192,11 +192,11 @@ if (
     dist: process.env.DIST_ROOT ? resolve(process.env.DIST_ROOT) : undefined,
   });
   server.listen(
-    Number(process.env.PORT || 8094),
+    Number(process.env.PORT || 8120),
     process.env.HOST || "127.0.0.1",
     () =>
       console.log(
-        `Dragons!: http://${process.env.HOST || "127.0.0.1"}:${server.address().port}/`,
+        `Character editor: http://${process.env.HOST || "127.0.0.1"}:${server.address().port}/`,
       ),
   );
 }
