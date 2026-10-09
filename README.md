@@ -7,6 +7,11 @@ make look bad.
 
 Run `npm run dev` and open http://127.0.0.1:8120/ (the Dragons! game itself is at `/game`).
 
+![Viking](docs/showcase/viking.png)
+![Witch](docs/showcase/witch.png)
+![Swordsman](docs/showcase/swordsman.png)
+![Elf](docs/showcase/elf.png)
+
 ## What it does
 
 - **A live character** in the game's sunny meadow: it breathes, blinks, follows the pointer with its
