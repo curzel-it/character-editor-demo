@@ -21,13 +21,41 @@ const INK = [0.09, 0.07, 0.08];
 const WHITE = [0.97, 0.96, 0.94];
 
 /**
- * A disc lying on the eyeball as a lens: an ellipsoid round the eye's centre, `bulge` times the
- * eyeball's radius along its gaze, sized so it meets the eyeball in an oval of radii `ry` and `rz`.
+ * The eyeball as one sphere painted in rings round the gaze: the pupil (a slit for cat eyes), the iris
+ * lighter at its foot, its dark rim, then the white; rows fall on every ring's edge so they stay crisp.
  */
-function lens(id, bone, centre, rotation, radius, bulge, ry, rz, color) {
-  const a = radius * bulge;
-  const across = (r) => r / Math.sqrt(Math.max(1e-6, 1 - (radius * radius - r * r) / (a * a)));
-  return { id, bone, shape: "ellipsoid", segments: 24, position: centre, rotation, scale: [a, across(ry), across(rz)], color };
+function eyeball(centre, radius, frame, style, iris) {
+  const { f, up, side } = frame;
+  const pupil = Math.asin(Math.min(0.99, style.white ? style.pupil : 0.01));
+  const irisEdge = Math.asin(Math.min(0.99, style.white ? style.iris : 0.98));
+  const rim = Math.min(Math.PI * 0.45, irisEdge + 0.08);
+  const marks = [0, pupil * 0.5, pupil, (pupil + irisEdge) / 2, irisEdge - 0.045, irisEdge, rim, rim + 0.25, 1.3, 1.9, 2.5, Math.PI];
+  const angles = [...new Set(marks.map((a) => Math.min(Math.PI, a)))].sort((x, y) => x - y);
+  const C = 40;
+  const rows = angles.map((theta) =>
+    Array.from({ length: C }, (_, i) => {
+      const phi = (i / C) * Math.PI * 2;
+      const dir = add(add(scale(f, Math.cos(theta)), scale(up, Math.sin(theta) * Math.sin(phi))), scale(side, Math.sin(theta) * Math.cos(phi)));
+      return add(centre, scale(dir, radius));
+    }),
+  );
+  const light = shade(iris, 1.3),
+    dark = shade(iris, 0.42);
+  const bead = mixRgb(INK, iris, 0.22);
+  const color = (j, i) => {
+    const theta = (angles[j] + angles[j + 1]) / 2;
+    const phi = ((i + 0.5) / C) * Math.PI * 2;
+    if (!style.white) return bead;
+    const u = Math.sin(theta) * Math.cos(phi),
+      v = Math.sin(theta) * Math.sin(phi);
+    const slit = style.slit && (u / 0.32) ** 2 + v * v < (style.pupil * 1.45) ** 2;
+    if (style.slit ? slit : theta < pupil) return INK;
+    if (theta < irisEdge - 0.045) return v < -Math.sin(irisEdge) * 0.2 ? light : iris;
+    if (theta < irisEdge) return v < -Math.sin(irisEdge) * 0.35 ? iris : dark;
+    if (theta < rim) return mixRgb(WHITE, dark, 0.18);
+    return WHITE;
+  };
+  return gridSurface(rows, { color, flip: true });
 }
 
 /** Euler angles turning a part's +X onto `f`, rolled `roll` about it. */
@@ -111,16 +139,7 @@ export function characterEyes(head, spec) {
     joints[`lowLid${name}`] = centre;
     const turn = aim(f, 0);
     const eyeBone = `eye${name}`;
-    if (style.white) parts.push({ id: `eye-white-${name}`, bone: eyeBone, shape: "ellipsoid", segments: 16, position: centre, rotation: turn, scale: [radius, radius, radius], color: WHITE });
-    else parts.push({ id: `eye-bead-${name}`, bone: eyeBone, shape: "ellipsoid", segments: 16, position: centre, rotation: turn, scale: [radius, radius, radius], color: mixRgb(INK, iris, 0.25) });
-    if (style.white) {
-      const ir = radius * style.iris;
-      const pr = radius * style.pupil;
-      parts.push(lens(`iris-ring-${name}`, eyeBone, centre, turn, radius, 1.04, ir * 1.08, ir * 1.08, shade(iris, 0.42)));
-      parts.push(lens(`iris-${name}`, eyeBone, centre, turn, radius, 1.06, ir, ir, iris));
-      parts.push(lens(`iris-low-${name}`, eyeBone, add(centre, scale(up, -ir * 0.12)), turn, radius, 1.075, ir * 0.62, ir * 0.66, shade(iris, 1.22)));
-      parts.push(lens(`pupil-${name}`, eyeBone, centre, turn, radius, 1.09, style.slit ? pr * 1.5 : pr, style.slit ? pr * 0.34 : pr, INK));
-    }
+    parts.push(meshPart(`eye-${name}`, eyeBone, eyeball(centre, radius, frame, style, iris)));
     const glints = [
       [0.42, -0.34, 0.2],
       [-0.4, 0.3, 0.1],

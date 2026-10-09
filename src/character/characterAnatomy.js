@@ -77,12 +77,12 @@ export function createCharacter(input) {
   const height = headTop;
   const focus = {
     full: { center: [0, height * 0.5, 0], radius: height * 0.56 },
-    head: { center: add(j.headCentre, [0, 0.01, 0]), radius: 0.2 * m.head },
-    face: { center: add(j.headCentre, [0.04 * m.head, -0.02 * m.head, 0]), radius: 0.14 * m.head },
-    eyes: { center: add(head.point(0, head.eye.pitch), [-0.02, 0.005, 0]), radius: 0.095 * m.head },
-    upper: { center: [0, (j.chest[1] + j.head[1]) / 2 - 0.04, 0], radius: 0.42 * m.s },
-    lower: { center: [0, j.shinL[1], 0], radius: 0.56 * m.s * m.legs },
-    feet: { center: [0.04, 0.12 * m.s, 0], radius: 0.26 * m.s },
+    head: { center: add(j.headCentre, [0, 0.0, 0]), radius: 0.27 * m.head },
+    face: { center: add(j.headCentre, [0.04 * m.head, -0.015 * m.head, 0]), radius: 0.19 * m.head },
+    eyes: { center: add(head.point(0, head.eye.pitch), [-0.02, 0.005, 0]), radius: 0.13 * m.head },
+    upper: { center: [0, (j.chest[1] + j.head[1]) / 2 - 0.02, 0], radius: 0.56 * m.s },
+    lower: { center: [0, j.shinL[1] + 0.05, 0], radius: 0.62 * m.s * m.legs },
+    feet: { center: [0.04, 0.14 * m.s, 0], radius: 0.32 * m.s },
   };
   return {
     id: "character",

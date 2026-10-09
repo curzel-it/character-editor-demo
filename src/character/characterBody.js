@@ -37,6 +37,28 @@ function samples(from, to, step, breaks = []) {
 
 const between = (y, a, b) => Math.max(0, Math.min(1, (y - a) / (b - a)));
 
+/** The torso's cross-sections from the crotch up into the head: height, centre and the two radii. */
+function torsoStations(j, m, marks) {
+  const { s, girth, hips, waist, belly, chest, muscle } = m;
+  const g = Math.pow(girth, 0.85);
+  const shoulderW = m.shoulders - 0.03 * s;
+  return [
+    { at: marks.crotchY, cx: 0.0, rx: 0.07 * g, rz: 0.07 * hips * g },
+    { at: j.thighL[1] - 0.02 * s, cx: 0.0, rx: 0.1 * g, rz: 0.14 * hips * g },
+    { at: j.thighL[1] + 0.03 * s, cx: 0.0, rx: 0.105 * g, rz: 0.158 * hips * Math.pow(girth, 0.75) },
+    { at: marks.pelvisTopY, cx: 0.004, rx: (0.098 + belly * 0.022) * g, rz: 0.15 * mix(hips, waist, 0.4) * Math.pow(girth, 0.7) },
+    { at: marks.waistY, cx: 0.006, rx: (0.088 + belly * 0.04) * g, rz: 0.126 * waist * Math.pow(girth, 0.6) },
+    { at: j.chest[1] - 0.025 * s, cx: 0.006, rx: (0.097 + belly * 0.024 + chest * 0.012) * g, rz: mix(0.138 * waist * Math.pow(girth, 0.5), shoulderW * 0.85, 0.5) },
+    { at: j.chest[1] + 0.055 * s, cx: 0.004 + chest * 0.006, rx: (0.104 + chest * 0.014 + muscle * 0.008) * Math.pow(girth, 0.7), rz: shoulderW * 0.93 },
+    { at: j.upperArmL[1] - 0.005 * s, cx: -0.004, rx: 0.085 * Math.pow(girth, 0.6), rz: shoulderW * 1.0 + 0.022 },
+    { at: j.upperArmL[1] + 0.03 * s, cx: 0.0, rx: 0.068 * Math.pow(girth, 0.5), rz: shoulderW * 0.82 + 0.01 },
+    { at: marks.neckBaseY, cx: j.neck[0] * 0.6, rx: 0.054 * mix(1, girth, 0.4), rz: 0.06 * mix(1, girth, 0.45) },
+    { at: j.neck[1] + 0.025 * s, cx: j.neck[0], rx: 0.048 * mix(1, girth, 0.35), rz: 0.05 * mix(1, girth, 0.4) },
+    { at: j.head[1] + 0.02 * s, cx: j.head[0], rx: 0.047 * mix(1, girth, 0.3), rz: 0.049 * mix(1, girth, 0.35) },
+    { at: j.head[1] + 0.06 * s, cx: j.head[0] + 0.004, rx: 0.044, rz: 0.044 },
+  ];
+}
+
 /**
  * The torso and neck as one skinned tube from the crotch up into the head, painted with the top
  * and bottom and swollen by their cloth.
@@ -47,21 +69,7 @@ function torso(j, m, outfit, skin, marks) {
   const top = outfit.top,
     bottom = outfit.bottom;
   const shoulderW = m.shoulders - 0.03 * s;
-  const stations = [
-    { at: marks.crotchY, cx: 0.0, rx: 0.07 * g, rz: 0.07 * hips * g },
-    { at: j.thighL[1] - 0.02 * s, cx: 0.0, rx: 0.1 * g, rz: 0.14 * hips * g },
-    { at: j.thighL[1] + 0.03 * s, cx: 0.0, rx: 0.105 * g, rz: 0.158 * hips * Math.pow(girth, 0.75) },
-    { at: marks.pelvisTopY, cx: 0.004, rx: (0.098 + belly * 0.022) * g, rz: 0.15 * mix(hips, waist, 0.4) * Math.pow(girth, 0.7) },
-    { at: marks.waistY, cx: 0.006, rx: (0.088 + belly * 0.04) * g, rz: 0.126 * waist * Math.pow(girth, 0.6) },
-    { at: j.chest[1] - 0.025 * s, cx: 0.006, rx: (0.097 + belly * 0.024 + chest * 0.012) * g, rz: mix(0.138 * waist * Math.pow(girth, 0.5), shoulderW * 0.85, 0.5) },
-    { at: j.chest[1] + 0.055 * s, cx: 0.004 + chest * 0.006, rx: (0.104 + chest * 0.014 + muscle * 0.008) * Math.pow(girth, 0.7), rz: shoulderW * 0.93 },
-    { at: j.upperArmL[1] - 0.005 * s, cx: -0.004, rx: 0.085 * Math.pow(girth, 0.6), rz: shoulderW * 0.98 + 0.012 },
-    { at: j.upperArmL[1] + 0.028 * s, cx: 0.0, rx: 0.066 * Math.pow(girth, 0.5), rz: shoulderW * 0.72 },
-    { at: marks.neckBaseY, cx: j.neck[0] * 0.6, rx: 0.054 * mix(1, girth, 0.4), rz: 0.06 * mix(1, girth, 0.45) },
-    { at: j.neck[1] + 0.025 * s, cx: j.neck[0], rx: 0.048 * mix(1, girth, 0.35), rz: 0.05 * mix(1, girth, 0.4) },
-    { at: j.head[1] + 0.02 * s, cx: j.head[0], rx: 0.047 * mix(1, girth, 0.3), rz: 0.049 * mix(1, girth, 0.35) },
-    { at: j.head[1] + 0.06 * s, cx: j.head[0] + 0.004, rx: 0.044, rz: 0.044 },
-  ];
+  const stations = torsoStations(j, m, marks);
   const bustAt = j.chest[1] + 0.045 * s;
   const neckline = (angle) => top.neck - top.scoop * Math.max(0, Math.cos(angle)) ** 2 - (top.vee ?? 0) * Math.max(0, 1 - Math.abs(Math.atan2(Math.sin(angle), Math.cos(angle))) / 0.42);
   const breaks = [top.hem, top.neck, bottom.waist, top.neck - top.scoop, top.hemBand ? top.hem + 0.03 * s : null, top.belt ? marks.waistY - 0.016 * s : null, top.belt ? marks.waistY + 0.016 * s : null].filter((b) => b !== null && b !== undefined);
@@ -81,52 +89,55 @@ function torso(j, m, outfit, skin, marks) {
     if (y < j.head[1]) return { joints: ["neck", "chest"], weight: Math.min(1, 0.5 + between(y, j.neck[1] - 0.01, j.head[1])) };
     return { joints: ["head", "neck"], weight: Math.min(1, 0.5 + between(y, j.head[1], j.head[1] + 0.04)) };
   };
+  const drapeFrom = j.thighL[1] + 0.055 * s;
+  const legOut = Math.abs(j.thighL[2]) + 0.088 * m.thigh;
+  const drape = [Math.max(profile(stations, "rx", drapeFrom), 0.092 * m.thigh * 1.32 + 0.006), Math.max(profile(stations, "rz", drapeFrom), legOut + 0.004)];
   const rings = ys.map((y) => {
     const t = covered(y);
+    const hangs = !top.tucked && y < drapeFrom && y >= top.hem;
     const bust = chest * 0.3 * Math.exp(-(((y - bustAt) / (0.07 * s)) ** 2));
     const tummy = belly * 0.18 * Math.exp(-(((y - marks.waistY + 0.02 * s) / (0.09 * s)) ** 2));
     const seat = 0.2 * mix(0.6, 1.3, (hips - 0.86) / 0.36) * Math.exp(-(((y - j.thighL[1] - 0.01 * s) / (0.07 * s)) ** 2));
     const shoulderBlade = 0.06 * Math.exp(-(((y - j.chest[1] - 0.05 * s) / (0.06 * s)) ** 2));
     return {
       p: [profile(stations, "cx", y), y, 0],
-      r: [profile(stations, "rx", y) + t, profile(stations, "rz", y) + t],
+      r: hangs ? [Math.max(profile(stations, "rx", y), drape[0]) + t, Math.max(profile(stations, "rz", y), drape[1] * (1 + 0.02 * (drapeFrom - y) / s)) + t] : [profile(stations, "rx", y) + t, profile(stations, "rz", y) + t],
       skin: weights(y),
       shape: (angle) => {
         const c = Math.cos(angle),
           sn = Math.sin(angle);
         const front = Math.max(0, c);
         const twin = 0.55 + 0.45 * Math.min(1, Math.abs(sn) * 2.2);
-        return 1 + bust * front ** 2.2 * twin + tummy * front ** 2 + seat * Math.max(0, -c) ** 2 + shoulderBlade * Math.max(0, -c) ** 3;
+        return 1 + bust * front ** 2.2 * twin + tummy * front ** 2 + (hangs ? seat * 0.6 : seat) * Math.max(0, -c) ** 2 + shoulderBlade * Math.max(0, -c) ** 3;
       },
     };
   });
   const pattern = top.pattern;
   const darker = shade(top.main, 0.82);
-  const strapZ = 0.062 * s;
   const color = (ring, seg, angle, centre) => {
     const y = centre[1],
       z = centre[2],
       front = Math.cos(angle) > 0;
+    const a = Math.abs(Math.atan2(Math.sin(angle), Math.cos(angle)));
     if (y > neckline(angle)) {
       if (top.vee && top.inner && y < top.neck + 0.005 && front) return top.inner;
       return skin;
     }
     if (top.bareShoulders && y > j.chest[1] + 0.035 * s && Math.abs(Math.sin(angle)) > 0.58) return skin;
-    if (bottom.bib && front && Math.abs(z) < 0.075 * s * Math.pow(girth, 0.5) && y < j.chest[1] + 0.05 * s && y >= bottom.waist - 0.01) return y > j.chest[1] + 0.035 * s ? shade(bottom.rgb, 0.85) : bottom.rgb;
-    if (bottom.bib && y > j.chest[1] + 0.02 * s && Math.abs(Math.abs(z) - strapZ) < 0.013 * s) return shade(bottom.rgb, 0.9);
+    if (bottom.bib && a < 0.62 && y < j.chest[1] + 0.05 * s && y >= bottom.waist - 0.01) return y > j.chest[1] + 0.035 * s ? shade(bottom.rgb, 0.85) : bottom.rgb;
+    if (bottom.bib && y > j.chest[1] + 0.02 * s && Math.abs(a - 0.55) < 0.08) return shade(bottom.rgb, 0.9);
     if (y >= top.hem) {
-      if (top.belt && Math.abs(y - marks.waistY) < 0.016 * s) return Math.abs(z) < 0.018 * s && front ? rgbOf("#e8b54a") : top.belt;
-      if (top.open && front && Math.abs(z) < top.open) return top.inner;
-      if (top.open && front && Math.abs(Math.abs(z) - top.open) < 0.006 * s) return darker;
-      if (top.buttons && top.vee && front && Math.abs(z) < 0.006 * s && y < top.neck - top.vee && Math.floor((y - top.hem) / (0.045 * s)) % 1 === 0 && ((y - top.hem) / (0.045 * s)) % 1 > 0.6) return top.buttons;
+      if (top.belt && Math.abs(y - marks.waistY) < 0.016 * s) return a < 0.16 ? rgbOf("#e8b54a") : top.belt;
+      if (top.open && a < 0.3) return top.inner;
+      if (top.open && a < 0.46) return darker;
       if (top.hemBand && y < top.hem + 0.03 * s) return top.hemBand;
-      if (top.pocket && front && Math.abs(z) < 0.075 * s && y > top.hem + 0.04 * s && y < top.hem + 0.12 * s) return shade(top.main, 0.9);
+      if (top.pocket && a < 0.62 && y > top.hem + 0.04 * s && y < top.hem + 0.12 * s) return shade(top.main, 0.9);
       return pattern(y - marks.waistY, angle) ? top.accent : top.main;
     }
     if (y <= bottom.waist) return bottom.rgb;
     return skin;
   };
-  return meshPart("body-torso", "hips", tubeSurface(rings, { around: 32, color }));
+  return meshPart("body-torso", "hips", tubeSurface(rings, { around: 40, color }));
 }
 
 /** An arm from inside the shoulder to the wrist, painted with the sleeve. */
@@ -138,10 +149,10 @@ function arm(side, j, m, outfit, skin) {
     elbow = j[`forearm${side}`],
     wrist = j[`hand${side}`];
   const z = Math.sign(shoulder[2]);
-  const start = add(shoulder, [0, -0.004 * s, -z * 0.055 * s]);
+  const start = add(shoulder, [0, -0.012 * s, -z * 0.07 * s]);
   const stations = [
-    { at: 0, p: start, r: 0.046 * k },
-    { at: 0.06, p: lerp(start, shoulder, 0.7), r: 0.05 * k },
+    { at: 0, p: start, r: 0.04 * k },
+    { at: 0.06, p: lerp(start, shoulder, 0.75), r: 0.047 * k },
     { at: 0.16, p: lerp(shoulder, elbow, 0.14), r: 0.05 * k },
     { at: 0.32, p: lerp(shoulder, elbow, 0.5), r: 0.047 * k * mix(1, 1.08, m.muscle) },
     { at: 0.5, p: elbow, r: 0.039 * k },
@@ -225,11 +236,11 @@ function leg(side, j, m, outfit, skin) {
     ankle = j[`foot${side}`];
   const z = Math.sign(hip[2]);
   const k = m.thigh;
-  const start = add(hip, [0.0, 0.05 * s, -z * 0.02 * s]);
+  const start = add(hip, [0.0, 0.045 * s, -z * 0.03 * s]);
   const bottom = outfit.bottom,
     shoes = outfit.shoes;
   const stations = [
-    { at: 0, p: start, r: 0.085 * k },
+    { at: 0, p: start, r: 0.072 * k },
     { at: 0.07, p: lerp(start, hip, 0.9), r: 0.092 * k },
     { at: 0.2, p: lerp(hip, knee, 0.24), r: 0.083 * k },
     { at: 0.36, p: lerp(hip, knee, 0.62), r: 0.066 * Math.pow(k, 0.9) },
@@ -347,6 +358,7 @@ function skirt(skirtWear, j, m, rgb, trim, marks, id) {
 /** Bands and trims that sit off the body: belts, collars, a hood, drawstrings, lapels. */
 function trims(j, m, outfit, marks) {
   const { s } = m;
+  const stations = torsoStations(j, m, marks);
   const top = outfit.top;
   const parts = [];
   const loopAt = (id, y, rx, rz, thickness, rgb, cx = 0.006, bone = "spine") => {
@@ -384,6 +396,13 @@ function trims(j, m, outfit, marks) {
       parts.push({ id: `lapel-${zs}`, bone: "chest", shape: "ellipsoid", segments: 10, position: [0.075 * s * g, y, zs * (top.open + 0.02 * s)], rotation: [zs * 0.5, 0, -0.25], scale: [0.006 * s, 0.05 * s, 0.022 * s], color: shade(top.main, 0.88) });
     }
   }
+  if (top.buttons && top.vee)
+    for (let k = 0; k < 4; k++) {
+      const y = top.hem + (0.035 + k * 0.045) * s;
+      if (y > top.neck - top.vee - 0.01) break;
+      const rx = profile(stations, "rx", y) + top.thick;
+      parts.push({ id: `button-${k}`, bone: "spine", shape: "ellipsoid", segments: 10, position: [profile(stations, "cx", y) + rx + 0.002, y, 0], rotation: [0, 0, 0], scale: [0.004 * s, 0.0065 * s, 0.0065 * s], color: top.buttons });
+    }
   if (top.belt) loopAt("belt", marks.waistY, (0.088 + m.belly * 0.04) * g + top.thick + 0.004, 0.126 * m.waist * Math.pow(m.girth, 0.6) + top.thick + 0.004, [0.017 * s, 0.004], top.belt, 0.006, "spine");
   return parts;
 }

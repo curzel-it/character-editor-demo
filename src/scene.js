@@ -1,6 +1,6 @@
 import { makeGlProgram, glUniforms, GL_QUAD_VERTEX } from "./glProgram.js";
 import { multiply, boneMatrices, transform, point, perspective, lookAt, invert, orientation } from "./math3d.js";
-import { makeSkinMesh } from "./skinMesh.js";
+import { makeSkinMesh, prebuiltSkin } from "./skinMesh.js";
 import { releaseSkin, uploadSkin } from "./scene/skinBuffers.js";
 import { metalShades } from "./anatomy/metalTone.js";
 import { cozyEnvironment, environmentOf, palette } from "./palette.js";
@@ -443,7 +443,7 @@ function sceneOnContext(canvas, gl) {
     let mesh = racerMeshes.get(round).get(anatomy);
     if (mesh && !mesh.disposed) return mesh;
     if (anatomy.bones.length > 64) throw new Error("Anatomy exceeds 64 bones");
-    const data = makeSkinMesh(anatomy, { round });
+    const data = prebuiltSkin(anatomy, round) ?? makeSkinMesh(anatomy, { round });
     const root = anatomy.bones[0].position;
     mesh = {
       ...uploadSkin(gl, data),

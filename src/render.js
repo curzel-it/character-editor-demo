@@ -1,6 +1,6 @@
 import { makeGlProgram, glUniforms, GL_QUAD_VERTEX } from "./glProgram.js";
 import { multiply, boneMatrices, camera, invert, point } from "./math3d.js";
-import { makeSkinMesh } from "./skinMesh.js";
+import { makeSkinMesh, prebuiltSkin } from "./skinMesh.js";
 import { releaseSkin, uploadSkin } from "./scene/skinBuffers.js";
 import { metalShades } from "./anatomy/metalTone.js";
 import { cozyEnvironment, environments, palette } from "./palette.js";
@@ -90,7 +90,7 @@ export function createRenderer(canvas, { transparent = false } = {}) {
     let mesh = cache.get(anatomy);
     if (mesh && !mesh.disposed) return mesh;
     if (anatomy.bones.length > 64) throw new Error("Anatomy exceeds 64 bones");
-    const data = makeSkinMesh(anatomy, { round });
+    const data = prebuiltSkin(anatomy, round) ?? makeSkinMesh(anatomy, { round });
     mesh = { ...uploadSkin(gl, data), inverseBind: data.inverseBind };
     cache.set(anatomy, mesh);
     resources.add(mesh);

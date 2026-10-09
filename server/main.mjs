@@ -36,6 +36,7 @@ const allowed = (path) =>
   (/^\/(src|styles|tools\/checks|tools\/pitch|shots|brand|node_modules\/musicbox\/src)\//.test(path) ||
     [
       "/index.html",
+      "/editor.html",
       "/lab.html",
       "/race.html",
       "/raceMap.html",
@@ -154,7 +155,8 @@ export function createServer({ dist } = {}) {
       }
       return;
     }
-    if (pathname === "/") pathname = "/index.html";
+    if (pathname === "/") pathname = "/editor.html";
+    if (pathname === "/game") pathname = "/index.html";
     const built = pathname === "/index.html" && dist ? await readBuiltPage(dist, req.headers["accept-encoding"]) : null;
     if (built) {
       send(200, built.data, types[".html"], {

@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <meta name="theme-color" content="#7EC8F5" />
+    <title>Character Editor</title>
+    <link rel="icon" type="image/png" href="/styles/ui/img/favicon.png" />
+    <link rel="stylesheet" href="/styles/ui/fonts/fonts.css" />
+    <link rel="stylesheet" href="/styles/ui/tokens.css" />
+    <link rel="stylesheet" href="/styles/editor.css" />
+  </head>
+  <body>
+    <main id="editor" class="ce-root"></main>
+    <noscript>The character editor needs JavaScript and WebGL 2.</noscript>
+    <script type="module">
+      import { createCharacterEditor } from "/src/editor/characterEditor.js";
+      window.__editor = createCharacterEditor(document.getElementById("editor"));
+    </script>
+  </body>
+</html>

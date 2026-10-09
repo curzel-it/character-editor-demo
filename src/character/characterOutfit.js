@@ -73,8 +73,9 @@ export function outfitOf(spec, marks) {
     overalls: { length: 1, thick: 0.01, flare: 0.006, bib: true, waist: pelvisTopY },
   };
   const bottom = spec.top === "dress" ? { length: 0, thick: 0, flare: 0, waist: waistY } : (bottoms[spec.bottom] ?? bottoms.trousers);
+  const tucked = Boolean(bottom.bib) || (bottom.skirt && !top.skirt && top.hem < bottom.waist);
   return {
-    top: { ...top, main, accent, pattern: patternOf(spec.top === "silks" && spec.pattern === "plain" ? "sash" : spec.pattern) },
+    top: { ...top, ...(tucked ? { hem: Math.max(top.hem, bottom.waist - 0.005), hemBand: undefined, tucked: true } : {}), main, accent, pattern: patternOf(spec.top === "silks" && spec.pattern === "plain" ? "sash" : spec.pattern) },
     bottom: { ...bottom, rgb: bottomRgb },
     shoes: shoeOf(spec),
     gloves: spec.gloves === "none" ? null : { kind: spec.gloves, rgb: rgbOf(spec.glovesColor) },

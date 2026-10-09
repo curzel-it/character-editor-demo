@@ -88,6 +88,14 @@ export function makeSkinMesh(anatomy, { round = 0 } = {}) {
   };
 }
 
+/** The key a skin mesh built at `round` is filed under. */
+export const roundKey = (round) => JSON.stringify(round ?? 0);
+
+/** A skin mesh built ahead of time (in a worker, say) and carried on the anatomy as `prebuilt: { key, data }`, when it was built at `round`. */
+export function prebuiltSkin(anatomy, round) {
+  return anatomy.prebuilt?.key === roundKey(round) ? anatomy.prebuilt.data : null;
+}
+
 /** The metal of every vertex in `data`, judged by its colour, one judgement per distinct colour. */
 function metalsOf(anatomy, data) {
   const metals = new Float32Array(data.length / 12);

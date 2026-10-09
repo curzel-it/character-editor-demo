@@ -49,7 +49,7 @@ export function characterJoints(spec) {
   const pelvisY = hipY + 0.035 * s;
   const spineY = pelvisY + 0.13 * s,
     chestY = spineY + 0.15 * s;
-  const shoulderY = chestY + 0.125 * s;
+  const shoulderY = chestY + 0.112 * s;
   const neckY = chestY + 0.155 * s;
   const headPivotY = neckY + 0.05 * s;
   const headRise = 0.104 * m.head * mix(0.97, 1.12, Number(spec.faceLength));
