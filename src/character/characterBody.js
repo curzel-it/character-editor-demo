@@ -346,7 +346,7 @@ function skirt(skirtWear, j, m, rgb, trim, marks, id) {
     mesh.skin.joints[v] = ["hips", vz < 0 ? "thighL" : "thighR"];
     mesh.skin.weights[v] = weight;
   }
-  const inner = tubeSurface(rings.map((r) => ({ ...r, r: r.r.map((v) => v - 0.003) })), { around: 32, color: () => shade(rgb, 0.6), caps: false });
+  const inner = tubeSurface(rings.map((r) => ({ ...r, r: r.r.map((v) => v - 0.003) })), { around: 32, color: () => shade(rgb, 0.82), caps: false });
   const innerCount = inner.vertices.length / 3;
   for (let v = 0; v < innerCount; v++) {
     inner.skin.joints[v] = mesh.skin.joints[v];

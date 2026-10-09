@@ -59,7 +59,7 @@ export function facialHair(head, spec) {
       }
       grid.push(row);
     }
-    parts.push(meshPart("beard", "head", gridSurface(grid, { wrap: false, color: (r, i) => ((r + i) % 7 === 0 ? shade(hair, 0.9) : hair) })));
+    parts.push(meshPart("beard", "head", gridSurface(grid, { wrap: false, color: () => hair })));
   }
   if (style.tache) {
     for (const s of [-1, 1]) {
