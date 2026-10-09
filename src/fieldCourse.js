@@ -1,11 +1,13 @@
 import { createCourse } from "./course/createCourse.js";
-import { leagueForAge } from "./stable/leagues.js";
+import { leagueForAge, leagues } from "./stable/leagues.js";
 import { ageOf } from "./dragonAge.js";
 
-/** Share of the full course length a field races: its league's when every racer is one age, the full length when ages mix. */
+const longest = Math.max(...leagues.map((league) => league.courseShare));
+
+/** Share of the full course length a field races: its league's when every racer is one age, the longest league's when ages mix. */
 export function courseShare(participants) {
   const [age, ...others] = new Set(participants.map((p) => ageOf(p.age).id));
-  return others.length ? 1 : (leagueForAge(age)?.courseShare ?? 1);
+  return others.length ? longest : (leagueForAge(age)?.courseShare ?? longest);
 }
 
 /** The seeded course a race field flies, as long as its league's races. */

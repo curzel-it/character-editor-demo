@@ -93,8 +93,13 @@ function neckwear(spec, j, m) {
     const knot = [cx + rx + 0.012 * s, y - 0.025 * s, 0.03 * s];
     parts.push({ id: "scarf-knot", bone: "chest", shape: "ellipsoid", segments: 12, position: knot, rotation: [0, 0, 0], scale: [0.026 * s, 0.03 * s, 0.03 * s], color: rgb });
     const length = kind === "longScarf" ? 0.42 * s : 0.14 * s;
+    const chestFront = j.chest[0] + (0.118 + 0.03 * m.chest) * Math.pow(m.girth, 0.7) * s + 0.022;
     for (const [k, dz] of [[0, 0.01], [1, -0.03]]) {
-      const path = [0, 0.33, 0.66, 1].map((t) => add(knot, [0.026 * s * Math.sin(t * 2) + 0.012 * s * t, -length * t, dz * s + 0.012 * s * Math.sin(t * 5 + k)]));
+      const path = [0, 0.2, 0.4, 0.6, 0.8, 1].map((t) => {
+        const y = knot[1] - length * t;
+        const front = y > j.chest[1] - 0.08 * s ? chestFront : chestFront - 0.012 + (m.belly * 0.04 * s);
+        return [Math.max(knot[0] + 0.012 * s * t, mix(knot[0], front, Math.min(1, t * 4))), y, knot[2] + dz * s + 0.012 * s * Math.sin(t * 5 + k)];
+      });
       push(`scarf-tail-${k}`, tubeSurface(path.map((p, i) => ({ p, r: [0.008 * s, 0.03 * s] })), { around: 8, up: [1, 0, 0], color: (ring) => (ring >= 2 ? shade(rgb, 0.85) : rgb) }));
     }
   }
@@ -134,20 +139,18 @@ function backwear(spec, j, m) {
   if (kind === "cape") {
     const columns = 22,
       rows = 14;
-    const bottom = j.shinL[1] + 0.02;
+    const bottom = mix(j.shinL[1], j.footL[1], 0.45);
     const grid = [];
     for (let r = 0; r <= rows; r++) {
       const t = r / rows;
       const y = mix(shoulderY + 0.035 * s, bottom, t);
-      const half = mix(m.shoulders * 0.95, m.shoulders * 1.35 + 0.05, smooth(0, 1, t));
+      const half = mix(m.shoulders * 0.92, m.shoulders * 1.3 + 0.05, smooth(0, 1, t));
       const row = [];
       for (let i = 0; i <= columns; i++) {
-        const u = i / columns * 2 - 1;
-        const wrap = mix(0.85, 0.35, smooth(0, 0.3, t));
-        const a = u * Math.PI * wrap * 0.5;
-        const x = backX - 0.02 - Math.cos(a) * 0.05 * s * (1 + t) + Math.sin(a * 3) * 0.004 + (1 - t) * 0.03 * Math.abs(u) ** 2;
+        const u = (i / columns) * 2 - 1;
+        const x = backX - 0.014 - (1 - u * u) * 0.025 * s * (1 + t) + (1 - t) ** 3 * 0.075 * u * u;
         const fold = 0.012 * s * Math.sin(u * 9) * smooth(0.2, 1, t);
-        row.push([x + fold - 0.07 * s * t * t, y, Math.sin(a) * half]);
+        row.push([x + fold - 0.035 * s * t * t, y, u * half]);
       }
       grid.push(row);
     }

@@ -13,9 +13,10 @@ For a forward vector `f`, the lateral vector is `[-f.z, 0, f.x]` (+Z when `f` is
 
 `createCourse(seed, { type, share, length })` returns plain data. `type` is `valley` (the default) or `canyon`, and is
 recorded as `course.type`. `share` (default 1) shortens the seeded length to that share, with gates
-cut in proportion (at least 6) so their spacing holds; `length` sets it outright in metres.
+cut in proportion (at least 6) so their spacing holds; `length` sets it outright in metres. `placeGates`
+keeps every gate within a climb (0.18) or dive (0.3) of its neighbours, gates fixed by a landmark aside.
 `fieldCourse(field)` in `src/fieldCourse.js` builds a race field's course with its league's
-`courseShare` (`src/stable/leagues.js`) when every racer is one age, the full length when ages mix:
+`courseShare` (`src/stable/leagues.js`) when every racer is one age, the longest league's when ages mix:
 
 ```
 {
@@ -97,6 +98,10 @@ standing height `standHeight(genome, age)`; `raceRoster` omits it for adults. Ev
 rolled from the race's seed (`raceForm` in `src/race/racerTraits.js`): `perfect` and `off` one race
 in ten each, lifting or trimming top speed and acceleration by 0.5% (`applyForm`), `usual` otherwise;
 a roster entry's `form` replaces the roll (the owner's dragon on the game's first day, `raceDayForm`).
+A roster entry's `edge` lifts its top speed, acceleration, climb and handling by that share (`applyEdge`):
+league races give the owner's dragon `edgeOf(season, dragon)` (`ownerEdge` in `src/stable/leagueRace.js`),
+5% in bronze, 3% in silver and 2% in gold, plus 3.5% in bronze for every star it is short of the
+division's strongest rivals.
 Riders never race: every racer flies on its dragon's stats alone, and a field participant's `jockey`
 (`{ seed, name, silks: { pattern, colors } }`, `createJockey(seed)` in `src/jockey/createJockey.js`)
 only dresses it in the scene.
@@ -105,9 +110,9 @@ There is no stamina. A racer flies at its top speed unless something slows it: a
 aims 25% below top speed for 2.5 s), a breath hit, a bump, a turn tighter than its handling (lateral
 load over `handling` bleeds speed) and the takeoff. `speedChange` (`src/race/flightModel.js`) brings it
 back at its acceleration, easing off near the target, and bleeds speed over it (a dive, a slingshot)
-slower for heavier racers. Slipstream raises the speed a chaser aims for by up to 5% and the gain
-lingers 2 s after it pulls out, the slingshot past; a clean pass within 40% of a gate's radius from
-its centre gives a 3% burst the same way. Two racers that touch `bump`: they lose 3.5 m/s between them,
+slower for heavier racers. Slipstream raises the speed a chaser aims for by up to 8% and the gain
+lingers 3 s after it pulls out, the slingshot past; a clean pass within 40% of a gate's radius from
+its centre gives a 5% burst the same way. Two racers that touch `bump`: they lose 3.5 m/s between them,
 split by the square of their weights so the lighter loses more, all of it to one being shoved by a
 breath. The racer AI (`decide` in `src/race/pilot.js`) steers from the racer's build and a seeded lane:
 high handling cuts tighter inside lines, high top speed takes the wide, smooth line, heavy racers

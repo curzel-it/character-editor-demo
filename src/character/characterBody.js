@@ -43,7 +43,7 @@ function torsoStations(j, m, marks) {
   const g = Math.pow(girth, 0.85);
   const shoulderW = m.shoulders - 0.03 * s;
   return [
-    { at: marks.crotchY, cx: 0.0, rx: 0.07 * g, rz: 0.07 * hips * g },
+    { at: marks.crotchY, cx: 0.0, rx: 0.088 * g, rz: 0.11 * hips * g },
     { at: j.thighL[1] - 0.02 * s, cx: 0.0, rx: 0.1 * g, rz: 0.14 * hips * g },
     { at: j.thighL[1] + 0.03 * s, cx: 0.0, rx: 0.105 * g, rz: 0.158 * hips * Math.pow(girth, 0.75) },
     { at: marks.pelvisTopY, cx: 0.004, rx: (0.098 + belly * 0.022) * g, rz: 0.15 * mix(hips, waist, 0.4) * Math.pow(girth, 0.7) },
@@ -73,7 +73,7 @@ function torso(j, m, outfit, skin, marks) {
   const bustAt = j.chest[1] + 0.045 * s;
   const neckline = (angle) => top.neck - top.scoop * Math.max(0, Math.cos(angle)) ** 2 - (top.vee ?? 0) * Math.max(0, 1 - Math.abs(Math.atan2(Math.sin(angle), Math.cos(angle))) / 0.42);
   const breaks = [top.hem, top.neck, bottom.waist, top.neck - top.scoop, top.hemBand ? top.hem + 0.03 * s : null, top.belt ? marks.waistY - 0.016 * s : null, top.belt ? marks.waistY + 0.016 * s : null].filter((b) => b !== null && b !== undefined);
-  const ys = samples(marks.crotchY, j.head[1] + 0.06 * s, 0.011, breaks);
+  const ys = samples(marks.crotchY, j.head[1] + 0.06 * s, top.fine ? 0.0065 : 0.011, breaks);
   const covered = (y) => {
     let t = 0;
     if (y >= top.hem && y <= top.neck - top.scoop) t = top.thick;
@@ -90,7 +90,7 @@ function torso(j, m, outfit, skin, marks) {
     return { joints: ["head", "neck"], weight: Math.min(1, 0.5 + between(y, j.head[1], j.head[1] + 0.04)) };
   };
   const drapeFrom = j.thighL[1] + 0.055 * s;
-  const legOut = Math.abs(j.thighL[2]) + 0.088 * m.thigh;
+  const legOut = Math.abs(j.thighL[2]) + 0.096 * m.thigh + 0.006;
   const drape = [Math.max(profile(stations, "rx", drapeFrom), 0.092 * m.thigh * 1.32 + 0.006), Math.max(profile(stations, "rz", drapeFrom), legOut + 0.004)];
   const rings = ys.map((y) => {
     const t = covered(y);
@@ -123,7 +123,7 @@ function torso(j, m, outfit, skin, marks) {
       if (top.vee && top.inner && y < top.neck + 0.005 && front) return top.inner;
       return skin;
     }
-    if (top.bareShoulders && y > j.chest[1] + 0.035 * s && Math.abs(Math.sin(angle)) > 0.58) return skin;
+    if (top.bareShoulders && y > j.chest[1] + (front ? 0.03 : 0.07) * s) return skin;
     if (bottom.bib && a < 0.62 && y < j.chest[1] + 0.05 * s && y >= bottom.waist - 0.01) return y > j.chest[1] + 0.035 * s ? shade(bottom.rgb, 0.85) : bottom.rgb;
     if (bottom.bib && y > j.chest[1] + 0.02 * s && Math.abs(a - 0.55) < 0.08) return shade(bottom.rgb, 0.9);
     if (y >= top.hem) {
@@ -137,7 +137,7 @@ function torso(j, m, outfit, skin, marks) {
     if (y <= bottom.waist) return bottom.rgb;
     return skin;
   };
-  return meshPart("body-torso", "hips", tubeSurface(rings, { around: 40, color }));
+  return meshPart("body-torso", "hips", tubeSurface(rings, { around: top.fine ? 72 : 40, color }));
 }
 
 /** An arm from inside the shoulder to the wrist, painted with the sleeve. */
@@ -396,6 +396,26 @@ function trims(j, m, outfit, marks) {
       parts.push({ id: `lapel-${zs}`, bone: "chest", shape: "ellipsoid", segments: 10, position: [0.075 * s * g, y, zs * (top.open + 0.02 * s)], rotation: [zs * 0.5, 0, -0.25], scale: [0.006 * s, 0.05 * s, 0.022 * s], color: shade(top.main, 0.88) });
     }
   }
+  if (top.bareShoulders)
+    for (const side of [-1, 1]) {
+      const z = side * 0.068 * s;
+      const path = [];
+      const yTop = (() => {
+        let y = j.chest[1];
+        while (y < j.neck[1] && profile(stations, "rz", y) > Math.abs(z) + 0.012) y += 0.004;
+        return y;
+      })();
+      const surface = (y, sign) => {
+        const rx = profile(stations, "rx", y) + 0.008,
+          rz = profile(stations, "rz", y) + 0.008;
+        return [profile(stations, "cx", y) + sign * rx * Math.sqrt(Math.max(0.02, 1 - (z / rz) ** 2)), y, z];
+      };
+      const from = j.chest[1] + 0.02 * s,
+        back = j.chest[1] + 0.06 * s;
+      for (let k = 0; k <= 6; k++) path.push(surface(mix(from, yTop, k / 6), 1));
+      for (let k = 6; k >= 0; k--) path.push(surface(mix(back, yTop, k / 6), -1));
+      parts.push(meshPart(`strap-${side}`, "chest", tubeSurface(path.map((p) => ({ p, r: [0.004 * s, 0.011 * s] })), { around: 6, up: [0, 0, 1], color: () => top.main })));
+    }
   if (top.buttons && top.vee)
     for (let k = 0; k < 4; k++) {
       const y = top.hem + (0.035 + k * 0.045) * s;

@@ -195,8 +195,8 @@ export function characterPose(anatomy, time, state = {}) {
     set(`lowLid${side}`, [0, 0, lowOf(side)]);
     const s = side === "L" ? -1 : 1;
     const size = rig.height / 1.7;
-    set(`brow${side}`, [face.inner * 0.32 * s, 0, 0], [0, (face.brows * 0.009 + face.inner * 0.002) * size, 0]);
-    set(`mouth${side}`, [0, 0, 0], [0, face.smile * 0.0075 * size, s * face.wide * 0.006 * size]);
+    set(`brow${side}`, [face.inner * 0.42 * s, 0, 0], [0, (face.brows * 0.011 + face.inner * 0.002) * size, 0]);
+    set(`mouth${side}`, [0, 0, 0], [0, face.smile * 0.011 * size, s * face.wide * 0.007 * size]);
   }
   const size = rig.height / 1.7;
   const opened = Math.max(rig.mouthOpen, face.open);
@@ -223,7 +223,7 @@ export function characterPose(anatomy, time, state = {}) {
   set("hairTip", [hairSwing * 1.4, 0, 0.07 * wave(t, 3.1, 0.3) * lag]);
   set("hairSideL", [0.06 * wave(t, 2.9) * lag, 0, 0.04 * wave(t, 3.3) * lag]);
   set("hairSideR", [0.06 * wave(t, 2.9, 0.3) * lag, 0, 0.04 * wave(t, 3.3, 0.2) * lag]);
-  set("cape", [0.02 * wave(t, 3.4) * lag, 0, -0.03 - 0.02 * wave(t, 2.8) * lag - (g?.lift ?? 0) * gw * 0.8]);
+  set("cape", [0.02 * wave(t, 3.4) * lag, 0, -0.01 - 0.015 * wave(t, 2.8) * lag - (g?.lift ?? 0) * gw * 0.8]);
   set("capeLow", [0.03 * wave(t, 3.4, 0.2) * lag, 0, -0.03 * wave(t, 2.8, 0.25) * lag]);
   return { bones };
 }

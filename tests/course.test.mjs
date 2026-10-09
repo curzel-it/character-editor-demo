@@ -151,15 +151,14 @@ test("a course share shortens the course with fewer gates at the same spacing, c
     }
 });
 
-test("a field races its league's course length; mixed ages and exhibitions race the full length", async () => {
+test("a field races its league's course length; mixed ages race the longest league's", async () => {
   const { courseShare, fieldCourse } = await import("../src/fieldCourse.js");
   const { leagues } = await import("../src/stable/leagues.js");
   const of = (...ages) => ages.map((age) => ({ age }));
-  assert.deepEqual(leagues.map((l) => courseShare(of(l.age, l.age))), [0.5, 0.72, 1]);
-  assert.equal(courseShare(of(undefined, "adult")), 1);
-  assert.equal(courseShare(of("kid", "teen")), 1);
+  assert.deepEqual(leagues.map((l) => courseShare(of(l.age, l.age))), [0.46, 0.48, 0.54]);
+  assert.equal(courseShare(of(undefined, "adult")), 0.54);
+  assert.equal(courseShare(of("kid", "teen")), 0.54);
   const field = (age) => ({ courseSeed: "7", courseType: "canyon", participants: of(age, age) });
   const [kid, teen, adult] = ["kid", "teen", "adult"].map((age) => fieldCourse(field(age)).length);
   assert.ok(kid < teen && teen < adult);
-  assert.equal(adult, courses.get("7").length);
 });

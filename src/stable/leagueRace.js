@@ -3,7 +3,9 @@ import { simulateRace } from "../race/simulateRace.js";
 import { raceRoster } from "../raceField.js";
 import { afterRaceCare } from "./care.js";
 import { afterRace, unfitReason } from "./condition.js";
-import { createSeason, leagueOf, raceField, seasonOver } from "./leagues.js";
+import { createSeason, leagueOf, raceField, rivalStars, seasonOver } from "./leagues.js";
+import { divisionRank } from "./divisions.js";
+import { strengthOf } from "./strength.js";
 import { onAirBlock } from "./onAir.js";
 import { markRaceHintDone } from "./raceLesson.js";
 import { raceDayForm } from "./raceDayForm.js";
@@ -24,11 +26,26 @@ export function entryBlock(stable, dragon, leagueId, now) {
   return onAirBlock(stable, dragon.id) ?? unfitReason(dragon) ?? slumberBlock(dragon, now);
 }
 
-/** The next race's field at game time `now` with the owner riding `dragon`: the season's rivals plus it, on a seeded grid, with its form for the day. */
+/**
+ * The owner's edge: the share their dragon's flight stats are lifted by in a league race, `base` in
+ * each division plus `perStar` for every star it is short of the division's strongest rivals, so a
+ * starter on Autopilot wins its bronze seasons and care decides how far it climbs.
+ */
+export const ownerEdge = { base: { bronze: 0.05, silver: 0.03, gold: 0.02 }, perStar: { bronze: 0.035, silver: 0, gold: 0 } };
+
+/** The owner's edge for `dragon` in a season. */
+export function edgeOf(season, dragon) {
+  const [, most] = rivalStars[season.league][divisionRank(season.division)];
+  return (ownerEdge.base[season.division] ?? 0) + (ownerEdge.perStar[season.division] ?? 0) * Math.max(0, most - strengthOf(dragon));
+}
+
+/** The next race's field at game time `now` with the owner riding `dragon`: the season's rivals plus it, on a seeded grid, with its form for the day and the owner's edge. */
 export function ownerField(stable, leagueId, dragon, now) {
-  const field = raceField(stable.leagues[leagueId], riddenByOwner(stable, dragon));
+  const season = stable.leagues[leagueId];
+  const field = raceField(season, riddenByOwner(stable, dragon));
   const entrant = field.participants.find((p) => p.id === dragon.id);
   entrant.form = raceDayForm(stable, field.raceSeed, dragon.id, now);
+  entrant.edge = Math.round(edgeOf(season, dragon) * 1000) / 1000;
   return field;
 }
 

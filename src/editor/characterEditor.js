@@ -135,12 +135,13 @@ export function createCharacterEditor(root, { value, onChange, onDone, persist =
     lastReaction = 0,
     saveTimer = 0;
 
-  async function rebuild({ bounce = true } = {}) {
+  const DRAFT = { bulge: 0.004 };
+  async function rebuild({ bounce = true, draft = false } = {}) {
     const spec = preview ? { ...state.spec, ...preview } : state.spec;
     building++;
     const slow = setTimeout(() => app.classList.add("is-building"), 260);
     try {
-      const anatomy = await stageBuilder.build(spec, stage.round(), { lane: "stage" });
+      const anatomy = await stageBuilder.build(spec, draft ? DRAFT : stage.round(), { lane: "stage" });
       if (anatomy) stage.show(anatomy, { bounce });
     } catch (error) {
       console.error(error);
@@ -218,7 +219,8 @@ export function createCharacterEditor(root, { value, onChange, onDone, persist =
 
   state.subscribe((spec, reason, detail) => {
     preview = null;
-    rebuild({ bounce: reason !== "edit" || !Array.isArray(detail) || !detail.some((k) => fieldByKey.get(k)?.kind === "slider") });
+    const sliding = reason === "edit" && Array.isArray(detail) && detail.some((k) => fieldByKey.get(k)?.kind === "slider");
+    rebuild({ bounce: !sliding, draft: sliding && state.dragging });
     panel.render();
     syncChrome();
     if (reason === "edit") react(detail);

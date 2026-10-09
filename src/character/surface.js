@@ -69,8 +69,8 @@ export function mergeMeshes(meshes) {
   if (skinned) out.skin = { joints: [], weights: [] };
   for (const mesh of meshes) {
     const base = out.vertices.length / 3;
-    out.vertices.push(...mesh.vertices);
-    out.colors.push(...mesh.colors);
+    for (const v of mesh.vertices) out.vertices.push(v);
+    for (const c of mesh.colors) out.colors.push(c);
     for (const index of mesh.indices) out.indices.push(index + base);
     if (skinned) {
       const count = mesh.vertices.length / 3;

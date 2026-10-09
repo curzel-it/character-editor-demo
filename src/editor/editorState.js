@@ -32,6 +32,7 @@ export function createEditorState(initial) {
       const normalized = normalizeSpec(next, spec);
       if (same(normalized, spec) && (!commit || same(normalized, committed))) return;
       spec = normalized;
+      this.dragging = !commit;
       if (commit && !same(spec, committed)) {
         past.push(committed);
         if (past.length > LIMIT) past.shift();

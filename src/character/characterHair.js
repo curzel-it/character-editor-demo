@@ -132,8 +132,8 @@ export function characterHair(head, spec, j, hat) {
     hairSideR: head.point(Math.PI / 2 + 0.4, 0.2),
   };
   if (spec.hair === "bald") return { parts, joints, coversEars: false };
-  const columns = 112,
-    rows = 44;
+  const columns = 96,
+    rows = 38;
   const lineOf = shape.line;
   const floor = 0.0007 * (size / 1.1);
   const angles = (r, i) => {
@@ -190,7 +190,8 @@ function fringe({ head, size, hair, deep, tips, profile }, group, id, hat) {
   for (let n = 0; n < group.count; n++) {
     const centre = group.from + spacing * (n + 0.5);
     const line = profile.shape.line(centre);
-    const rootPitch = line + group.lift;
+    const rootPitch = hat ? Math.min(line + group.lift, hat.line(centre) - 0.06) : line + group.lift;
+    if (hat && rootPitch < line - 0.02) continue;
     const drop = group.drop * (hat ? 0.75 : 1) * (0.9 + 0.2 * (((n * 37) % 7) / 7));
     const path = [],
       count = 8;

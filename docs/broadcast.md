@@ -19,7 +19,7 @@ and the speed FOV kick, reduced under `prefers-reduced-motion`. Shot types inclu
 `flyby` (both with an `anchor`), `rider` (an onboard camera behind and above the subject's saddle,
 framed by `riderCam` in `src/camera/riderCam.js`; the saddle offset scales with the racer's age
 `size`, the lens distance does not) and `landing`, a camera standing on the ground ahead of a
-`land` event (`anchor` carries its position, forward, time and surface). Shots also add `thud`,
+`land` event (`anchor` carries its position, forward, time and surface); while the winner is still coming in to land, nobody else's touchdown is offered. Shots also add `thud`,
 ground shake from touchdowns near a camera standing on the ground, which `applyCameraFx` adds as a
 sharp jolt. `pace(t)` is the broadcast playback rate: 1, dipping to slow motion around the touchdown
 a `landing` shot is waiting for. `riderShotAt(id, t)` frames the onboard shot of any racer outside the edit.

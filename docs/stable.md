@@ -43,7 +43,7 @@ next race on air as `season.live` with the owner riding that dragon (the field f
 and an empty input log) and returns it, or null without a dragon
 fit to enter, after the last race, or while a race of the league is already on air, so no race runs
 without one of the owner's dragons and none starts twice. The race screen flies it from the same
-seeds and course (`fieldCourse`, at the league's `courseShare`: kids 0.5, teens 0.72, adults 1),
+seeds and course (`fieldCourse`, at the league's `courseShare`: kids 0.46, teens 0.48, adults 0.54, with the owner's edge on the owned entrant),
 keeping `live.step` and the log up to date (`liveRaceOf(stable, league)`). A race left before its finish
 (the screen left, the app hidden or closed) flies on by itself on Autopilot in game time, in
 `src/stable/unwatchedRace.js`: `leaveLiveRace(stable, league, step, now)` hands the reins back and keeps

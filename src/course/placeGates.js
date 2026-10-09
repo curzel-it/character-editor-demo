@@ -4,12 +4,29 @@ const leftOf = (f) => {
   return [-f[2] / l, 0, f[0] / l];
 };
 const round = (v) => Math.round(v * 1000) / 1000 + 0;
+/** Steepest climb and dive from one gate to the next, as height per distance along the course. */
+const maxClimb = 0.18,
+  maxDive = 0.3;
+
+/** Moves each gate but the fixed ones within a climb or dive of its neighbours, keeping it inside its corridor. */
+function flyable(gates) {
+  const bound = (g, other, up, down) => {
+    const ds = Math.abs(g.p.s - other.p.s);
+    const span = g.p.ceiling - g.p.floor;
+    const lo = g.p.floor + Math.min(g.radius + 5, span / 2),
+      hi = Math.max(lo, g.p.ceiling - g.radius - 5);
+    g.y = clamp(clamp(g.y, other.y - down * ds, other.y + up * ds), lo, hi);
+  };
+  for (let i = 1; i < gates.length; i++) if (!gates[i].fixed) bound(gates[i], gates[i - 1], maxClimb, maxDive);
+  for (let i = gates.length - 2; i >= 0; i--) if (!gates[i].fixed) bound(gates[i], gates[i + 1], maxDive, maxClimb);
+}
 
 /**
  * Evenly spaced, jittered gates along a reference-scale path; the last is the finish.
  * `fixed` gates `{ s, lateral, y, radius }` replace the nearest generated gate, so a course can
  * force a line past a landmark. `maxLateral` limits how far gates stray from the centreline.
  * `share` scales the gate count with a course shortened to that share of its full length, keeping the spacing.
+ * Each gate sits no higher or lower than a dragon can climb or dive from its neighbours.
  */
 export function placeGates(path, random, { length, step, first = 220, fixed = [], maxLateral = Infinity, share = 1 }) {
   const gateCount = Math.max(6, Math.round((12 + Math.floor(random() * 9)) * share));
@@ -42,8 +59,9 @@ export function placeGates(path, random, { length, step, first = 220, fixed = []
     const prev = gates[best - 1]?.p.s ?? -Infinity,
       next = gates[best + 1].p.s;
     if (p.s <= prev || p.s >= next) continue;
-    gates[best] = { index: best, p, lateral: want.lateral, y: want.y, radius: want.radius };
+    gates[best] = { index: best, p, lateral: want.lateral, y: want.y, radius: want.radius, fixed: true };
   }
+  flyable(gates);
   return gates.map(({ index, p, lateral, y, radius }) => {
     const left = leftOf(p.forward);
     return {

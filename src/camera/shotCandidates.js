@@ -294,10 +294,13 @@ export function shotCandidates(index, course, t) {
     }
   }
 
+  const [leader] = now.order;
+  const winnerInbound = now.byId.get(leader)?.finished && !index.eventsBetween(0, t).some((e) => e.type === "land" && e.racer === leader);
   if (!finishNear)
     for (const e of events) {
       if (e.type !== "land" || e.t < t + LANDING_LEAD || !now.byId.has(e.racer)) continue;
       const place = now.byId.get(e.racer).rank;
+      if (winnerInbound && place !== 1) continue;
       push({
         shot: "landing",
         subject: e.racer,

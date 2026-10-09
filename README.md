@@ -96,10 +96,12 @@ owner is the rider of every dragon they own.
   Riders never count in a race: every racer flies on its dragon's stats alone. Tack is
   layered: a harness (on/off per dragon), a saddle with a cloth in the silks, and the rider in a
   racing tuck (helmet or hat, goggles, belt, reins). Every dragon is ridden on screen.
-- **Courses:** Froude-scaled to 200 km/h racing, 7–10 km for the Main Event; the Kids League flies
-  half that (3.5–5 km, fewer gates at the same spacing) and the Teen League 72% (5–7 km), so races
-  last about 2, 2.5 and 3.2 minutes. Exhibition fields of one age race their league's length, mixed
-  fields the full length. Valleys (default) with forests, river,
+- **Courses:** Froude-scaled to 200 km/h racing; every league races about 90 s (80–100 s): the Main
+  Event flies 54% of the full 7–10 km course (4–5 km), the Teen League 48% and the Kids League 46%
+  (fewer gates at the same spacing, no gate higher or lower than a dragon can climb or dive to from
+  the one before). Exhibition fields of one age race their league's length, mixed fields the Main
+  Event's. In league races the owner's dragon flies with the owner's edge, a hidden lift to its flight
+  stats that makes a starter on Autopilot a bronze champion. Valleys (default) with forests, river,
   lake, gorge, col and a real-scale castle; canyons with slots, arches and spires.
 - **Simulation:** a deterministic flight model. A dragon races on five stats, each read off a part of
   its body: Top speed (a long torso), Acceleration (big wings), Handling (a long tail), Weight (its

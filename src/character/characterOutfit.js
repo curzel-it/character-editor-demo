@@ -50,7 +50,7 @@ export function outfitOf(spec, marks) {
   const tops = {
     tee: { sleeve: 0.4, hem: hipY - 0.01 * s, neck: neckBaseY, scoop: 0.012 * s, thick: 0.005, cuff: darker },
     longsleeve: { sleeve: 1, hem: hipY - 0.012 * s, neck: neckBaseY, scoop: 0.006 * s, thick: 0.005, cuff: accent, collar: darker },
-    tank: { sleeve: 0, hem: hipY - 0.005 * s, neck: chestY + 0.06 * s, scoop: 0.045 * s, thick: 0.004, bareShoulders: true },
+    tank: { sleeve: 0, hem: hipY - 0.005 * s, neck: neckBaseY - 0.005 * s, scoop: 0.07 * s, thick: 0.004, bareShoulders: true },
     sweater: { sleeve: 1, hem: hipY - 0.03 * s, neck: neckBaseY + 0.03 * s, scoop: 0, thick: 0.012, cuff: darker, hemBand: darker, collar: darker },
     hoodie: { sleeve: 1, hem: hipY - 0.035 * s, neck: neckBaseY, scoop: 0.01 * s, thick: 0.013, cuff: darker, hemBand: darker, hood: true, pocket: true, buttons: accent },
     jacket: { sleeve: 1, hem: hipY - 0.05 * s, neck: neckBaseY + 0.01 * s, scoop: 0, thick: 0.014, cuff: darker, open: 0.05 * s, inner: shirt, collar: darker, buttons: accent },
@@ -73,9 +73,10 @@ export function outfitOf(spec, marks) {
     overalls: { length: 1, thick: 0.01, flare: 0.006, bib: true, waist: pelvisTopY },
   };
   const bottom = spec.top === "dress" ? { length: 0, thick: 0, flare: 0, waist: waistY } : (bottoms[spec.bottom] ?? bottoms.trousers);
+  const patternId = spec.top === "silks" && spec.pattern === "plain" ? "sash" : spec.pattern;
   const tucked = Boolean(bottom.bib) || (bottom.skirt && !top.skirt && top.hem < bottom.waist);
   return {
-    top: { ...top, ...(tucked ? { hem: Math.max(top.hem, bottom.waist - 0.005), hemBand: undefined, tucked: true } : {}), main, accent, pattern: patternOf(spec.top === "silks" && spec.pattern === "plain" ? "sash" : spec.pattern) },
+    top: { ...top, ...(tucked ? { hem: Math.max(top.hem, bottom.waist - 0.005), hemBand: undefined, tucked: true } : {}), main, accent, pattern: patternOf(patternId), fine: ["chevron", "sash", "dots"].includes(patternId) },
     bottom: { ...bottom, rgb: bottomRgb },
     shoes: shoeOf(spec),
     gloves: spec.gloves === "none" ? null : { kind: spec.gloves, rgb: rgbOf(spec.glovesColor) },

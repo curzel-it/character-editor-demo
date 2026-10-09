@@ -5,7 +5,7 @@ import { resolve, basename } from "node:path";
 import { createServer, root } from "../server/main.mjs";
 import { subjects, styles } from "../src/subjects.js";
 
-test("Server serves the app, the lab and modules while restricting paths and methods", async () => {
+test("Server serves the editor, the game, the lab and modules while restricting paths and methods", async () => {
   const server = createServer();
   await new Promise((resolve) => server.listen(0, "127.0.0.1", resolve));
   const base = `http://127.0.0.1:${server.address().port}`;
@@ -13,8 +13,9 @@ test("Server serves the app, the lab and modules while restricting paths and met
     const app = await fetch(base);
     assert.equal(app.status, 200);
     assert.match(app.headers.get("content-type"), /text\/html/);
-    assert.match(await app.text(), /src="\/src\/app\.js"/);
-    for (const page of ["/index.html", "/lab.html", "/race.html", "/raceMap.html", "/cameraMap.html"])
+    assert.match(await app.text(), /\/src\/editor\/characterEditor\.js/);
+    assert.match(await (await fetch(`${base}/game`)).text(), /src="\/src\/app\.js"/);
+    for (const page of ["/editor.html", "/index.html", "/lab.html", "/race.html", "/raceMap.html", "/cameraMap.html"])
       assert.equal((await fetch(base + page)).status, 200, `${page} is served`);
     const sheet = await fetch(`${base}/styles/race.css`);
     assert.equal(sheet.status, 200);

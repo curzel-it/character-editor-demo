@@ -33,6 +33,6 @@ export function flightStats(level) {
     handling: round(5.6 + 1.5 * level.handling),
     weight: round(weight),
     breath: round(breath),
-    recharge: round((9 * froude.time) / breath),
+    recharge: round((7 * froude.time) / breath),
   };
 }

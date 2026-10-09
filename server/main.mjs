@@ -155,7 +155,7 @@ export function createServer({ dist } = {}) {
       }
       return;
     }
-    if (pathname === "/") pathname = "/editor.html";
+    if (pathname === "/") pathname = dist ? "/index.html" : "/editor.html";
     if (pathname === "/game") pathname = "/index.html";
     const built = pathname === "/index.html" && dist ? await readBuiltPage(dist, req.headers["accept-encoding"]) : null;
     if (built) {

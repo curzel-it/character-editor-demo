@@ -93,10 +93,10 @@ export function saveField(field) {
  * Race entries. Riders and `harness` (whether the dragon races in its harness) change the look, not the race.
  * `age` changes both (see `src/dragonAge.js`); adults leave it out, so their recordings are unchanged.
  * `strength` (stars) sets its stats with its build; the tool pages' fields race at 3 stars. `form`, when set,
- * replaces the shape rolled from the race seed.
+ * replaces the shape rolled from the race seed, and `edge` lifts its flight stats (the owner's edge).
  */
 export const raceRoster = (field) =>
-  field.participants.map(({ id, name, genome, harness, age, strength, form }) => ({
+  field.participants.map(({ id, name, genome, harness, age, strength, form, edge }) => ({
     id,
     name,
     subject: "dragon",
@@ -105,4 +105,5 @@ export const raceRoster = (field) =>
     strength: strength ?? 3,
     ...(ageOf(age).id !== defaultAge ? { age: ageOf(age).id } : {}),
     ...(form ? { form } : {}),
+    ...(edge ? { edge } : {}),
   }));

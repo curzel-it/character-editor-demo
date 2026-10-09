@@ -14,6 +14,13 @@ export function raceForm(seed, id) {
   return "usual";
 }
 
+/** Stats flown with an `edge`: Top speed, Acceleration, Climb and Handling lifted by that share. */
+export function applyEdge(stats, edge = 0) {
+  if (!edge) return stats;
+  const lift = 1 + edge;
+  return { ...stats, topSpeed: stats.topSpeed * lift, acceleration: stats.acceleration * lift, climb: stats.climb * lift, handling: stats.handling * lift };
+}
+
 /** Stats actually flown on the day: form lifts or trims Top speed and Acceleration. */
 export function applyForm(stats, form) {
   const boost = forms.find((f) => f.id === form)?.boost ?? 0;

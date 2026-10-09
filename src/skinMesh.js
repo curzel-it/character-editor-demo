@@ -2,7 +2,6 @@ import { primitive } from "./geometry.js";
 import { roundMesh, roundMeshAdaptive } from "./roundMesh.js";
 import {
   transform,
-  point,
   multiply,
   boneMatrices,
   inverseRigid,
@@ -24,24 +23,39 @@ export function makeSkinMesh(anatomy, { round = 0 } = {}) {
   const bind = boneMatrices(anatomy);
   for (const part of anatomy.parts) {
     const geometry = part.cornerColors ? unweld(part) : primitive(part);
-    const matrix = part.skin
+    const m = part.skin
       ? transform()
       : multiply(
           bind[ids.get(part.bone)],
           transform(part.position, part.rotation, part.scale),
         );
-    const count = geometry.vertices.length / 3;
-    const positions = [],
-      colors = [],
-      joints = [],
-      weights = [];
+    const source = geometry.vertices;
+    const count = source.length / 3;
+    const positions = new Array(count),
+      colors = new Array(count),
+      joints = new Array(count),
+      weights = new Array(count);
+    const own = [part.bone, part.bone];
+    const marking = part.markings ?? 0;
     for (let index = 0; index < count; index++) {
-      positions.push(point(matrix, geometry.vertices.slice(index * 3, index * 3 + 3)));
-      const source = geometry.sources?.[index] ?? index;
-      const color = geometry.colors?.[index] ?? (part.colors ? part.colors.slice(source * 3, source * 3 + 3) : part.color);
-      colors.push([...color, (part.markings ?? 0) * (geometry.marks?.[index] ?? part.marks?.[source] ?? 1)]);
-      joints.push(part.skin?.joints[source] || [part.bone, part.bone]);
-      weights.push(part.skin?.weights[source] ?? 1);
+      const x = source[index * 3],
+        y = source[index * 3 + 1],
+        z = source[index * 3 + 2];
+      positions[index] = [
+        m[0] * x + m[4] * y + m[8] * z + m[12],
+        m[1] * x + m[5] * y + m[9] * z + m[13],
+        m[2] * x + m[6] * y + m[10] * z + m[14],
+      ];
+      const from = geometry.sources?.[index] ?? index;
+      const mark = marking * (geometry.marks?.[index] ?? part.marks?.[from] ?? 1);
+      const own3 = geometry.colors?.[index];
+      colors[index] = own3
+        ? [own3[0], own3[1], own3[2], mark]
+        : part.colors
+          ? [part.colors[from * 3], part.colors[from * 3 + 1], part.colors[from * 3 + 2], mark]
+          : [part.color[0], part.color[1], part.color[2], mark];
+      joints[index] = part.skin?.joints[from] || own;
+      weights[index] = part.skin?.weights[from] ?? 1;
     }
     if (round) {
       const mesh = { positions, colors, joints, weights, indices: geometry.indices };
@@ -53,30 +67,34 @@ export function makeSkinMesh(anatomy, { round = 0 } = {}) {
       else roundMesh(mesh, round, emit);
       continue;
     }
-    for (let triangle = 0; triangle < geometry.indices.length; triangle += 3) {
-      const indices = geometry.indices.slice(triangle, triangle + 3);
-      const corners = indices.map((index) => positions[index]);
-      const a = corners[1].map((v, i) => v - corners[0][i]);
-      const b = corners[2].map((v, i) => v - corners[0][i]);
-      const n = [
-        a[1] * b[2] - a[2] * b[1],
-        a[2] * b[0] - a[0] * b[2],
-        a[0] * b[1] - a[1] * b[0],
-      ];
-      const length = Math.hypot(...n);
+    const indices = geometry.indices;
+    for (let triangle = 0; triangle < indices.length; triangle += 3) {
+      const i0 = indices[triangle],
+        i1 = indices[triangle + 1],
+        i2 = indices[triangle + 2];
+      const c0 = positions[i0],
+        c1 = positions[i1],
+        c2 = positions[i2];
+      const a0 = c1[0] - c0[0],
+        a1 = c1[1] - c0[1],
+        a2 = c1[2] - c0[2];
+      const b0 = c2[0] - c0[0],
+        b1 = c2[1] - c0[1],
+        b2 = c2[2] - c0[2];
+      const n0 = a1 * b2 - a2 * b1,
+        n1 = a2 * b0 - a0 * b2,
+        n2 = a0 * b1 - a1 * b0;
+      const length = Math.hypot(n0, n1, n2);
       if (length < 1e-9) continue;
-      const normal = n.map((v) => v / length);
-      for (let corner = 0; corner < 3; corner++) {
-        const index = indices[corner];
-        data.push(
-          ...corners[corner],
-          ...normal,
-          ...colors[index].slice(0, 3),
-          ids.get(joints[index][0]),
-          ids.get(joints[index][1]),
-          weights[index],
-        );
-        markings.push(colors[index][3]);
+      const nx = n0 / length,
+        ny = n1 / length,
+        nz = n2 / length;
+      for (const index of [i0, i1, i2]) {
+        const p = positions[index],
+          c = colors[index],
+          j = joints[index];
+        data.push(p[0], p[1], p[2], nx, ny, nz, c[0], c[1], c[2], ids.get(j[0]), ids.get(j[1]), weights[index]);
+        markings.push(c[3]);
       }
     }
   }
@@ -91,9 +109,13 @@ export function makeSkinMesh(anatomy, { round = 0 } = {}) {
 /** The key a skin mesh built at `round` is filed under. */
 export const roundKey = (round) => JSON.stringify(round ?? 0);
 
-/** A skin mesh built ahead of time (in a worker, say) and carried on the anatomy as `prebuilt: { key, data }`, when it was built at `round`. */
+/**
+ * A skin mesh built ahead of time (in a worker, say) and carried on the anatomy as `prebuilt: { key, data }`,
+ * when it was built at `round`, or whatever it was built at when the anatomy has no parts to build another from.
+ */
 export function prebuiltSkin(anatomy, round) {
-  return anatomy.prebuilt?.key === roundKey(round) ? anatomy.prebuilt.data : null;
+  if (!anatomy.prebuilt) return null;
+  return anatomy.prebuilt.key === roundKey(round) || !anatomy.parts.length ? anatomy.prebuilt.data : null;
 }
 
 /** The metal of every vertex in `data`, judged by its colour, one judgement per distinct colour. */

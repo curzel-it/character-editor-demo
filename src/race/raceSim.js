@@ -2,7 +2,7 @@ import { makeRng } from "../rng.js";
 import { normalize } from "../vec3.js";
 import { raceGeometry } from "./raceGeometry.js";
 import { deriveStats } from "./deriveStats.js";
-import { raceForm, applyForm } from "./racerTraits.js";
+import { raceForm, applyForm, applyEdge } from "./racerTraits.js";
 import { buildOf } from "../dragonBuild.js";
 import { genes as dragonGenes } from "../genome/dragon.js";
 import { decide } from "./pilot.js";
@@ -47,8 +47,8 @@ const roam = { width: 3, bend: 0.6 };
  * `sling` s after it pulls out, the slingshot past. A clean pass through a gate's centre (within
  * `centre` of its radius) gives a `burst` the same way.
  */
-const slipstream = { gain: 0.05, near: 2 * L, far: 25 * L, width: 5 * L, height: 4 * L, sling: 2 * T };
-const gateBurst = { centre: 0.4, burst: 0.03 };
+const slipstream = { gain: 0.08, near: 2 * L, far: 30 * L, width: 6 * L, height: 5 * L, sling: 3 * T };
+const gateBurst = { centre: 0.4, burst: 0.05 };
 const clearance = { side: 3 * L, body: 3 * L };
 const separation = { distance: 4.5 * L, rate: 12 * R, axis: 0.3 * L };
 /** Speed (m/s) a bump costs, split between the two so the lighter one loses more, all of it to one being shoved by a breath; `rest` s before the same pair bumps again. */
@@ -89,8 +89,8 @@ function advanceFlap(r, dt) {
  * for the open terrain around it.
  * A racer flies at its top speed unless something slows it: a missed gate, a breath hit, a bump, a
  * turn tighter than its handling, the takeoff; its acceleration brings it back. A roster entry's
- * `strength` (stars) sets its stats with its build, and its form is rolled from the seed unless the entry
- * sets `form`.
+ * `strength` (stars) sets its stats with its build, its form is rolled from the seed unless the entry
+ * sets `form`, and an `edge` lifts its flight stats by that share (`applyEdge`).
  */
 export function createRaceSim({ seed, course, roster, hz = recordingHz, pilots = {} }) {
   const { corridor, gates, thermals, finishS } = raceGeometry(course);
@@ -106,7 +106,7 @@ export function createRaceSim({ seed, course, roster, hz = recordingHz, pilots =
     const slot = course.start.grid[i % course.start.grid.length];
     const adjusted = { ...entry.stats };
     for (const [key, delta] of Object.entries(roster[i].adjust || {})) adjusted[key] += delta;
-    const stats = applyForm(adjusted, entry.form);
+    const stats = applyEdge(applyForm(adjusted, entry.form), entry.edge);
     const start = planTakeoff(entry, slot, stats, seed, groundContext);
     const random = makeRng(`race:${seed}:${entry.id}`);
     return {

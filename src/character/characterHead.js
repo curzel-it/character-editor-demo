@@ -3,7 +3,7 @@ import { headRows, rowAngles, wrapYaw } from "./headShape.js";
 import { rgbOf, shade, mixRgb } from "./characterColors.js";
 import { aim } from "./characterEyes.js";
 
-const GRID = { columns: 64, rows: 40 };
+const GRID = { columns: 56, rows: 36 };
 
 /**
  * The skin of the head as one smooth surface on the head bone, shaded faintly darker under the jaw;

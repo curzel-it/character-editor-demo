@@ -11,9 +11,9 @@ import { divisionTeams } from "./teams.js";
  * its speed class suggests.
  */
 export const leagues = [
-  { id: "kids", age: "kid", label: "Kids League", courseShare: 0.4 },
-  { id: "teens", age: "teen", label: "Teen League", courseShare: 0.5 },
-  { id: "adults", age: "adult", label: "Main Event", courseShare: 0.6 },
+  { id: "kids", age: "kid", label: "Kids League", courseShare: 0.46 },
+  { id: "teens", age: "teen", label: "Teen League", courseShare: 0.48 },
+  { id: "adults", age: "adult", label: "Main Event", courseShare: 0.54 },
 ];
 export const seasonLength = 16;
 export const fieldSize = 8;

@@ -129,10 +129,10 @@ test("stats ignore colour genes and head choices", () => {
   assert.notDeepEqual(deriveStats("dragon", { ...genome, wingspan: wingspan.max }), base);
 });
 
-test("stats are real units: a 3-star dragon averages about 180 km/h flat out", () => {
+test("stats are real units: a 3-star dragon averages about 200 km/h flat out", () => {
   const all = Array.from({ length: 400 }, (_, i) => deriveStats("dragon", makeGenome(genes, `units:${i}`), "adult", 3));
   const mean = (key) => all.reduce((sum, s) => sum + s[key], 0) / all.length;
-  assert.ok(Math.abs(mean("topSpeed") * 3.6 - 180) < 8, `top speed ${mean("topSpeed") * 3.6} km/h`);
+  assert.ok(Math.abs(mean("topSpeed") * 3.6 - 200) < 8, `top speed ${mean("topSpeed") * 3.6} km/h`);
   assert.ok(mean("handling") > 5 && mean("handling") < 12, "handling is an acceleration and does not scale");
   assert.ok(mean("recharge") > 5 && mean("recharge") < 30, "breath recharges in seconds");
 });

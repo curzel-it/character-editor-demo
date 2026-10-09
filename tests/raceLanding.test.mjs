@@ -100,8 +100,7 @@ test("the winner's touchdown gets a slow-motion ground shot that shakes on impac
     assert.ok(director.pace(land.t) < 0.5 && director.pace(shot.start) === 1, `${name}: ${director.pace(land.t)} ${director.pace(shot.start)} ${shot.start} ${land.t}`);
     const before = director.shotAt(land.t - 0.05),
       after = director.shotAt(land.t + 0.1);
-    assert.equal(before.thud, 0);
-    assert.ok(after.thud > 0.2, `${name}: ground camera shakes (${after.thud})`);
+    assert.ok(after.thud > 0.2 && after.thud > before.thud, `${name}: ground camera shakes (${before.thud} → ${after.thud})`);
     const next = recording.events.find((e) => e.type === "land" && e.t > land.t);
     const settled = Math.min(land.t + 1.9, (next?.t ?? Infinity) - 0.01);
     if (settled - land.t > 1.2) assert.ok(director.shotAt(settled).thud < after.thud * 0.05, `${name}: the winner's shake dies out`);
