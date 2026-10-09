@@ -519,6 +519,14 @@ button { font: inherit; color: inherit; }
 .ce-dialog__head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
 .ce-dialog__head h2 { display: flex; align-items: center; gap: 10px; margin: 0; font: var(--dz-text-h2); --size: 28px; }
 .ce-dialog__note { margin: 6px 0 14px; color: var(--ce-muted); font: var(--dz-text-caption); }
+.ce-dialog__sub { display: flex; align-items: center; gap: 8px; margin: 22px 0 10px; font: var(--dz-text-h3); --size: 22px; }
+.ce-dialog__sub .ce-icon { color: var(--dz-accent-dark); }
+.ce-link { padding: 0; border: 0; background: none; color: var(--dz-info); font: inherit; text-decoration: underline; cursor: pointer; }
+.ce-card--starter { padding: 0; border: 2px solid var(--ce-line); cursor: pointer; transition: transform var(--dz-dur-fast) var(--dz-ease-pop); }
+.ce-card--starter:hover { transform: translateY(-2px); border-color: var(--ce-ring); }
+.ce-card--starter img { display: block; width: 100%; aspect-ratio: 1; background: linear-gradient(var(--ce-tile-sky), var(--ce-tile-grass)); }
+.ce-card--starter img:not([src]) { visibility: visible; }
+.ce-wardrobe__grid--starters { grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); }
 
 .ce-wardrobe__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(124px, 1fr)); gap: 12px; }
 .ce-card {

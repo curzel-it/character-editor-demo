@@ -1,6 +1,7 @@
 import { normalizeSpec } from "../character/characterSpec.js";
 import { escapeHtml } from "../escapeHtml.js";
 import { icon } from "./editorIcons.js";
+import { starters, starterSpec } from "../character/characterStarters.js";
 
 const KEY = "character-editor:wardrobe";
 const LIMIT = 48;
@@ -45,10 +46,11 @@ export function createWardrobeStore(storage = globalThis.localStorage) {
 }
 
 /**
- * The wardrobe drawer: every saved character as a portrait card to load, duplicate or delete, and a
- * card to save the one on stage. Calls `onLoad(saved)`, `onSave()`, `onDuplicate(saved)`.
+ * The wardrobe drawer: every saved character as a portrait card to load, duplicate or delete, a card
+ * to save the one on stage, and the curated starters to begin from. Calls `onLoad(saved)`, `onSave()`,
+ * `onDuplicate(saved)` and `onStarter(spec)`; `portraitOf(key, spec)` resolves a starter's portrait.
  */
-export function openWardrobe({ store, currentId, onLoad, onSave, onDuplicate }) {
+export function openWardrobe({ store, currentId, onLoad, onSave, onDuplicate, onStarter, portraitOf }) {
   const dialog = document.createElement("dialog");
   dialog.className = "ce-dialog ce-wardrobe";
   dialog.setAttribute("aria-label", "Wardrobe");
@@ -67,7 +69,21 @@ export function openWardrobe({ store, currentId, onLoad, onSave, onDuplicate }) 
           )
           .join("")}
       </div>
-      ${list.length ? "" : `<p class="ce-dialog__note">Characters you save land here, with their portraits. They stay in this browser.</p>`}`;
+      ${list.length ? "" : `<p class="ce-dialog__note">Characters you save land here, with their portraits. They stay in this browser.</p>`}
+      <h3 class="ce-dialog__sub">${icon("sparkle")} Start from</h3>
+      <div class="ce-wardrobe__grid ce-wardrobe__grid--starters">
+        ${starters
+          .map((st) => {
+            const spec = starterSpec(st);
+            return `<button type="button" class="ce-card ce-card__open ce-card--starter" data-starter="${st.id}" aria-label="Start from ${escapeHtml(spec.name)}"><img alt="" data-portrait="${st.id}" /><span class="ce-card__name">${escapeHtml(spec.name)}</span></button>`;
+          })
+          .join("")}
+      </div>`;
+    for (const st of starters)
+      portraitOf?.(`starter:${st.id}`, starterSpec(st)).then((url) => {
+        const img = dialog.querySelector(`[data-portrait="${st.id}"]`);
+        if (img) img.src = url;
+      });
   };
   render();
   dialog.addEventListener("click", async (e) => {
@@ -76,6 +92,12 @@ export function openWardrobe({ store, currentId, onLoad, onSave, onDuplicate }) 
       await onSave();
       currentId = onSave.currentId?.() ?? currentId;
       return render();
+    }
+    const starter = e.target.closest("[data-starter]");
+    if (starter) {
+      const found = starters.find((st) => st.id === starter.dataset.starter);
+      if (found) onStarter(starterSpec(found));
+      return dialog.close();
     }
     const card = e.target.closest("[data-id]");
     if (!card) return;

@@ -74,7 +74,7 @@ export function createEditorPanel({ state, tiles, onChange, onPreview, onFocus, 
     if (field.kind === "slider")
       return `<div class="ce-field ce-field--slider" data-field="${field.key}" data-focus="${field.focus}">
         <label class="ce-slider"><span class="ce-slider__name">${escapeHtml(field.label)}</span>
-          <input type="range" min="0" max="1" step="0.005" aria-label="${escapeHtml(field.label)}" data-slider />
+          <input type="range" min="0" max="1" step="0.005" aria-label="${escapeHtml(field.label)}" title="Double-click to reset" data-slider />
           <span class="ce-slider__ends"><span>${escapeHtml(field.min ?? "")}</span><span>${escapeHtml(field.max ?? "")}</span></span>
         </label></div>`;
     return `<div class="ce-field ce-field--color" data-field="${field.key}" data-focus="${field.focus}">${head}

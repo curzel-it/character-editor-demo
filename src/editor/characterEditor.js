@@ -180,10 +180,10 @@ export function createCharacterEditor(root, { value, onChange, onDone, persist =
     toast(group ? `Shuffled ${group}` : keep.length ? `Shuffled all but ${keep.join(", ")}` : "A new character!");
   }
 
-  async function portrait() {
+  async function portrait(key = `portrait:${Date.now()}`, spec = state.spec) {
     return new Promise((resolve) => {
       const canvas = Object.assign(document.createElement("canvas"), { width: 168, height: 168 });
-      tiles.request(`portrait:${Date.now()}`, state.spec, { focus: "head", yaw: -Math.PI / 2 + 0.38, zoom: 0.92 }, (source) => {
+      tiles.request(key, spec, { focus: "head", yaw: -Math.PI / 2 + 0.38, zoom: 1.1 }, (source) => {
         const context = canvas.getContext("2d");
         const gradient = context.createLinearGradient(0, 0, 0, 168);
         gradient.addColorStop(0, "#bfe6fb");
@@ -251,6 +251,13 @@ export function createCharacterEditor(root, { value, onChange, onDone, persist =
           savedId = saved.id;
           state.load(saved.spec);
           toast(`Wearing ${saved.spec.name}`);
+        },
+        portraitOf: portrait,
+        onStarter: (spec) => {
+          savedId = null;
+          state.load(spec);
+          stage.play("wave");
+          toast(`Meet ${spec.name}`);
         },
         onDuplicate: (saved) => {
           savedId = null;

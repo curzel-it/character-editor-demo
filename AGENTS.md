@@ -1,9 +1,23 @@
+# Character Editor
+
+This repository develops a character editor in isolation, on a copy of the Dragons! engine, for a new
+project that will reuse that engine. The editor is at `/` (`editor.html`, `src/character/`, `src/editor/`,
+`docs/character.md`); the game it came from still runs at `/game` and its notes below still hold for the engine.
+
+## Character editor
+
+- The character is plain data from a flat spec (`src/character/characterSpec.js`); every trait is a field, and the model, codes, shuffles, panel and tests read the field list
+- Parts are authored in model space and moved into bone frames at assembly; the head is one parametric surface that hair, hats and faces build on
+- Builds run in workers (`characterBuild.js`); renderers take a `prebuilt` skin mesh
+- Visual work needs Federico's review: render contact sheets with `node tools/checks/characterEvidence.mjs` and editor screenshots with `node tools/checks/editorEvidence.mjs`
+- The dev server runs on port 8120 (other projects hold 8093–8098)
+
 # Dragons!
 
 Dragons! is a game about racing flying dragons: owners raise dragons, make new eggs at the Soul
 Altar, enter them in age-restricted leagues and watch every race as a live broadcast. The game runs locally; there is no online play.
 
-- `README.md` holds the concept, current state and results; `todo.md` the work queue; `docs/` the module contracts
+- `README.md` describes the editor; `docs/game.md` holds the game's concept, current state and results; `todo.md` the work queue; `docs/` the module contracts
 - Still in development with no users: break links, saved data and contracts whenever it makes things simpler; no migrations, no backwards compatibility
 - The game is named "Dragons!" and its creatures are dragons (they were once called wyverns, so old notes may say so); internal identifiers such as the `dragonz-*` storage keys and the `it.curzel.dragonz` bundle id keep the earlier spelling
 - Vanilla JS, no third party dependencies (musicbox, our own soundtrack library, is the one exception), closed source
@@ -16,7 +30,7 @@ Altar, enter them in age-restricted leagues and watch every race as a live broad
 
 ## Dev Tools
 
-- `npm run dev` - serves the game at `http://127.0.0.1:8094/`
+- `npm run dev` - serves the editor at `http://127.0.0.1:8120/` and the game at `/game`
 - `npm test` - runs unit tests
 - `npm run lint` - runs linter
 - `npm run check -- --style cozy` - dragon browser evidence; `--all` checks both styles

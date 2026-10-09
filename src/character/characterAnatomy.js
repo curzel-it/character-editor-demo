@@ -77,7 +77,7 @@ export function createCharacter(input) {
   const height = headTop;
   const focus = {
     full: { center: [0, height * 0.5, 0], radius: height * 0.56 },
-    head: { center: add(j.headCentre, [0, 0.0, 0]), radius: 0.27 * m.head },
+    head: { center: add(j.headCentre, [0, 0.025 * m.head, 0]), radius: 0.27 * m.head },
     face: { center: add(j.headCentre, [0.04 * m.head, -0.015 * m.head, 0]), radius: 0.19 * m.head },
     eyes: { center: add(head.point(0, head.eye.pitch), [-0.02, 0.005, 0]), radius: 0.13 * m.head },
     upper: { center: [0, (j.chest[1] + j.head[1]) / 2 - 0.02, 0], radius: 0.56 * m.s },

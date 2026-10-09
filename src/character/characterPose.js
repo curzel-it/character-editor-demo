@@ -58,7 +58,7 @@ function gestureAt(id, t) {
   const g = { length, w, armL: { x: 0, z: 0, fx: 0, fz: 0, hand: 0 }, armR: { x: 0, z: 0, fx: 0, fz: 0, hand: 0 }, spine: [0, 0, 0], chest: [0, 0, 0], head: [0, 0, 0], hips: [0, 0, 0], lift: 0, face: null };
   switch (id) {
     case "wave":
-      g.armR = { x: 2.3, z: 0.25, fx: 0, fz: 1.3 + 0.35 * wave(t, 0.5), hand: 0.3 * wave(t, 0.5, 0.25) };
+      g.armR = { x: 1.45, z: 0.2, fx: 1.25 + 0.38 * wave(t, 0.55), fz: 0.25, hand: 0.25 * wave(t, 0.55, 0.25) };
       g.head = [0.12, -0.1, 0.06];
       g.chest = [0.05, 0, 0];
       g.face = "happy";
@@ -73,8 +73,8 @@ function gestureAt(id, t) {
       break;
     }
     case "think":
-      g.armR = { x: 0.25, z: 0.9, fx: -0.2, fz: 2.25, hand: -0.6 };
-      g.armL = { x: 0.15, z: 0.55, fx: 0.3, fz: 1.55, hand: 0 };
+      g.armR = { x: -0.5, z: 0.8, fx: -0.85, fz: 2.15, hand: -0.4 };
+      g.armL = { x: -0.45, z: 0.45, fx: -1.1, fz: 1.3, hand: 0 };
       g.head = [-0.12, 0.12 * wave(t, 2.6), 0.14];
       g.face = "smug";
       break;
@@ -96,8 +96,8 @@ function gestureAt(id, t) {
       break;
     }
     case "hero":
-      g.armL = { x: 0.65, z: -0.15, fx: -0.6, fz: 1.6, hand: 0 };
-      g.armR = { x: 0.65, z: -0.15, fx: 0.6, fz: 1.6, hand: 0 };
+      g.armL = { x: 0.8, z: -0.08, fx: -1.55, fz: 0.45, hand: 0.4 };
+      g.armR = { x: 0.8, z: -0.08, fx: -1.55, fz: 0.45, hand: 0.4 };
       g.chest = [0, 0, 0.1];
       g.head = [0, -0.25, 0.12];
       g.face = "smug";
@@ -118,8 +118,8 @@ function gestureAt(id, t) {
       const crouch = Math.max(0, Math.sin(clamp(t / 0.25, 0, 1) * Math.PI)) + Math.max(0, Math.sin(clamp((t - 0.88) / 0.22, 0, 1) * Math.PI));
       g.lift = 0.22 * air - 0.05 * crouch;
       g.crouch = crouch;
-      g.armL = { x: 1.2 * air + 0.2, z: 0.3 * air, fx: 0, fz: 0.5, hand: 0 };
-      g.armR = { x: 1.2 * air + 0.2, z: 0.3 * air, fx: 0, fz: 0.5, hand: 0 };
+      g.armL = { x: 2.3 * air + 0.15, z: 0.35 * air, fx: 0, fz: 0.35, hand: 0 };
+      g.armR = { x: 2.3 * air + 0.15, z: 0.35 * air, fx: 0, fz: 0.35, hand: 0 };
       g.face = "laugh";
       break;
     }

@@ -15,7 +15,7 @@ export function openShareDialog({ spec, snapshot, onImport, toast }) {
     <header class="ce-dialog__head"><h2>${icon("share")} Share ${escapeHtml(spec.name)}</h2><button type="button" class="ce-iconbtn" data-close aria-label="Close">${icon("close")}</button></header>
     <label class="ce-share__label" for="ce-share-code">Character code</label>
     <div class="ce-share__row"><input id="ce-share-code" class="ce-input ce-share__code" readonly value="${code}" /><button type="button" class="ce-btn ce-btn--accent" data-copy>${icon("copy")}<span>Copy</span></button></div>
-    <p class="ce-dialog__note">Anyone can paste this code into the editor to get this exact character.</p>
+    <p class="ce-dialog__note">Anyone can paste this code into the editor to get this exact character. <button type="button" class="ce-link" data-link>Copy a link instead</button></p>
     <label class="ce-share__label" for="ce-share-paste">Wear a code</label>
     <div class="ce-share__row"><input id="ce-share-paste" class="ce-input" placeholder="CE1-…" spellcheck="false" autocomplete="off" /><button type="button" class="ce-btn ce-btn--primary" data-import>${icon("paste")}<span>Wear it</span></button></div>
     <p class="ce-share__error" data-error role="alert"></p>
@@ -35,6 +35,16 @@ export function openShareDialog({ spec, snapshot, onImport, toast }) {
       } catch {
         $("#ce-share-code").select();
         toast("Select and copy the code");
+      }
+    }
+    if (e.target.closest("[data-link]")) {
+      const link = `${location.origin}${location.pathname}#${code}`;
+      try {
+        await navigator.clipboard.writeText(link);
+        toast("Link copied");
+      } catch {
+        $("#ce-share-code").value = link;
+        $("#ce-share-code").select();
       }
     }
     if (e.target.closest("[data-import]")) {
