@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dragons! — Race Map</title>
+    <link rel="icon" type="image/png" href="/styles/ui/img/favicon.png" />
+    <link rel="apple-touch-icon" href="/styles/ui/img/apple-touch-icon.png" />
+    <link rel="stylesheet" href="/style.css" />
+    <style>
+      .race-main {
+        padding: 18px 3% 28px;
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 360px;
+        gap: 18px;
+      }
+      .race-controls {
+        grid-column: 1 / -1;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
+      }
+      .race-controls label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        color: var(--muted);
+        font-size: 12px;
+        letter-spacing: 0.6px;
+        text-transform: uppercase;
+      }
+      .race-controls input[type="text"],
+      .race-controls input[type="number"],
+      .race-controls select {
+        width: 110px;
+        background: var(--panel);
+        color: var(--text);
+        border: 1px solid var(--edge);
+        border-radius: 6px;
+        padding: 8px 10px;
+        font: inherit;
+      }
+      .race-controls input[type="number"] {
+        width: 64px;
+      }
+      .race-controls .grow {
+        flex: 1;
+      }
+      .panel {
+        background: var(--panel);
+        border: 1px solid var(--edge);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .panel h2 {
+        margin: 0;
+        padding: 10px 14px;
+        font-size: 11px;
+        letter-spacing: 1.6px;
+        color: var(--muted);
+        text-transform: uppercase;
+        border-bottom: 1px solid var(--edge);
+        font-weight: 650;
+      }
+      .views {
+        display: grid;
+        gap: 18px;
+        min-width: 0;
+      }
+      .views canvas {
+        display: block;
+        width: 100%;
+      }
+      #map {
+        height: 56vh;
+        min-height: 360px;
+      }
+      #profile {
+        height: 190px;
+      }
+      .transport-bar {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 14px;
+        border-top: 1px solid var(--edge);
+      }
+      .transport-bar input[type="range"] {
+        flex: 1;
+        accent-color: var(--accent);
+      }
+      .transport-bar time {
+        font-variant-numeric: tabular-nums;
+        color: var(--muted);
+        min-width: 110px;
+        text-align: right;
+      }
+      .side {
+        display: grid;
+        gap: 18px;
+        align-content: start;
+        min-width: 0;
+      }
+      #board {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12.5px;
+        font-variant-numeric: tabular-nums;
+      }
+      #board td {
+        padding: 6px 8px;
+        border-bottom: 1px solid var(--edge);
+        white-space: nowrap;
+      }
+      #board tr {
+        cursor: pointer;
+      }
+      #board tr.selected td {
+        background: var(--bg);
+      }
+      #board .swatch {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        margin-right: 6px;
+        vertical-align: -1px;
+      }
+      #board .bar {
+        width: 64px;
+        height: 6px;
+        border-radius: 3px;
+        background: var(--edge);
+        overflow: hidden;
+      }
+      #board .bar i {
+        display: block;
+        height: 100%;
+        background: var(--accent);
+      }
+      #board .bar.low i {
+        background: var(--danger);
+      }
+      #board .tag {
+        color: var(--amber);
+        font-size: 11px;
+      }
+      #board .muted {
+        color: var(--muted);
+      }
+      #log {
+        list-style: none;
+        margin: 0;
+        padding: 6px 0;
+        max-height: 34vh;
+        overflow: auto;
+        font-size: 12.5px;
+        font-variant-numeric: tabular-nums;
+      }
+      #log li {
+        padding: 4px 14px;
+        cursor: pointer;
+        display: grid;
+        grid-template-columns: 54px 1fr;
+        gap: 8px;
+      }
+      #log li:hover {
+        background: var(--bg);
+      }
+      #log time {
+        color: var(--muted);
+      }
+      #log .overtake b {
+        color: var(--accent);
+      }
+      #log .miss b,
+      #log .exhausted b {
+        color: var(--danger);
+      }
+      #log .finish b,
+      #log .kick b {
+        color: var(--amber);
+      }
+      #details {
+        padding: 10px 14px;
+        font-size: 12.5px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+      #details strong {
+        color: var(--text);
+      }
+      @media (max-width: 980px) {
+        .race-main {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="/">DRAGONS!<span> / RACE MAP</span></a>
+      <span class="eyebrow" id="summary">Simulating…</span>
+    </header>
+    <main class="race-main">
+      <form class="race-controls" id="setup">
+        <label>Course <input id="course-seed" type="text" value="canyon-1" /></label>
+        <label>Race <input id="race-seed" type="text" value="race-1" /></label>
+        <label>Field <input id="field" type="number" min="2" max="12" value="8" /></label>
+        <label
+          >Track
+          <select id="track">
+            <option value="generated">Generated</option>
+            <option value="winding">Synthetic winding</option>
+          </select></label
+        >
+        <button type="submit">Run race ↗</button>
+        <span class="grow"></span>
+        <label><input id="follow" type="checkbox" /> Follow selected</label>
+      </form>
+      <section class="views">
+        <div class="panel">
+          <h2>Top-down course</h2>
+          <canvas id="map" aria-label="Top-down race map"></canvas>
+          <div class="transport-bar">
+            <button id="play" type="button">Play</button>
+            <select id="rate" aria-label="Playback speed">
+              <option value="1">1×</option>
+              <option value="2">2×</option>
+              <option value="4" selected>4×</option>
+              <option value="8">8×</option>
+              <option value="16">16×</option>
+            </select>
+            <input id="scrub" type="range" min="0" max="1" step="0.05" value="0" aria-label="Race time" />
+            <time id="clock">0:00.0</time>
+          </div>
+        </div>
+        <div class="panel">
+          <h2>Altitude profile</h2>
+          <canvas id="profile" aria-label="Altitude against course distance"></canvas>
+        </div>
+      </section>
+      <aside class="side">
+        <div class="panel">
+          <h2>Leaderboard</h2>
+          <table id="board"></table>
+          <div id="details"></div>
+        </div>
+        <div class="panel">
+          <h2>Events</h2>
+          <ol id="log"></ol>
+        </div>
+      </aside>
+    </main>
+    <script type="module" src="/src/race/raceMap.js"></script>
+  </body>
+</html>

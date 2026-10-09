@@ -1,0 +1,359 @@
+.league-cards {
+  display: grid;
+  gap: 12px;
+}
+.league-card {
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr) auto;
+  align-items: stretch;
+  min-height: 118px;
+  padding: 0;
+  overflow: hidden;
+  transition: transform var(--dz-dur-base) var(--dz-ease-pop);
+}
+.league-card:active {
+  transform: translateY(2px);
+}
+.league-card__art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  background: var(--c);
+  color: #fff;
+  overflow: hidden;
+}
+.league-card__art canvas {
+  display: block;
+  place-self: stretch;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.league-card__art .league-emblem {
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  --size: 34px;
+}
+.league-emblem {
+  display: inline-block;
+  width: var(--size, 32px);
+  height: var(--size, 32px);
+  filter: drop-shadow(0 2px 0 rgb(0 0 0 / .25));
+}
+.league-emblem svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.league-emblem__shield {
+  fill: var(--c);
+  stroke: var(--dz-navy);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+.league-emblem__glyph {
+  fill: #fff;
+}
+.league-card__padlock {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: var(--dz-stroke-sm) solid var(--dz-outline);
+  border-radius: 50%;
+  background: var(--dz-surface);
+  color: var(--dz-navy);
+}
+.league-card__padlock .dz-icon {
+  --size: 18px;
+}
+.league-card__why {
+  color: var(--dz-danger);
+  font: 600 14px/1.2 var(--dz-font-body);
+}
+.league-card.is-nudged {
+  animation: league-nudge .4s var(--dz-ease-out);
+}
+@keyframes league-nudge {
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+.league-card__body {
+  display: grid;
+  align-content: center;
+  gap: 5px;
+  min-width: 0;
+  padding: 10px 0 10px 12px;
+}
+.league-card__title {
+  max-width: 100%;
+  text-decoration: none;
+  overflow: hidden;
+  color: color-mix(in oklab, var(--c), var(--dz-navy) 25%);
+  font: 600 clamp(20px, 6.4vw, 24px)/1.05 var(--dz-font-display);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.league-card__title::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
+.league-card__roster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 10px;
+  font: 600 16px/1.15 var(--dz-font-display);
+}
+.league-card__roster small {
+  color: var(--dz-danger);
+  font: 500 14px/1 var(--dz-font-body);
+}
+.league-card__roster.is-empty {
+  color: var(--dz-ink-soft);
+  font: 400 14px/1.15 var(--dz-font-body);
+}
+.league-card__season {
+  font: 600 15px/1 var(--dz-font-display);
+}
+.league-card .dz-progress {
+  height: 10px;
+  border-width: 1.5px;
+}
+.league-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px 8px;
+  font: 400 14px/1.1 var(--dz-font-body);
+}
+.league-card__meta b {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: var(--dz-radius-sm);
+  background: color-mix(in oklab, var(--dz-surface), var(--dz-navy) 8%);
+  font: 600 15px/1 var(--dz-font-display);
+}
+.league-card__meta b .dz-icon {
+  --size: 16px;
+}
+.league-card__action {
+  position: relative;
+  z-index: 1;
+}
+.league-card__go {
+  display: grid;
+  place-items: center;
+  padding: 0 8px 0 4px;
+}
+.league-card__go .dz-icon {
+  --size: 26px;
+}
+.league-card__meta .league-card__lock {
+  background: var(--dz-track);
+}
+.league-card.is-locked .league-card__art canvas {
+  filter: grayscale(.85);
+  opacity: .6;
+}
+.races__note {
+  margin: 0;
+}
+
+.league-next,
+.league-section {
+  display: grid;
+  gap: 10px;
+}
+.league-next > *,
+.league-section > * {
+  margin: 0;
+}
+.league-next__eyebrow,
+.league-section__title {
+  font: 600 16px/1 var(--dz-font-display);
+  color: var(--dz-ink-soft);
+}
+.league-section__row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+.league-next__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font: 600 26px/1 var(--dz-font-display);
+}
+.league-next__head .dz-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 15px;
+}
+.league-next__head .dz-tag .dz-icon {
+  --size: 16px;
+}
+.champion {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.champion .dz-icon {
+  --size: 44px;
+}
+.champion span {
+  display: grid;
+  min-width: 0;
+}
+.champion small {
+  font: 500 15px/1 var(--dz-font-display);
+  color: var(--dz-ink-soft);
+}
+.champion b {
+  overflow: hidden;
+  font: 600 30px/1.05 var(--dz-font-display);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.standings__head,
+.standings .dz-list__item {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) 30px 40px;
+  gap: 10px;
+  padding-right: 12px;
+}
+.standings__head {
+  font: 600 13px/1 var(--dz-font-display);
+  color: var(--dz-ink-soft);
+}
+.standings__head span:nth-child(n + 3) {
+  text-align: right;
+}
+.standings .dz-list__item {
+  min-height: 38px;
+  font-size: 17px;
+}
+.standings__name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.standings__wins,
+.standings__points {
+  text-align: right;
+}
+.standings__points {
+  font: 600 20px/1 var(--dz-font-display);
+}
+
+.season-races {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.season-race {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 10px;
+  padding: 10px 12px;
+  border-left: 5px solid var(--c, var(--league-c, var(--dz-navy)));
+  border-radius: var(--dz-radius-sm);
+  background: color-mix(in oklab, var(--dz-parchment), var(--dz-white) 45%);
+}
+.season-race__text {
+  display: grid;
+  flex: 1 1 150px;
+  gap: 3px;
+  min-width: 0;
+}
+.season-race__text b {
+  font: 600 18px/1.1 var(--dz-font-display);
+}
+.season-race__text span,
+.season-race__text small {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font: 400 14px/1.2 var(--dz-font-body);
+}
+.season-race__text small {
+  color: var(--dz-ink-soft);
+}
+.season-race__text .dz-icon {
+  --size: 16px;
+}
+.season-race__links {
+  display: flex;
+  gap: 8px;
+}
+.season-race__links .dz-btn {
+  padding-inline: 12px;
+  font-size: 16px;
+}
+.league-card.is-locked .league-card__title {
+  color: var(--dz-ink-soft);
+}
+
+.division-tag {
+  font-size: 14px;
+}
+.league-card__season .division-tag {
+  margin-right: 4px;
+  padding: 2px 6px 3px;
+  font-size: 13px;
+  vertical-align: 1px;
+}
+.dz-list__item[data-zone] {
+  box-shadow: inset -5px 0 0 var(--zone);
+}
+.dz-list__item[data-zone] .dz-list__rank {
+  background: var(--zone);
+  color: var(--dz-navy);
+}
+.dz-list__item[data-zone="promote"] {
+  --zone: var(--dz-success);
+}
+.dz-list__item[data-zone="relegate"] {
+  --zone: var(--dz-danger);
+}
+.dz-list__item[data-zone="relegate"] .dz-list__rank {
+  color: var(--dz-white);
+}
+.league-outcome {
+  font: 600 19px/1.2 var(--dz-font-display);
+}
+.league-outcome[data-outcome="promoted"] {
+  color: color-mix(in oklab, var(--dz-success), var(--dz-navy) 45%);
+}
+.league-outcome[data-outcome="relegated"] {
+  color: var(--dz-danger);
+}
+
+.league-next__locked {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
+  color: var(--dz-danger);
+  font: 600 16px/1.2 var(--dz-font-display);
+}
+.league-next__locked .dz-icon {
+  --size: 22px;
+  flex: none;
+}

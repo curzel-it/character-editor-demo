@@ -1,0 +1,143 @@
+.away {
+  position: absolute;
+  inset: 0;
+  z-index: 45;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+.away__scrim {
+  position: absolute;
+  inset: 0;
+  padding: 0;
+  border: 0;
+  background: rgb(20 28 40 / .55);
+  cursor: pointer;
+  animation: away-fade .3s var(--dz-ease-out);
+}
+.away__sheet {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(100%, var(--column, 640px));
+  max-height: calc(100% - env(safe-area-inset-top) - 56px);
+  padding: 16px max(14px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+  border-width: 3px 3px 0;
+  border-color: var(--dz-navy);
+  border-radius: var(--dz-radius-xl) var(--dz-radius-xl) 0 0;
+  animation: away-rise .45s var(--dz-ease-pop);
+}
+.away__head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 12px;
+}
+.away__head .dz-plate__icon {
+  width: 46px;
+  height: 50px;
+  color: #fff;
+}
+.away__head .dz-plate__icon .dz-icon {
+  --size: 28px;
+}
+.away__heading {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.away__title {
+  font: 600 28px/1 var(--dz-font-display);
+}
+.away__sub {
+  font: 500 16px/1.1 var(--dz-font-display);
+  color: var(--dz-ink-soft);
+}
+.away__close {
+  --s: var(--dz-tap);
+}
+.away__list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 2px 2px 6px;
+  list-style: none;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.away__item {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  padding: 6px 12px 6px 6px;
+  border: var(--dz-stroke-sm) solid var(--dz-outline);
+  border-left: 8px solid var(--c);
+  border-radius: var(--dz-radius-md);
+  background: var(--dz-surface);
+  box-shadow: var(--dz-shadow-drop);
+  transition: transform var(--dz-dur-fast) ease-out;
+  -webkit-tap-highlight-color: transparent;
+}
+.away__item:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 rgb(20 28 40 / .35);
+}
+.away__item > .dz-icon {
+  --size: 18px;
+  color: var(--dz-navy);
+}
+.away__art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 60px;
+  height: 52px;
+  border-radius: var(--dz-radius-sm);
+  background: linear-gradient(180deg, var(--dz-sky-top), var(--dz-sky-bottom) 80%);
+}
+.away__art canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+}
+.egg-art--away {
+  --size: 32px;
+}
+.away__badge {
+  position: absolute;
+  right: -8px;
+  bottom: -6px;
+}
+.away__badge .dz-icon {
+  --size: 24px;
+  filter: drop-shadow(0 2px 0 rgb(20 28 40 / .3));
+}
+.away__text {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+.away__line {
+  font: 600 19px/1.05 var(--dz-font-display);
+}
+.away__detail {
+  font: 400 15px/1.2 var(--dz-font-body);
+  color: var(--dz-ink-soft);
+}
+@keyframes away-rise {
+  from {
+    transform: translateY(40%);
+    opacity: 0;
+  }
+}
+@keyframes away-fade {
+  from {
+    opacity: 0;
+  }
+}

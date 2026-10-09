@@ -1,0 +1,125 @@
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+  background: var(--dz-sky-top);
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+input,
+textarea {
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
+}
+:where(.dz-root a) {
+  color: inherit;
+  text-decoration: none;
+}
+:where(.dz-root button) {
+  font-family: inherit;
+}
+
+.app {
+  --column: 640px;
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  overflow: hidden;
+  background:
+    radial-gradient(140% 40% at 20% 100%, color-mix(in oklab, var(--dz-success), var(--dz-navy) 18%) 0 45%, transparent 46%),
+    radial-gradient(120% 34% at 90% 100%, color-mix(in oklab, var(--dz-success), var(--dz-navy) 30%) 0 50%, transparent 51%),
+    linear-gradient(180deg, var(--dz-sky-top), var(--dz-sky-bottom) 70%);
+}
+
+.topbar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: max(20px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right), (100% - var(--column)) / 2 + 14px) 6px
+    max(14px, env(safe-area-inset-left), (100% - var(--column)) / 2 + 14px);
+}
+.topbar .dz-logo {
+  min-width: var(--dz-tap);
+  order: 1;
+  margin-left: auto;
+  transition: opacity .5s var(--dz-ease-out), visibility .5s;
+}
+.topbar .dz-logo[hidden] {
+  display: none;
+}
+.topbar__back {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: var(--dz-tap);
+  height: var(--dz-tap);
+  margin: -8px -6px -8px -12px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--dz-navy);
+  cursor: pointer;
+}
+.topbar__back .dz-icon {
+  --size: 26px;
+}
+.topbar__title {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  overflow: hidden;
+  color: var(--dz-navy);
+  font: 600 28px/1.1 var(--dz-font-display);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.screens {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+.screen {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 100%;
+  max-width: var(--column);
+  margin-inline: auto;
+  padding: 8px max(14px, env(safe-area-inset-right)) 16px max(14px, env(safe-area-inset-left));
+  animation: screen-in .35s var(--dz-ease-out);
+}
+@keyframes screen-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}
+
+.app > .dz-nav {
+  flex: none;
+  padding: 0 max(6px, (100% - var(--column)) / 2) env(safe-area-inset-bottom);
+}
+.app > .dz-nav .dz-nav__item {
+  font-size: 13px;
+}
+.app > .dz-nav .dz-nav__item .dz-icon {
+  --size: 24px;
+}
+.app > .dz-toasts {
+  top: calc(max(20px, env(safe-area-inset-top)) + 50px);
+}

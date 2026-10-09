@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no" />
+    <meta name="theme-color" content="#7EC8F5" />
+    <title>Dragons!</title>
+    <link rel="icon" type="image/png" href="/styles/ui/img/favicon.png" />
+    <link rel="apple-touch-icon" href="/styles/ui/img/apple-touch-icon.png" />
+    <link rel="stylesheet" href="/styles/ui/fonts/fonts.css" />
+    <link rel="stylesheet" href="/styles/ui/tokens.css" />
+    <link rel="stylesheet" href="/styles/ui/components.css" />
+    <link rel="stylesheet" href="/styles/ui/shell.css" />
+    <link rel="stylesheet" href="/styles/ui/shared.css" />
+    <link rel="stylesheet" href="/styles/ui/coachMarks.css" />
+    <link rel="stylesheet" href="/styles/ui/infoTip.css" />
+    <link rel="stylesheet" href="/styles/ui/stable.css" />
+    <link rel="stylesheet" href="/styles/ui/minigame.css" />
+    <link rel="stylesheet" href="/styles/ui/breathReveal.css" />
+    <link rel="stylesheet" href="/styles/ui/profile.css" />
+    <link rel="stylesheet" href="/styles/ui/lineage.css" />
+    <link rel="stylesheet" href="/styles/ui/details.css" />
+    <link rel="stylesheet" href="/styles/ui/altar.css" />
+    <link rel="stylesheet" href="/styles/ui/broadcast.css" />
+    <link rel="stylesheet" href="/styles/ui/countdown.css" />
+    <link rel="stylesheet" href="/styles/ui/catchUp.css" />
+    <link rel="stylesheet" href="/styles/ui/fps.css" />
+    <link rel="stylesheet" href="/styles/ui/riderControls.css" />
+    <link rel="stylesheet" href="/styles/ui/reins.css" />
+    <link rel="stylesheet" href="/styles/ui/results.css" />
+    <link rel="stylesheet" href="/styles/ui/ceremony.css" />
+    <link rel="stylesheet" href="/styles/ui/honours.css" />
+    <link rel="stylesheet" href="/styles/ui/more.css" />
+    <link rel="stylesheet" href="/styles/ui/league.css" />
+    <link rel="stylesheet" href="/styles/ui/raceEntry.css" />
+    <link rel="stylesheet" href="/styles/ui/maker.css" />
+    <link rel="stylesheet" href="/styles/ui/welcome.css" />
+    <link rel="stylesheet" href="/styles/ui/away.css" />
+    <link rel="stylesheet" href="/styles/ui/field.css" />
+    <link rel="stylesheet" href="/styles/ui/editor.css" />
+    <link rel="stylesheet" href="/styles/ui/loading.css" />
+  </head>
+  <body class="dz-root">
+    <div class="app" id="app">
+      <header class="topbar">
+        <a class="dz-logo dz-logo--corner" href="#/stable" id="logo" aria-label="Dragons!, back to the stable"></a>
+        <button type="button" class="topbar__back" id="page-back" hidden></button>
+        <h1 class="topbar__title" id="page-title" hidden></h1>
+        <div class="topbar__play" id="play-bar" hidden></div>
+      </header>
+      <main class="screens" id="screens"></main>
+      <nav class="dz-nav" id="nav" aria-label="Screens"></nav>
+      <div class="dz-toasts" id="toasts" role="status"></div>
+    </div>
+    <div class="loading" id="loading" role="status">
+      <div class="loading__card">
+        <span class="dz-logo"><img class="dz-logo__art" src="/styles/ui/img/logo-peaks.png" alt="Dragons!" draggable="false" /></span>
+        <div class="loading__track"><div class="loading__fill"></div></div>
+        <p class="loading__label">Waking the stable…</p>
+      </div>
+    </div>
+    <script type="module" src="/src/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,100 @@
+.rider-controls {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.rider-controls__stick {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
+}
+.rider-controls__stick::before,
+.rider-controls__knob {
+  content: "";
+  position: absolute;
+  border-radius: 50%;
+  translate: -50% -50%;
+}
+.rider-controls__stick::before {
+  width: 112px;
+  height: 112px;
+  border: 2px solid rgb(255 255 255 / .55);
+  background: rgb(30 42 58 / .25);
+}
+.rider-controls__knob {
+  width: 48px;
+  height: 48px;
+  background: var(--dz-white);
+  box-shadow: var(--dz-shadow-drop);
+}
+.rider-controls__stick[hidden] {
+  display: none;
+}
+.rider-controls__hint {
+  position: absolute;
+  left: 50%;
+  bottom: calc(max(20px, env(safe-area-inset-bottom)) + 88px);
+  margin: 0;
+  padding: 6px 12px;
+  transform: translateX(-50%);
+  border-radius: var(--dz-radius-pill);
+  background: var(--dz-navy-glass);
+  color: var(--dz-white);
+  font: 500 15px/1 var(--dz-font-body);
+  white-space: nowrap;
+}
+.rider-controls__hint[hidden],
+.rider-controls.is-off .rider-controls__hint {
+  display: none;
+}
+.rider-controls__pedals {
+  position: absolute;
+  right: max(16px, env(safe-area-inset-right));
+  bottom: max(20px, env(safe-area-inset-bottom));
+  display: flex;
+  flex-wrap: wrap-reverse;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: 12px;
+  max-width: 190px;
+  pointer-events: auto;
+}
+.rider-controls__pedal {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 2px;
+  padding: 0;
+  border-radius: 50%;
+  touch-action: none;
+}
+.rider-controls__pedal--breath {
+  position: relative;
+  width: 92px;
+  height: 92px;
+  font-size: 16px;
+}
+.rider-controls__pedal--breath[hidden] {
+  display: none;
+}
+.rider-controls__cool {
+  position: absolute;
+  inset: var(--dz-stroke);
+  clip-path: var(--chamfer-in);
+  background: rgb(30 42 58 / .6);
+  transform: scaleY(var(--cool, 0));
+  transform-origin: top;
+  pointer-events: none;
+}
+.rider-controls__pedal .dz-icon {
+  --size: 26px;
+}
+.rider-controls__pedal.is-on {
+  transform: scale(.94);
+  filter: brightness(1.15);
+}
+.rider-controls.is-off .rider-controls__pedal {
+  opacity: .5;
+}

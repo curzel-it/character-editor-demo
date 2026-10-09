@@ -1,0 +1,289 @@
+.altar-ring {
+  --place: 82px;
+  --reach: calc(50% - var(--place) / 2 - 4px);
+  --label: 112px;
+  position: relative;
+  width: min(100%, 340px);
+  aspect-ratio: 1;
+  margin: 4px auto 0;
+}
+.altar-ring::before {
+  content: "";
+  position: absolute;
+  inset: calc(var(--place) / 2);
+  border: 10px dotted var(--dz-parchment-edge);
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--dz-track) 60%, transparent) 0 55%, transparent 56%);
+}
+.altar-ring__stone {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  width: 38%;
+  aspect-ratio: 1.25;
+  translate: -50% -50%;
+  border: var(--dz-stroke) solid var(--dz-outline);
+  border-radius: var(--dz-radius-lg);
+  background: var(--dz-parchment);
+  box-shadow: var(--dz-shadow-drop);
+  color: var(--dz-navy);
+  text-align: center;
+}
+.altar-ring__odds {
+  font: var(--dz-text-h1);
+  color: var(--dz-purple-dark);
+}
+.altar-ring__stone small {
+  font: var(--dz-text-caption);
+  color: var(--dz-ink-soft);
+}
+
+.altar-place {
+  --angle: calc(-90deg + 360deg * var(--i) / var(--n));
+  position: absolute;
+  top: calc(50% + sin(var(--angle)) * var(--reach));
+  left: calc(50% + cos(var(--angle)) * var(--reach));
+  display: grid;
+  justify-items: center;
+  gap: 1px;
+  width: var(--label);
+  padding: 0;
+  translate: -50% calc(-1 * var(--place) / 2);
+  border: 0;
+  background: none;
+  color: var(--dz-navy);
+  font: 500 13px/1.05 var(--dz-font-body);
+  cursor: pointer;
+}
+.altar-place__art {
+  display: grid;
+  place-items: center;
+  width: var(--place);
+  aspect-ratio: 1;
+  border: var(--dz-stroke) solid var(--dz-purple);
+  border-radius: 50%;
+  background: linear-gradient(180deg, var(--dz-sky-top), var(--dz-sky-bottom) 80%);
+  box-shadow: var(--dz-shadow-card);
+  overflow: hidden;
+}
+.altar-place__art canvas {
+  display: block;
+  width: 115%;
+  height: 115%;
+  object-fit: cover;
+}
+.altar-place__name {
+  max-width: 100%;
+  overflow: hidden;
+  padding: 1px 6px;
+  border-radius: var(--dz-radius-pill);
+  background: var(--dz-surface);
+  font: 600 15px/1.1 var(--dz-font-display);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.altar-place__state {
+  max-width: 100%;
+  padding: 1px 6px;
+  border-radius: var(--dz-radius-sm);
+  background: color-mix(in srgb, var(--dz-surface) 85%, transparent);
+  text-align: center;
+}
+.altar-place--empty .altar-place__art {
+  border: 2px dashed var(--dz-navy);
+  background: var(--dz-surface);
+  box-shadow: none;
+}
+.altar-place--empty .dz-icon {
+  --size: 30px;
+}
+.altar [data-state][data-tone="happy"] {
+  color: color-mix(in oklab, var(--dz-success), black 40%);
+}
+.altar [data-state][data-tone="warn"] {
+  color: color-mix(in oklab, var(--dz-warning), black 30%);
+}
+.altar [data-state][data-tone="sad"] {
+  color: var(--dz-danger);
+}
+.altar-card [data-state] {
+  color: inherit !important;
+}
+.altar-card:not([aria-pressed="true"]) [data-state][data-tone="warn"] {
+  color: var(--dz-accent) !important;
+}
+
+.altar-tradeoff {
+  margin: 0;
+  color: var(--dz-navy);
+}
+
+.altar-status .status__row[data-tone="happy"] .status__label {
+  color: color-mix(in oklab, var(--dz-success), black 40%);
+}
+.altar-begin {
+  margin-top: 4px;
+}
+
+.altar-subhead {
+  margin: 0;
+  font: 600 16px/1 var(--dz-font-display);
+  color: var(--dz-navy);
+}
+.altar-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(76px, 1fr));
+  gap: 10px 8px;
+  scroll-margin: 12px;
+}
+.altar-card {
+  width: auto;
+  min-height: var(--dz-tap);
+}
+.altar-card[aria-pressed="true"] {
+  border: var(--dz-stroke) solid var(--dz-purple);
+  background: var(--dz-surface);
+  color: var(--dz-navy);
+}
+.altar-card:disabled {
+  cursor: default;
+  opacity: .72;
+  box-shadow: none;
+}
+.altar-card:disabled:hover {
+  transform: none;
+}
+.altar-card:disabled .dz-roster-card__art {
+  filter: grayscale(.6);
+}
+.altar-card__mark {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: var(--dz-stroke-sm) solid var(--dz-outline);
+  border-radius: 50%;
+  background: var(--dz-purple-light);
+}
+.altar-card__mark .dz-icon {
+  --size: 14px;
+}
+.altar-growing {
+  margin: 0;
+  color: var(--dz-navy);
+}
+
+.altar-empty {
+  display: grid;
+  justify-items: start;
+  gap: 10px;
+}
+.altar-empty p {
+  margin: 0;
+}
+.altar-empty .altar-growing {
+  color: var(--dz-ink-soft);
+}
+
+.altar-result h2 {
+  margin: 0;
+}
+.altar-stamp {
+  font-size: 58px;
+}
+.altar-result--silent .altar-stamp {
+  color: var(--dz-ink-soft);
+}
+.altar-egg {
+  animation: dz-wobble .9s ease-in-out 2;
+}
+.altar-result__stone {
+  display: grid;
+  place-items: center;
+  width: 120px;
+  aspect-ratio: 1;
+  border: var(--dz-stroke) solid var(--dz-outline);
+  border-radius: var(--dz-radius-lg);
+  background: var(--dz-track);
+}
+.altar-result__stone .dz-icon {
+  --size: 56px;
+  opacity: .6;
+}
+
+.altar-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.altar-stage {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in oklab, var(--dz-navy), var(--dz-purple) 25%);
+}
+.altar-stage__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.altar-show {
+  position: fixed;
+  inset: 0;
+  z-index: 31;
+  pointer-events: none;
+}
+.altar-show[hidden],
+.altar-show [hidden] {
+  display: none;
+}
+.altar-show::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 40%;
+  background: linear-gradient(180deg, transparent, rgb(12 14 30 / .5));
+}
+.altar-show__skip {
+  position: absolute;
+  top: max(14px, env(safe-area-inset-top));
+  right: max(14px, env(safe-area-inset-right));
+  z-index: 1;
+  pointer-events: auto;
+}
+.altar-show__foot {
+  position: absolute;
+  bottom: max(22px, env(safe-area-inset-bottom));
+  left: 50%;
+  z-index: 1;
+  display: grid;
+  gap: 14px;
+  width: min(var(--column), 100% - 28px);
+  translate: -50% 0;
+  pointer-events: auto;
+}
+.altar-show__avatar {
+  --s: 56px;
+  background: linear-gradient(180deg, var(--dz-purple-light), var(--dz-purple));
+  color: var(--dz-white);
+}
+.altar-show__avatar .dz-icon {
+  --size: 30px;
+}
+.altar-show__dialog .dz-dialog__line {
+  min-width: 0;
+  margin: 14px 0 0;
+  padding: 14px 14px 12px;
+}
+.altar-show__dialog .dz-dialog__tag {
+  background: var(--dz-purple);
+}
+.altar-show[data-mode="show"] .altar-show__dialog {
+  animation: screen-in .35s var(--dz-ease-out);
+}

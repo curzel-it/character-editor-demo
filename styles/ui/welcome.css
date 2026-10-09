@@ -1,0 +1,204 @@
+.screen.welcome {
+  position: relative;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 100%;
+  max-width: none;
+  padding-top: max(20px, env(safe-area-inset-top));
+  padding-bottom: max(20px, env(safe-area-inset-bottom));
+  overflow: hidden;
+  text-align: center;
+}
+.welcome__next {
+  flex: none;
+  max-width: 420px;
+}
+.welcome__logo {
+  position: absolute;
+  z-index: 1;
+  top: max(20px, env(safe-area-inset-top));
+  right: max(14px, env(safe-area-inset-right), (100% - var(--column)) / 2 + 14px);
+  pointer-events: none;
+}
+.welcome__logo[hidden] {
+  display: none;
+}
+.welcome__meadow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, var(--dz-sky-top), var(--dz-sky-bottom));
+}
+.meadow-stage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+  cursor: grab;
+}
+.meadow-stage:active {
+  cursor: grabbing;
+}
+.welcome__head,
+.welcome__foot {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  width: 100%;
+  max-width: var(--column);
+}
+.welcome__head {
+  pointer-events: none;
+}
+.welcome[data-step="gift"] .welcome__head {
+  min-height: 110px;
+  margin-top: 16px;
+  align-content: center;
+}
+.welcome__foot {
+  gap: 14px;
+}
+.welcome__dialog {
+  width: 100%;
+  text-align: left;
+}
+.welcome__avatar {
+  --s: 56px;
+  color: var(--dz-white);
+}
+.welcome__avatar .dz-icon {
+  --size: 30px;
+}
+.welcome__dialog .dz-dialog__line {
+  min-width: 0;
+  margin: 14px 0 0;
+  padding: 14px 14px 12px;
+}
+.welcome__stamp {
+  margin-top: 8px;
+}
+.welcome__roster {
+  width: 100%;
+  box-sizing: border-box;
+  padding-top: 4px;
+}
+.welcome__roster[hidden] {
+  display: none;
+}
+.welcome__kids {
+  justify-content: center;
+}
+.welcome__kid {
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 96px;
+}
+.welcome__kid .dz-roster-card__name {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.welcome__stat {
+  display: grid;
+  place-items: center;
+  min-height: 2.2em;
+  line-height: 1.1;
+}
+.welcome__all {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  place-items: center;
+  align-content: center;
+  gap: 0;
+  padding: 3px;
+  box-sizing: border-box;
+}
+.welcome__all canvas {
+  width: 30px;
+  height: 30px;
+  border: 2px solid var(--dz-white);
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+.welcome__all canvas:first-child {
+  grid-column: 1 / -1;
+  margin-bottom: -8px;
+}
+
+.welcome__popup {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  padding: 24px max(16px, env(safe-area-inset-right)) 24px max(16px, env(safe-area-inset-left));
+  background: rgb(30 40 60 / .18);
+  animation: welcome-popup-in .4s var(--dz-ease-out) both;
+}
+@keyframes welcome-popup-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(.97);
+  }
+}
+.welcome__greet {
+  position: relative;
+  display: grid;
+  gap: 14px;
+  width: 100%;
+  max-width: 380px;
+  margin: 0;
+  padding: 44px 18px 18px;
+  box-sizing: border-box;
+  color: var(--dz-ink);
+  box-shadow: var(--dz-shadow-float);
+}
+.welcome__greet-avatar {
+  --s: 64px;
+  position: absolute;
+  top: -32px;
+  left: 50%;
+  translate: -50% 0;
+  color: var(--dz-white);
+}
+.welcome__greet-avatar .dz-icon {
+  --size: 34px;
+}
+.welcome__greet-tag {
+  position: static;
+  justify-self: center;
+}
+.welcome__greet-line {
+  margin: 0;
+  font: 500 17px/1.3 var(--dz-font-body);
+}
+.welcome__popup[hidden],
+.welcome__foot[hidden],
+.welcome__next[hidden] {
+  display: none;
+}
+.welcome:is([data-step="name"], [data-step="pick"]) .welcome__foot {
+  gap: 10px;
+}
+.welcome:is([data-step="name"], [data-step="pick"]) .welcome__avatar {
+  --s: 44px;
+}
+.welcome:is([data-step="name"], [data-step="pick"]) .welcome__avatar .dz-icon {
+  --size: 24px;
+}
+.welcome:is([data-step="name"], [data-step="pick"]) .welcome__dialog .dz-dialog__line {
+  margin-top: 10px;
+  padding: 10px 12px 8px;
+  font-size: 15px;
+}
+@media (max-height: 700px) {
+  .welcome[data-step="gift"] .welcome__head {
+    min-height: 64px;
+  }
+  .welcome:is([data-step="name"], [data-step="pick"]) .welcome__dialog .dz-dialog__line {
+    font-size: 14px;
+  }
+}

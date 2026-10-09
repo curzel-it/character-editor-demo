@@ -1,0 +1,162 @@
+.editor__modes {
+  display: flex;
+  gap: 6px;
+  margin-inline: -14px;
+  padding: 2px 14px 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.editor__modes button {
+  flex: none;
+  min-height: var(--dz-tap);
+  padding: 6px 14px;
+  border: var(--dz-stroke-sm) solid var(--dz-outline);
+  border-radius: var(--dz-radius-pill);
+  background: var(--dz-surface);
+  color: var(--dz-navy);
+  font: 600 16px/1 var(--dz-font-display);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.editor__modes button[aria-checked="true"] {
+  background: var(--dz-navy);
+  color: #fff;
+}
+
+.editor__nav {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 8px;
+}
+.editor__position {
+  font: 600 22px/1 var(--dz-font-display);
+  text-align: center;
+}
+
+.editor__stats {
+  gap: 8px;
+  padding: 12px 14px;
+}
+.editor__stats .dz-meter--stat {
+  grid-template-columns: 22px minmax(70px, 30%) 1fr 40px;
+  font-size: 15px;
+}
+
+.editor__card {
+  padding: 0 0 14px;
+}
+.editor__card > .dz-tabs {
+  padding: 8px 8px 0;
+}
+.editor__card .dz-tab {
+  padding-inline: 2px;
+  font-size: 16px;
+}
+.editor__body {
+  display: grid;
+  gap: 12px;
+  padding: 14px 14px 0;
+}
+.editor__body[hidden] {
+  display: none;
+}
+.editor__body > * {
+  margin: 0;
+}
+.editor__body .field {
+  font-size: 16px;
+}
+.editor__inline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+.editor__inline .text-input,
+.editor__inline .editor__select {
+  flex: 1;
+  min-width: 0;
+}
+.editor__select {
+  min-height: var(--dz-tap);
+  padding: 6px 10px;
+  border: var(--dz-stroke-sm) solid var(--dz-outline);
+  border-radius: var(--dz-radius-md);
+  background: var(--dz-white);
+  color: var(--dz-navy);
+  font: 500 17px/1 var(--dz-font-body);
+}
+
+.editor__gene-tabs {
+  padding: 0;
+}
+.editor__gene-tabs .dz-tab::before {
+  background: color-mix(in oklab, var(--dz-parchment), var(--dz-navy) 12%);
+}
+.editor__presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.editor__presets[hidden] {
+  display: none;
+}
+.editor__presets button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--dz-tap);
+  padding: 4px 12px 4px 6px;
+  border: var(--dz-stroke-sm) solid var(--dz-parchment-edge);
+  border-radius: var(--dz-radius-pill);
+  background: var(--dz-surface);
+  color: var(--dz-navy);
+  font: 500 15px/1 var(--dz-font-body);
+  cursor: pointer;
+}
+.editor__presets button[aria-pressed="true"] {
+  border-color: var(--dz-navy);
+  background: color-mix(in oklab, var(--dz-accent), var(--dz-surface) 55%);
+}
+.editor .palette-swatch {
+  width: 28px;
+  height: 28px;
+  border: 1.5px solid var(--dz-outline);
+  border-radius: 50%;
+}
+.editor__genes {
+  display: grid;
+  gap: 12px;
+}
+.editor .gene {
+  display: grid;
+  gap: 2px;
+}
+.editor .gene-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 10px;
+  font: 600 16px/1.1 var(--dz-font-display);
+}
+.editor .gene-label output {
+  font: 500 15px/1 var(--dz-font-body);
+  font-variant-numeric: tabular-nums;
+  color: var(--dz-ink-soft);
+}
+.editor .gene select {
+  min-height: var(--dz-tap);
+  padding: 6px 10px;
+  border: var(--dz-stroke-sm) solid var(--dz-outline);
+  border-radius: var(--dz-radius-md);
+  background: var(--dz-white);
+  color: var(--dz-navy);
+  font: 500 17px/1 var(--dz-font-body);
+}
+.editor input[type="range"] {
+  width: 100%;
+  height: var(--dz-tap);
+  margin: 0;
+  accent-color: var(--dz-primary);
+}

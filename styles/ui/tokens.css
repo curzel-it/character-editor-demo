@@ -1,0 +1,84 @@
+:root {
+  --dz-primary:   #FF4B6E;
+  --dz-secondary: #2EC4B6;
+  --dz-accent:    #FFC83D;
+  --dz-info:      #3B82F6;
+  --dz-success:   #7ED957;
+  --dz-warning:   #FF9D3A;
+  --dz-danger:    #E04B4B;
+  --dz-purple:    #A855F7;
+  --dz-navy:      #283246;
+  --dz-surface:   #FFFAF1;
+  --dz-bronze:    #D08A4E;
+  --dz-silver:    #BCC6D0;
+  --dz-gold:      #F5C028;
+
+  --dz-parchment:   #EFE3C8;
+  --dz-parchment-edge: #D9C7A0;
+  --dz-wood:        #9A6433;
+  --dz-leather:     #6B4226;
+  --dz-track:       #D5CDBF;
+  --dz-white:       #FFFFFF;
+  --dz-ink:         var(--dz-navy);
+  --dz-ink-soft:    color-mix(in oklab, var(--dz-navy), var(--dz-surface) 35%);
+  --dz-sky-top:     #7EC8F5;
+  --dz-sky-bottom:  #D6F0FF;
+
+  --dz-primary-light:   color-mix(in oklab, var(--dz-primary), white 25%);
+  --dz-primary-dark:    color-mix(in oklab, var(--dz-primary), black 28%);
+  --dz-secondary-light: color-mix(in oklab, var(--dz-secondary), white 25%);
+  --dz-secondary-dark:  color-mix(in oklab, var(--dz-secondary), black 28%);
+  --dz-accent-light:    color-mix(in oklab, var(--dz-accent), white 30%);
+  --dz-accent-dark:     color-mix(in oklab, var(--dz-accent), #7a3d00 35%);
+  --dz-purple-light:    color-mix(in oklab, var(--dz-purple), white 25%);
+  --dz-purple-dark:     color-mix(in oklab, var(--dz-purple), black 28%);
+  --dz-navy-light:      color-mix(in oklab, var(--dz-navy), white 14%);
+  --dz-navy-glass:      color-mix(in srgb, var(--dz-navy) 86%, transparent);
+
+  --dz-cream:       #FFFAF1;
+  --dz-cream-deep:  #F6EEDF;
+  --dz-cream-edge:  #EADFCB;
+  --dz-ink-muted:   #6A6F7C;
+  --dz-outline:     rgb(90 64 34 / .16);
+  --dz-glass:       color-mix(in srgb, var(--dz-cream) 92%, transparent);
+
+  --dz-font-logo:    "Lilita One", "Arial Rounded MT Bold", system-ui, sans-serif;
+  --dz-font-display: "Fredoka", "Arial Rounded MT Bold", system-ui, sans-serif;
+  --dz-font-body:    "Fredoka", "Arial Rounded MT Bold", system-ui, sans-serif;
+  --dz-font-hand:    "Fredoka", "Arial Rounded MT Bold", system-ui, sans-serif;
+
+  --dz-text-h1:      600 34px/1.05 var(--dz-font-display);
+  --dz-text-h2:      600 26px/1.1 var(--dz-font-display);
+  --dz-text-h3:      600 20px/1.15 var(--dz-font-display);
+  --dz-text-body:    400 16px/1.35 var(--dz-font-body);
+  --dz-text-caption: 400 13px/1.3 var(--dz-font-body);
+  --dz-text-button:  600 19px/1 var(--dz-font-display);
+  --dz-text-hand:    500 20px/1.1 var(--dz-font-hand);
+
+  --dz-stroke:    2px;
+  --dz-stroke-sm: 2px;
+  --dz-radius-sm: 10px;
+  --dz-radius-md: 16px;
+  --dz-radius-lg: 22px;
+  --dz-radius-xl: 28px;
+  --dz-radius-pill: 999px;
+  --dz-tap: 44px;
+
+  --dz-space-1: 4px;
+  --dz-space-2: 8px;
+  --dz-space-3: 12px;
+  --dz-space-4: 16px;
+  --dz-space-5: 24px;
+  --dz-space-6: 32px;
+
+  --dz-shadow-drop: 0 3px 0 rgb(120 90 50 / .16), 0 6px 14px rgb(60 40 20 / .14);
+  --dz-shadow-card: 0 2px 0 rgb(120 90 50 / .10), 0 10px 24px rgb(60 40 20 / .16);
+  --dz-shadow-float: 0 12px 28px rgb(60 40 20 / .22);
+  --dz-bevel-depth: 4px;
+
+  --dz-ease-pop:   cubic-bezier(.34, 1.56, .64, 1);
+  --dz-ease-out:   cubic-bezier(.22, 1, .36, 1);
+  --dz-dur-fast:   90ms;
+  --dz-dur-base:   220ms;
+  --dz-dur-slow:   600ms;
+}

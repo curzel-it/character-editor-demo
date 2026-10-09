@@ -1,0 +1,331 @@
+.lineage-tree {
+  display: grid;
+  justify-items: center;
+}
+.lineage-parents {
+  display: grid;
+  grid-template-columns: 1fr 30px 1fr;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+.lineage-parents--circle {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px 10px;
+  padding-top: 8px;
+}
+.lineage-parents--circle > .lineage-parent {
+  flex: none;
+  width: calc((100% - 20px) / 3);
+  padding: 6px 4px 8px;
+}
+.lineage-parents--circle[data-count="4"] > .lineage-parent {
+  width: calc((100% - 10px) / 2);
+}
+.lineage-parents--circle .lineage-parent__name {
+  font-size: 17px;
+}
+.lineage-parents--circle .lineage-parent small {
+  font-size: 12px;
+}
+.lineage-parents--circle .lineage-parent .dz-stars {
+  --size: 11px;
+}
+.lineage-parents--circle .lineage-parent__grand {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+.lineage-circle__title {
+  margin: 0 0 2px;
+  color: var(--dz-navy);
+  font: var(--dz-text-h3);
+  text-align: center;
+}
+.lineage-parents__x {
+  display: grid;
+  place-items: center;
+}
+.lineage-parents__x .dz-icon {
+  --size: 28px;
+}
+.lineage-parent {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 3px;
+  min-width: 0;
+  min-height: var(--dz-tap);
+  padding: 6px 6px 8px;
+  border: var(--dz-stroke-sm) solid var(--dz-parchment-edge);
+  border-radius: var(--dz-radius-md);
+  background: var(--dz-surface);
+  box-shadow: var(--dz-shadow-card);
+  color: var(--dz-ink);
+  font: 500 13px/1.15 var(--dz-font-body);
+  text-align: center;
+  text-decoration: none;
+}
+a.lineage-parent:active {
+  transform: translateY(2px);
+}
+.lineage-parent.is-gone {
+  background: color-mix(in srgb, var(--dz-surface) 70%, transparent);
+  box-shadow: none;
+}
+.lineage-parent.is-away {
+  box-shadow: none;
+  border-style: dashed;
+}
+.lineage-parent.is-gone .lineage-art {
+  filter: saturate(.55);
+}
+.lineage-parent > .lineage-side {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  z-index: 1;
+}
+.lineage-parent__name {
+  max-width: 100%;
+  overflow: hidden;
+  font: 600 20px/1.05 var(--dz-font-display);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lineage-parent .dz-stars {
+  --size: 14px;
+}
+.lineage-parent small {
+  color: var(--dz-ink-soft);
+}
+.lineage-parent__grand {
+}
+
+.lineage-art {
+  display: block;
+  width: 100%;
+  max-width: 200px;
+  aspect-ratio: 1.1;
+  border-radius: var(--dz-radius-sm);
+  background: linear-gradient(180deg, var(--dz-sky-top), var(--dz-sky-bottom) 80%);
+  overflow: hidden;
+}
+.lineage-art canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.lineage-art--none {
+  display: grid;
+  place-items: center;
+}
+.lineage-art--none .dz-icon {
+  --size: 40px;
+}
+
+.lineage-tree__link {
+  width: 50%;
+  height: 22px;
+  border: var(--dz-stroke) solid var(--dz-outline);
+  border-top: 0;
+  border-radius: 0 0 var(--dz-radius-md) var(--dz-radius-md);
+  position: relative;
+}
+.lineage-tree__link::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: calc(50% - var(--dz-stroke) / 2);
+  width: var(--dz-stroke);
+  height: 12px;
+  background: var(--dz-navy);
+}
+.lineage-child {
+  display: grid;
+  grid-template-columns: 112px 1fr;
+  align-items: center;
+  gap: 12px;
+  width: min(100%, 320px);
+  margin-top: 12px;
+  padding: 6px 12px 6px 6px;
+  border: var(--dz-stroke) solid var(--dz-accent);
+  border-radius: var(--dz-radius-md);
+  background: var(--dz-surface);
+  box-shadow: var(--dz-shadow-card);
+  color: var(--dz-ink);
+  text-decoration: none;
+}
+.lineage-tree.is-wild .lineage-child {
+  margin-top: 0;
+}
+.lineage-child__text {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.lineage-child__text b {
+  overflow: hidden;
+  font: 600 24px/1.05 var(--dz-font-display);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lineage-child__text .dz-stars {
+  --size: 16px;
+}
+.lineage-child__text small {
+  color: var(--dz-ink-soft);
+  font: 500 14px/1.1 var(--dz-font-body);
+}
+
+.lineage-card {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+}
+.lineage-card > * {
+  margin: 0;
+}
+.lineage-list {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lineage-list li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 2px 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--dz-parchment-edge);
+}
+.lineage-list b {
+  font: 600 17px/1.1 var(--dz-font-display);
+  text-align: right;
+}
+.lineage-list small {
+  grid-column: 1 / -1;
+  color: var(--dz-ink-soft);
+  font-size: 13px;
+}
+.lineage-list .lineage-source {
+  grid-column: 1 / -1;
+}
+.lineage-list--colors li {
+  grid-template-columns: auto 1fr auto;
+}
+.lineage-list--colors .lineage-source {
+  grid-column: auto;
+}
+.lineage-source {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  font: 500 14px/1.1 var(--dz-font-body);
+}
+.lineage-source > span:last-child {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lineage-side {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: var(--dz-stroke-sm) solid var(--dz-outline);
+  border-radius: 50%;
+  background: var(--dz-accent);
+  color: var(--dz-navy);
+  font: 600 14px/1 var(--dz-font-display);
+}
+.lineage-side[data-side="1"] {
+  background: var(--dz-secondary);
+}
+.lineage-side[data-side="2"] {
+  background: var(--dz-primary);
+  color: var(--dz-white);
+}
+.lineage-side[data-side="3"] {
+  background: var(--dz-info);
+  color: var(--dz-white);
+}
+.lineage-side[data-side="4"] {
+  background: var(--dz-success);
+}
+.lineage-side[data-side="5"] {
+  background: var(--dz-warning);
+}
+.lineage-side--new {
+  background: var(--dz-purple);
+}
+.lineage-side--new .dz-icon {
+  --size: 16px;
+}
+.lineage-mutation {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border: var(--dz-stroke-sm) solid var(--dz-outline);
+  border-radius: 14px;
+  background: color-mix(in oklab, var(--dz-purple), white 70%);
+}
+.lineage-mutation > .dz-icon {
+  --size: 28px;
+  flex: none;
+  color: var(--dz-purple);
+}
+.lineage-mutation span {
+  display: grid;
+  gap: 2px;
+}
+.lineage-mutation b {
+  font: 600 18px/1.1 var(--dz-font-display);
+}
+.lineage-mutation small {
+  color: var(--dz-ink-soft);
+  font-size: 13px;
+}
+.lineage-list li.is-mutation {
+  margin: 0 -6px;
+  padding: 4px 6px 6px;
+  border-radius: 10px;
+  background: color-mix(in oklab, var(--dz-purple), transparent 85%);
+}
+.lineage-carried {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 10px;
+}
+.lineage-carried > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  opacity: .7;
+}
+.lineage-carried > span.is-from {
+  color: var(--dz-ink);
+  font-weight: 600;
+  opacity: 1;
+}
+.lineage-carried .lineage-side {
+  width: 18px;
+  height: 18px;
+  border-width: 1.5px;
+  font-size: 11px;
+}
+.swatch--sm {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+}

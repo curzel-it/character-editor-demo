@@ -1,0 +1,151 @@
+.field-card {
+  display: grid;
+  gap: 10px;
+}
+.field-card > * {
+  margin: 0;
+}
+.field-card__title {
+  margin: 0;
+  font: 600 16px/1 var(--dz-font-display);
+  color: var(--dz-ink-soft);
+}
+.field-card__seeds {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.field-card__seeds .field {
+  min-width: 0;
+  font-size: 16px;
+}
+.field-card__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.field-card__buttons .dz-icon {
+  --size: 20px;
+}
+
+.field-list {
+  display: grid;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.field-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  border: var(--dz-stroke-sm) solid var(--dz-parchment-edge);
+  border-radius: var(--dz-radius-md);
+  background: var(--dz-surface);
+}
+.field-row__open {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  min-height: 58px;
+  color: var(--dz-ink);
+  text-decoration: none;
+}
+.field-row__art {
+  position: relative;
+  width: 64px;
+  height: 58px;
+  border-radius: var(--dz-radius-sm);
+  background: linear-gradient(180deg, var(--dz-sky-top), var(--dz-sky-bottom) 80%);
+  overflow: hidden;
+}
+.field-row__art canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.field-row__pos {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  padding: 2px 5px;
+  border-radius: var(--dz-radius-sm);
+  background: var(--dz-navy);
+  color: #fff;
+  font: 600 13px/1 var(--dz-font-display);
+}
+.field-row__text {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+.field-row__text b {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
+  font: 600 18px/1.1 var(--dz-font-display);
+  white-space: nowrap;
+}
+.field-row__text small {
+  display: block;
+  overflow: hidden;
+  font: 400 14px/1.2 var(--dz-font-body);
+  color: var(--dz-ink-soft);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.field-row__color,
+.field-row__silks {
+  flex: none;
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid var(--dz-outline);
+  border-radius: 50%;
+}
+.field-row__silks {
+  display: inline-block;
+  margin-right: 5px;
+  vertical-align: -1px;
+}
+.field-row__moves {
+  display: flex;
+}
+.field-row__moves button {
+  display: grid;
+  place-items: center;
+  width: var(--dz-tap);
+  height: var(--dz-tap);
+  padding: 0;
+  border: 0;
+  border-radius: var(--dz-radius-sm);
+  background: none;
+  color: var(--dz-navy);
+  cursor: pointer;
+}
+.field-row__moves button:active:not(:disabled) {
+  background: color-mix(in oklab, var(--dz-parchment), var(--dz-navy) 10%);
+}
+.field-row__moves button:disabled {
+  opacity: .25;
+  cursor: default;
+}
+.field-row__moves .dz-icon {
+  --size: 22px;
+}
+.field-row__moves .is-down .dz-icon {
+  transform: rotate(180deg);
+}
+.field-row__moves [data-remove] {
+  color: var(--dz-danger);
+}
+.field-row__moves [data-remove] .dz-icon {
+  transform: rotate(45deg);
+}
+
+.field-start .dz-icon {
+  --size: 26px;
+}

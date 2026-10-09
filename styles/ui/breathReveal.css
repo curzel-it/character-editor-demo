@@ -1,0 +1,83 @@
+.stable-home.is-revealing-breath :is(.yard__head, .yard__panel, .yard__roster) {
+  opacity: 0;
+  visibility: hidden;
+}
+.breath-reveal {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 3;
+  display: flex;
+  justify-content: center;
+  padding: 0 12px calc(16px + env(safe-area-inset-bottom, 0px));
+  pointer-events: none;
+}
+.breath-reveal[hidden] {
+  display: none;
+}
+.breath-reveal__card {
+  display: grid;
+  gap: 8px;
+  width: min(380px, 100%);
+  padding: 14px 14px 12px;
+  color: var(--dz-ink);
+  pointer-events: auto;
+  box-shadow: var(--dz-shadow-float), 0 0 0 3px color-mix(in srgb, var(--breath-color) 55%, transparent);
+  animation: breath-reveal-in .5s var(--dz-ease-out) both;
+}
+.breath-reveal__head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.breath-reveal__badge {
+  --s: 48px;
+  flex: none;
+  color: var(--breath-color);
+  background: color-mix(in srgb, var(--breath-color) 18%, var(--dz-cream));
+  box-shadow: 0 0 16px color-mix(in srgb, var(--breath-color) 70%, transparent);
+}
+.breath-reveal__badge .dz-icon {
+  --size: 26px;
+}
+.breath-reveal__titles {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+.breath-reveal__eyebrow {
+  font: 500 14px/1.1 var(--dz-font-display);
+  color: var(--dz-ink-muted);
+}
+.breath-reveal__title {
+  margin: 0;
+  font: var(--dz-text-h2);
+  font-size: 24px;
+  line-height: 1.1;
+}
+.breath-reveal__text,
+.breath-reveal__note {
+  margin: 0;
+}
+.breath-reveal__text {
+  font: var(--dz-text-body);
+}
+.breath-reveal__note {
+  color: var(--dz-ink-muted);
+}
+.breath-reveal__buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 4px;
+}
+@keyframes breath-reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .breath-reveal__card {
+    animation: none;
+  }
+}

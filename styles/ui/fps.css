@@ -1,0 +1,13 @@
+.dz-fps {
+  position: absolute;
+  top: env(safe-area-inset-top);
+  right: max(4px, env(safe-area-inset-right));
+  z-index: 5;
+  padding: 1px 4px;
+  border-radius: var(--dz-radius-sm);
+  background: var(--dz-navy-glass);
+  color: var(--dz-white);
+  font: 600 10px/1 var(--dz-font-body);
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+}

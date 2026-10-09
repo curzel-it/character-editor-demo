@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1,user-scalable=no" />
+    <title>Dragons! — Race</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/png" href="/styles/ui/img/favicon.png" />
+    <link rel="apple-touch-icon" href="/styles/ui/img/apple-touch-icon.png" />
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/styles/race.css" />
+    <link rel="stylesheet" href="/styles/ui/fonts/fonts.css" />
+    <link rel="stylesheet" href="/styles/ui/tokens.css" />
+    <link rel="stylesheet" href="/styles/ui/countdown.css" />
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="/race.html">DRAGONS!<span> / RACE</span></a>
+      <nav class="site-nav"><a href="/">App</a><a href="/lab.html">Lab</a><a href="/raceMap.html">Race map</a><a href="/cameraMap.html">Camera map</a></nav>
+      <div class="style-switch">
+        <span class="field-label" id="style-label">Style</span>
+        <div class="toggle" id="style-toggle" role="group" aria-labelledby="style-label"></div>
+      </div>
+      <div class="style-switch" id="blur-switch">
+        <span class="field-label" id="blur-label">Motion blur</span>
+        <div class="toggle" id="blur-toggle" role="group" aria-labelledby="blur-label">
+          <button type="button" data-blur="on">On</button><button type="button" data-blur="off">Off</button>
+        </div>
+      </div>
+    </header>
+    <main>
+      <div class="intro compact">
+        <div>
+          <p class="eyebrow" id="race-label">RACE</p>
+          <h1 id="race-headline">Into the valley.</h1>
+        </div>
+        <div class="counter"><strong id="course-length">— km</strong><span id="course-signature">generating course</span></div>
+      </div>
+      <div class="workspace">
+        <div class="stage-panel">
+          <div class="stage-heading">
+            <div>
+              <span class="eyebrow">BROADCAST</span>
+              <h2 id="race-title">Valley Cup</h2>
+            </div>
+            <div class="toggle" id="camera-toggle" aria-label="Camera">
+              <button type="button" data-camera="director" aria-pressed="true">Director</button>
+              <button type="button" data-camera="free" aria-pressed="false">Free camera</button>
+            </div>
+          </div>
+          <div class="race-stage" id="race-stage">
+            <canvas id="race-view" aria-label="Race replay"></canvas>
+            <div class="hud tags" id="tags"></div>
+            <div class="hud hud-top">
+              <span class="chip live"><b>● REPLAY</b><span id="clock">0:00.0</span></span>
+              <span class="chip"><b>GATE</b><span id="gate-count">0 / 0</span></span>
+            </div>
+            <div class="hud board"><ol id="board"></ol></div>
+            <div class="hud chip speed" id="speed-chip" hidden><span class="name" id="speed-name"></span><strong id="speed-value">0</strong><span class="unit">km/h</span><span class="gap" id="speed-gap"></span></div>
+            <div class="hud caption" id="caption"><span class="shot" id="shot-kind">chase</span><span id="shot-reason">Preparing the broadcast</span></div>
+            <div class="hud feed" id="feed"></div>
+            <div class="hud fps" id="fps"></div>
+            <div class="hud loading" id="loading">Shaping the valley…</div>
+          </div>
+          <div class="transport">
+            <button type="button" id="race-play" aria-label="Pause">Ⅱ <span>Pause</span></button>
+            <button type="button" id="race-restart" aria-label="Restart">↺</button>
+            <input type="range" id="race-timeline" min="0" max="1" step="0.01" value="0" aria-label="Race time" />
+            <span id="race-frame-label" class="frame-label">0.0 / 0.0 s</span>
+            <select id="race-speed" aria-label="Playback speed">
+              <option value="0.5">0.5×</option>
+              <option value="1" selected>1×</option>
+              <option value="2">2×</option>
+              <option value="4">4×</option>
+            </select>
+          </div>
+        </div>
+        <aside class="inspector">
+          <div class="inspector-heading">
+            <p class="eyebrow">RACE CONTROL</p>
+            <h2>Everyone sees the same replay.</h2>
+            <p>A seeded field; the result is fixed by the grid and the seeds.</p>
+          </div>
+          <dl class="facts" id="facts"></dl>
+          <p class="eyebrow">RESULT</p>
+          <ol class="results" id="results"></ol>
+          <p class="keys">Space play/pause · ←/→ seek · C camera · V style<br />Free camera: drag to orbit, scroll to zoom, WASD/QE to fly, F to follow the leader.</p>
+        </aside>
+      </div>
+      <footer><span>Seeded dragons and courses · Vanilla JavaScript · WebGL 2</span><span id="renderer-label"></span></footer>
+    </main>
+    <script type="module" src="/src/raceTool.js"></script>
+  </body>
+</html>

@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024">
+  <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4F8F6A"/><stop offset="1" stop-color="#1E2A3A"/></linearGradient></defs>
+  <rect width="1024" height="1024" fill="url(#sky)"/>
+  <g transform="translate(-68 82)">
+  <path d="M300 330 L300 700 L560 700 C760 700 860 600 860 515 C860 430 760 330 560 330 Z M440 450 L550 450 C640 450 700 480 700 515 C700 550 640 580 550 580 L440 580 Z" fill-rule="evenodd" fill="#FFC933" stroke="#1E2A3A" stroke-width="34" stroke-linejoin="round" paint-order="stroke"/>
+  <path d="M410 300 L440 190 L500 250 L560 160 L620 250 L680 190 L710 300 Z" fill="#FF4D6D" stroke="#1E2A3A" stroke-width="30" stroke-linejoin="round" paint-order="stroke"/>
+</g>
+</svg>

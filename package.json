@@ -1,0 +1,26 @@
+{
+  "name": "dragonz",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "license": "UNLICENSED",
+  "scripts": {
+    "dev": "node server/main.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "lint": "node tools/lint.mjs",
+    "check": "node tools/checks/run.mjs",
+    "deploy": "node tools/deploy.mjs",
+    "build": "node tools/build.mjs",
+    "mobile": "node tools/mobile.mjs",
+    "testflight": "node tools/testflight.mjs",
+    "testflight:setup": "node tools/testflight.mjs --import-env ~/dev/testflight/testflight.env",
+    "playstore": "node tools/playStore.mjs",
+    "brand": "node tools/brand/brand.mjs all",
+    "appicon": "node tools/brand/brand.mjs appicon",
+    "logo": "node tools/brand/brand.mjs logo",
+    "splash": "node tools/brand/brand.mjs splash"
+  },
+  "dependencies": {
+    "musicbox": "github:curzel-it/musicbox"
+  }
+}

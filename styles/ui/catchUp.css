@@ -1,0 +1,37 @@
+.dz-catch-up {
+  position: absolute;
+  inset: 36% 0 auto;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  width: min(240px, 70vw);
+  margin-inline: auto;
+  padding: 10px 16px 12px;
+  border-radius: var(--dz-radius-md);
+  background: var(--dz-navy-glass);
+  color: var(--dz-white);
+  box-shadow: var(--dz-shadow-float);
+  pointer-events: none;
+  animation: catch-up-in var(--dz-dur-slow) var(--dz-ease-out);
+}
+.dz-catch-up[hidden] {
+  display: none;
+}
+.dz-catch-up__label {
+  font: 600 16px/1.1 var(--dz-font-display);
+  letter-spacing: .02em;
+}
+.dz-catch-up__bar {
+  --c: var(--dz-accent);
+  justify-self: stretch;
+  height: 10px;
+}
+@keyframes catch-up-in {
+  from { opacity: 0; transform: translateY(-6px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dz-catch-up {
+    animation: none;
+  }
+}

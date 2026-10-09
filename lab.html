@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dragons! — Lab</title>
+    <meta name="robots" content="noindex" />
+    <link rel="icon" type="image/png" href="/styles/ui/img/favicon.png" />
+    <link rel="apple-touch-icon" href="/styles/ui/img/apple-touch-icon.png" />
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/styles/lab.css" />
+  </head>
+  <body>
+    <header>
+      <a class="brand" href="/lab.html">DRAGONS!<span> / LAB</span></a>
+      <nav class="site-nav"><a href="/">App</a><a href="/lab.html" aria-current="page">Lab</a><a href="/raceMap.html">Race map</a><a href="/cameraMap.html">Camera map</a></nav>
+      <div class="connection">
+        <i id="connection-dot"></i><span id="connection-label">Connecting</span>
+      </div>
+    </header>
+    <main>
+      <section class="intro">
+        <div>
+          <p class="eyebrow">DEVELOPER LAB / PROCEDURAL COMPETITORS</p>
+          <h1>Meet the contenders.</h1>
+          <p class="subtitle">
+            One genome. Two visual languages. A world of individuals.
+          </p>
+        </div>
+        <div class="counter">
+          <strong id="preview-count">0 / 10</strong
+          ><span>previews available</span>
+        </div>
+      </section>
+      <div class="activity">
+        <span class="live-tag">WORKBENCH</span
+        ><span id="activity-message">Preparing the gallery…</span
+        ><button type="button" id="reload-source" class="reload-source" hidden>
+          New code available · Reload
+        </button
+        ><time id="activity-time"></time>
+      </div>
+      <nav class="subjects" id="subjects" aria-label="Subject"></nav>
+      <section class="workspace">
+        <div class="stage-panel">
+          <div class="stage-heading">
+            <div>
+              <span id="specimen-label" class="eyebrow">SPECIMEN</span>
+              <h2 id="subject-title">Dragon</h2>
+            </div>
+            <div
+              id="style-tabs"
+              class="style-tabs"
+              aria-label="Art style"
+            ></div>
+          </div>
+          <div class="stage" id="stage">
+            <canvas
+              id="view"
+              aria-label="Animated procedural specimen"
+            ></canvas>
+            <div class="stage-grid"></div>
+            <p id="empty-state" hidden>This preview is queued.</p>
+            <div class="stage-meta">
+              <span id="mesh-info">Loading geometry</span
+              ><span>Drag to orbit · scroll to zoom</span>
+            </div>
+            <div
+              id="flight-modes"
+              class="flight-modes"
+              role="radiogroup"
+              aria-label="Flight mode"
+            ></div>
+            <div class="specimen-id">
+              <span id="seed-label">SEED 2407</span
+              ><span id="stage-status">Preview · review pending</span>
+            </div>
+          </div>
+          <div class="transport">
+            <button id="play" aria-label="Pause animation">
+              Ⅱ <span>Pause</span></button
+            ><input
+              type="range"
+              id="timeline"
+              min="0"
+              max="1"
+              step="0.001"
+              value="0"
+              aria-label="Animation time"
+            /><span id="frame-label">0.00 s</span
+            ><button id="reset-camera">Reset view</button
+            ><button id="lineup">12 together</button>
+          </div>
+        </div>
+        <aside class="inspector">
+          <div class="inspector-heading">
+            <p class="eyebrow">GENOME EXPLORER</p>
+            <h2>Made of possibilities.</h2>
+            <p>Change a gene. Keep the individual across every style.</p>
+          </div>
+          <form id="seed-form">
+            <label for="seed">Seed</label>
+            <div class="seed-input">
+              <input
+                id="seed"
+                value="2407"
+                maxlength="64"
+                autocomplete="off"
+              /><button type="submit">Generate ↗</button>
+            </div>
+          </form>
+          <div
+            id="gene-tabs"
+            class="gene-tabs"
+            role="tablist"
+            aria-label="Genome controls"
+            hidden
+          >
+            <button
+              id="shape-tab"
+              type="button"
+              role="tab"
+              aria-controls="genes"
+            >
+              Shape
+            </button>
+            <button
+              id="color-tab"
+              type="button"
+              role="tab"
+              aria-controls="genes"
+            >
+              Colours
+            </button>
+          </div>
+          <div
+            id="color-presets"
+            class="color-presets"
+            aria-label="Colour palettes"
+            hidden
+          ></div>
+          <div id="genes"></div>
+          <button class="reset-genes" id="reset-genes">
+            Reset genes to seed
+          </button>
+        </aside>
+      </section>
+      <section class="matrix-section">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">THE EXPLORATION</p>
+            <h2>Every subject. Every style.</h2>
+          </div>
+          <p>
+            Previews update as files arrive. Visual approval stays with you.
+          </p>
+        </div>
+        <div class="matrix" id="matrix"></div>
+      </section>
+      <section class="evidence-section">
+        <div class="section-title">
+          <div>
+            <p class="eyebrow">CURRENT SELECTION</p>
+            <h2>Evidence, not guesswork.</h2>
+          </div>
+          <span id="evidence-state">Awaiting checks</span>
+        </div>
+        <div id="check-results"></div>
+        <div id="evidence-links"></div>
+      </section>
+      <footer>
+        <span>Seeded geometry · Vanilla JavaScript · WebGL 2</span
+        ><span id="revision-label"></span>
+      </footer>
+    </main>
+    <script type="module" src="/src/lab.js"></script>
+  </body>
+</html>

@@ -1,0 +1,63 @@
+html, body { margin: 0; background: transparent; }
+body { overflow: hidden; }
+
+@font-face { font-family: "Paytone One"; font-weight: 100 900; src: url("fonts/PaytoneOne.woff2") format("woff2"); }
+@font-face { font-family: "Titan One"; font-weight: 100 900; src: url("fonts/TitanOne.woff2") format("woff2"); }
+@font-face { font-family: "Luckiest Guy"; font-weight: 100 900; src: url("fonts/LuckiestGuy.woff2") format("woff2"); }
+@font-face { font-family: "Baloo 2"; font-weight: 100 900; src: url("fonts/Baloo2.woff2") format("woff2"); }
+@font-face { font-family: "Rubik"; font-weight: 100 900; src: url("fonts/Rubik.woff2") format("woff2"); }
+@font-face { font-family: "Lilita One"; font-weight: 100 900; src: url("fonts/LilitaOne.woff2") format("woff2"); }
+@font-face { font-family: "Passion One"; font-weight: 100 900; src: url("fonts/PassionOne.woff2") format("woff2"); }
+@font-face { font-family: "Bangers"; font-weight: 100 900; src: url("fonts/Bangers.woff2") format("woff2"); }
+
+/* logo */
+.logo { position: relative; }
+.logo .dz-logo__word { font-weight: var(--logo-weight, 400); }
+.logo__peaks {
+  position: absolute; left: 324px; top: var(--peaks-top, 235px);
+}
+.logo__dragon { position: absolute; left: 324px; top: 0; }
+.logo__mark { position: absolute; left: 0; right: 0; top: var(--mark-top, 590px); height: 600px; }
+.logo__plate {
+  position: absolute; left: 330px; right: 330px; top: 402px; height: 118px;
+  background: #FFF8EA; border: 7px solid #5A3922; border-radius: 999px; transform: rotate(-2deg);
+  box-shadow: 0 12px 0 #C99A66, 0 26px 36px rgb(60 40 20 / .25);
+}
+.logo__tagline {
+  position: absolute; left: 0; right: 0; top: 432px;
+  display: flex; justify-content: center; align-items: center; gap: 30px;
+  font: 600 64px/1 "Fredoka", var(--dz-font-display); letter-spacing: .02em; color: #5A3922;
+  transform: rotate(-2deg);
+}
+.logo__dot { width: 16px; height: 16px; border-radius: 50%; background: #7CC85E; }
+
+.logo__word { position: absolute; left: 0; right: 0; top: 90px; height: 400px; font: var(--logo-weight, 700) 300px/1 var(--dz-font-logo); font-variation-settings: "wdth" 106; letter-spacing: -.01em; }
+.logo__mark .logo__word { top: 30px; }
+.logo__word--alone { top: 110px; }
+.logo__layer { position: absolute; inset: 0; display: flex; justify-content: center; white-space: nowrap; }
+.logo__ch { position: relative; display: inline-block; transform: translateY(var(--dy)) rotate(var(--rot)); }
+.logo__layer--rim { color: #3C2814; -webkit-text-stroke: .2em #3C2814; paint-order: stroke fill; filter: url(#logo-rim); }
+.logo__layer--ink { color: #5A3922; -webkit-text-stroke: .2em #5A3922; paint-order: stroke fill; filter: url(#logo-ink); }
+.logo__layer--ext { color: #C99A66; text-shadow: 0 .02em 0 #C99A66, 0 .035em 0 #B9864F, 0 .05em 0 #A9743F; }
+.logo__layer--hi { color: #FFFFFF; }
+.logo__layer--face { color: transparent; }
+.logo__layer--face .logo__ch { background: linear-gradient(180deg, #FFFDF7 0%, #FFF4DD 50%, #F8E2B8 100%); -webkit-background-clip: text; background-clip: text; }
+.logo__layer--hi .logo__ch { transform: translate(-.010em, -.012em) translateY(var(--dy)) rotate(var(--rot)); }
+.logo__layer--sprout { color: transparent; }
+.logo__sprout { display: none; }
+.logo__layer--sprout .logo__sprout { display: block; position: absolute; left: .1em; top: -.2em; width: .5em; height: .46em; transform: rotate(-12deg); filter: drop-shadow(0 6px 4px rgb(60 40 20 / .3)); }
+
+/* splash */
+.splash__dragon { position: absolute; left: 0; top: 1150px; }
+.splash__logo { position: absolute; left: 0; top: 130px; transform: scale(.62); transform-origin: top left; margin-left: 11px; }
+.splash__loading { position: absolute; left: 0; right: 0; bottom: 150px; display: grid; justify-items: center; gap: 36px; }
+.splash__track {
+  width: 880px; height: 48px; box-sizing: border-box; overflow: hidden;
+  border: 9px solid #fff; border-radius: 999px; background: #F6EEDF;
+  box-shadow: 0 8px 0 rgb(120 90 50 / .2), 0 18px 40px rgb(60 40 20 / .25);
+}
+.splash__fill { width: 64%; height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--dz-accent), var(--dz-warning)); }
+.splash__label {
+  margin: 0; padding: 26px 54px; border-radius: 999px; background: #FFFAF1; color: var(--dz-navy);
+  font: 500 62px/1 "Fredoka", var(--dz-font-display); box-shadow: 0 8px 0 rgb(120 90 50 / .2), 0 18px 40px rgb(60 40 20 / .25);
+}

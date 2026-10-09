@@ -1,0 +1,189 @@
+.maker {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+}
+.maker__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.maker__name {
+  position: relative;
+  flex: 1 1 100%;
+  min-width: 0;
+}
+.maker__name-input {
+  padding-right: 48px;
+  font-size: 19px;
+}
+.maker__rename {
+  position: absolute;
+  top: 50%;
+  right: 4px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  translate: 0 -50%;
+  cursor: pointer;
+}
+.maker__rename .dz-icon {
+  --size: 26px;
+}
+.maker__rename:active {
+  rotate: 30deg;
+}
+.maker__random {
+  flex: none;
+  gap: 6px;
+}
+.maker__random .dz-icon {
+  --size: 22px;
+}
+.maker__group {
+  display: grid;
+  gap: 10px;
+  padding-top: 14px;
+  border-top: 2px dashed var(--dz-parchment-edge);
+}
+.maker__title {
+  margin: 0;
+  color: var(--dz-navy);
+  font: 600 19px/1.1 var(--dz-font-display);
+}
+
+.maker-fields {
+  display: grid;
+  gap: 12px;
+}
+.maker-fields__pickers {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.picker,
+.swatches {
+  display: grid;
+  gap: 5px;
+  min-width: 0;
+}
+.picker__label,
+.swatches__label {
+  overflow: hidden;
+  color: var(--dz-ink-muted);
+  font: 600 14px/1.1 var(--dz-font-display);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.swatches__label b {
+  margin-left: 6px;
+  color: var(--dz-navy);
+  font-weight: 600;
+}
+.picker__control {
+  display: flex;
+  align-items: stretch;
+  height: 42px;
+  border: var(--dz-stroke-sm) solid var(--dz-outline);
+  border-radius: var(--dz-radius-pill);
+  background: var(--dz-white);
+  overflow: hidden;
+}
+.picker__step {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 34px;
+  border: 0;
+  background: none;
+  color: var(--dz-navy);
+  cursor: pointer;
+}
+.picker__step .dz-icon {
+  --size: 13px;
+}
+.picker__step:active {
+  background: var(--dz-cream-deep);
+}
+.picker__select {
+  flex: 1;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--dz-navy);
+  font: 600 16px/1 var(--dz-font-display);
+  text-align: center;
+  text-align-last: center;
+  text-overflow: ellipsis;
+  appearance: none;
+  cursor: pointer;
+}
+.picker__select:focus-visible {
+  outline: 3px solid var(--dz-accent);
+  outline-offset: -3px;
+  border-radius: var(--dz-radius-sm);
+}
+.swatches__row {
+  display: flex;
+  gap: 8px;
+  margin-inline: -6px;
+  padding: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  mask-image: linear-gradient(90deg, transparent, #000 6px, #000 calc(100% - 22px), transparent);
+}
+.swatches__row::-webkit-scrollbar {
+  display: none;
+}
+.swatch {
+  position: relative;
+  flex: none;
+  width: 34px;
+  height: 34px;
+  border: var(--dz-stroke-sm) solid var(--dz-outline);
+  border-radius: 50%;
+  background: var(--swatch);
+  cursor: pointer;
+}
+.swatch--none {
+  background: linear-gradient(135deg, transparent 44%, var(--dz-danger) 44% 56%, transparent 56%), var(--dz-white);
+}
+.swatch input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+.swatch:has(input:checked) {
+  box-shadow: 0 0 0 3px var(--dz-surface), 0 0 0 6px var(--dz-accent);
+}
+.swatch:has(input:focus-visible) {
+  outline: 3px solid var(--dz-navy);
+  outline-offset: 5px;
+}
+.silks-fields__pattern {
+  display: flex;
+  align-items: end;
+  gap: 10px;
+}
+.silks-fields__pattern .picker {
+  flex: 1;
+}
+.silks-fields__swatch {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border: var(--dz-stroke-sm) solid var(--dz-outline);
+  border-radius: 50%;
+}
+.maker__panel {
+  mask-image: linear-gradient(#000 calc(100% - 16px), transparent);
+  padding-bottom: 12px;
+}

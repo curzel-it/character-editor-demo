@@ -1,0 +1,116 @@
+.screen.ceremony {
+  gap: 0;
+  max-width: none;
+  padding: 0;
+}
+.ceremony__stage {
+  position: relative;
+  flex: none;
+  height: clamp(380px, 64dvh, 640px);
+  overflow: hidden;
+  background: linear-gradient(180deg, var(--dz-sky-top), var(--dz-sky-bottom));
+}
+.podium-stage {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.ceremony__head {
+  position: absolute;
+  top: max(20px, env(safe-area-inset-top));
+  left: max(14px, env(safe-area-inset-left));
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  max-width: calc(100% - 28px);
+  padding: 4px 18px 4px 14px;
+  border-radius: var(--dz-radius-pill);
+  background: var(--dz-glass);
+  box-shadow: var(--dz-shadow-drop);
+}
+.ceremony__stamp {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(max(10px, env(safe-area-inset-top)) + 96px);
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  pointer-events: none;
+}
+.ceremony__stamp-text {
+  font-size: clamp(44px, 13vw, 72px);
+}
+.ceremony__stamp-text[data-outcome="relegated"] {
+  color: var(--dz-silver);
+}
+.ceremony__tags {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+}
+.ceremony__tag {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 32vw;
+  padding: 3px 8px 3px 3px;
+  border-radius: var(--dz-radius-pill);
+  background: var(--dz-navy-glass);
+  color: var(--dz-white);
+  box-shadow: var(--dz-shadow-float);
+}
+.ceremony__tag.is-owned {
+  background: var(--dz-accent);
+  color: var(--dz-navy);
+}
+.ceremony__tag > span {
+  display: grid;
+  min-width: 0;
+}
+.ceremony__tag b,
+.ceremony__tag small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ceremony__tag b {
+  font: 600 14px/1 var(--dz-font-display);
+}
+.ceremony__tag small {
+  font: 400 11px/1.1 var(--dz-font-body);
+  opacity: .85;
+}
+.ceremony__place {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border: var(--dz-stroke-sm) solid var(--dz-outline);
+  border-radius: 50%;
+  background: var(--metal);
+  color: var(--dz-navy);
+  font: 600 13px/1 var(--dz-font-display);
+}
+.ceremony__body {
+  display: grid;
+  gap: 12px;
+  width: 100%;
+  max-width: var(--column);
+  margin-inline: auto;
+  padding: 14px max(14px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+}
+.ceremony__card {
+  display: grid;
+  gap: 10px;
+}
+.ceremony__actions {
+  display: grid;
+  gap: 10px;
+}

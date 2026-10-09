@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dragons! · The pitch</title>
+    <link rel="icon" type="image/png" href="/styles/ui/img/favicon.png" />
+    <link rel="stylesheet" href="/styles/ui/fonts/fonts.css" />
+    <link rel="stylesheet" href="/styles/ui/tokens.css" />
+    <link rel="stylesheet" href="/styles/ui/components.css" />
+    <link rel="stylesheet" href="./deck.css" />
+  </head>
+  <body>
+    <div id="frame">
+      <section class="slide" data-name="title" style="align-items: center; justify-content: center">
+        <img src="/brand/logo-full.png" alt="Dragons!" style="width: 1180px; margin-top: 10px" />
+        <aside class="notes">
+          Hi! This is Dragons!, a cozy phone game where you raise dragons, race them and watch every race like a live TV sport.
+          Everything you'll see is the real game, drawn by its own engine.
+        </aside>
+      </section>
+
+      <section class="slide" data-name="pitch">
+        <p class="kicker">The idea</p>
+        <h2>Raise them. Race them. Watch them fly.</h2>
+        <p class="lede">A Tamagotchi you take to the races: a dragon of your own, grown from an egg, flying in a league that's broadcast like a real sport.</p>
+        <div class="body">
+          <div class="cards">
+            <div class="card" data-step="1" style="--c: var(--dz-primary)">
+              <canvas data-dragon='{"age":"kid","zoom":1.6,"genes":{"scales":24,"wings":23,"underside":26}}' style="width: 100%; aspect-ratio: 1.4"></canvas>
+              <h3>Raise</h3>
+              <p>Warm an egg, hatch a kid, feed it, play with it, watch it grow into a teen and an adult.</p>
+            </div>
+            <div class="card" data-step="2">
+              <canvas data-dragon='{"age":"adult","zoom":1.45,"seed":"pitch-race","genes":{"scales":17,"wings":15,"underside":26}}' style="width: 100%; aspect-ratio: 1.4"></canvas>
+              <h3>Race</h3>
+              <p>Kids, Teen and Main Event leagues, seasons, divisions and an awards ceremony at the end.</p>
+            </div>
+            <div class="card" data-step="3">
+              <canvas data-dragon='{"age":"teen","zoom":1.5,"seed":"pitch-breed","genes":{"scales":21,"wings":4,"underside":7}}' style="width: 100%; aspect-ratio: 1.4"></canvas>
+              <h3>Breed</h3>
+              <p>Bring adults to the Soul Altar for a new egg that inherits their looks, or surprises you.</p>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Three loops. Raise: daily care, a few minutes at a time. Race: the main event, a ranked season per league. Breed: the long game, new dragons from your best ones.
+        </aside>
+      </section>
+
+      <section class="slide slide--cream" data-name="wall">
+        <div class="split" style="grid-template-columns: 520px 1fr">
+          <div class="copy">
+            <p class="kicker">Every dragon is one of a kind</p>
+            <div class="big">2.9 trillion</div>
+            <p class="lede">possible combinations of colours, parts and rare traits, before growing up and before the shape genes that make each body unique.</p>
+            <p class="lede" data-step="1">No artist draws them: <strong>every dragon grows from a seed</strong>, and the rarer the combination, the more it's worth showing off.</p>
+          </div>
+          <div class="gallery" data-build="wall" style="--cols: 6; align-content: center"></div>
+        </div>
+        <aside class="notes">
+          32 colours for the scales, wings and underside, five heads, five headgears, seven feet, six tail tips and more. That's 2.9 trillion discrete combinations, and the body proportions are continuous on top of that. No two dragons are alike.
+        </aside>
+      </section>
+
+      <section class="slide" data-name="rarity">
+        <p class="kicker" style="--c: var(--dz-purple)">Rarity</p>
+        <h2>Common, rare, legendary</h2>
+        <p class="lede">Most traits are everyday. A few turn up once in a while, and some once in a thousand.</p>
+        <div class="body">
+          <div class="rarity">
+            <div class="card" data-step="1">
+              <canvas data-dragon='{"seed":"rare-1","zoom":1.5,"genes":{"scales":15,"wings":11,"underside":26}}'></canvas>
+              <div class="odds">3 in 4</div>
+              <h3>Plain coat</h3>
+            </div>
+            <div class="card" data-step="2" style="--c: var(--dz-secondary-dark)">
+              <canvas data-dragon='{"seed":"rare-2","zoom":1.5,"genes":{"scales":4,"wings":1,"underside":26,"markings":"leopard"}}'></canvas>
+              <div class="odds">1 in 4</div>
+              <h3>Coat markings</h3>
+            </div>
+            <div class="card" data-step="3" style="--c: var(--dz-info)">
+              <canvas data-dragon='{"seed":"rare-3","zoom":1.4,"yaw":-0.9,"genes":{"scales":21,"wings":23,"underside":26,"hindWings":"feathered"}}'></canvas>
+              <div class="odds">1 in 5</div>
+              <h3>Hind wings</h3>
+            </div>
+            <div class="card" data-step="4" style="--c: var(--dz-warning)">
+              <img src="media/shots/elements/01-mane-fire.webp" alt="" />
+              <div class="odds">1 in 25</div>
+              <h3>Element mane</h3>
+            </div>
+            <div class="card" data-step="5" style="--c: var(--dz-accent-dark)">
+              <canvas data-dragon='{"seed":"rare-5","zoom":1.5,"genes":{"metal":"gold","markings":0}}'></canvas>
+              <div class="odds">1 in 1,000</div>
+              <h3>Metallic coat</h3>
+            </div>
+          </div>
+        </div>
+        <aside class="notes">
+          Rarity gives collectors something to chase. Markings show up on one dragon in four, hind wings one in five, an element mane one in 25, and a metallic coat one in a thousand. A metal dragon with an element mane is one in 25,000.
+        </aside>
+      </section>
+
+      <section class="slide slide--cream" data-name="colours-kid">
+        <p class="kicker" style="--c: var(--dz-secondary)">32 colours</p>
+        <h2>One kid, every colour</h2>
+        <div class="body" style="margin-top: 12px">
+          <div class="gallery" data-build="colourGrid" data-age="kid"></div>
+        </div>
+        <aside class="notes">
+          Same kid, same seed: only the colour changes. Every dragon picks one of 32 named colours for its scales, its wings and its underside, from Crimson to Chocolate.
+        </aside>
+      </section>
+
+      <section class="slide slide--cream" data-name="colours-teen">
+        <p class="kicker" style="--c: var(--dz-secondary)">32 colours</p>
+        <h2>The teen…</h2>
+        <div class="body" style="margin-top: 12px">
+          <div class="gallery" data-build="colourGrid" data-age="teen"></div>
+        </div>
+        <aside class="notes">The same dragon as a teen: lankier, with long legs and big eyes, wearing the same 32 colours.</aside>
+      </section>
+
+      <section class="slide slide--cream" data-name="colours-adult">
+        <p class="kicker" style="--c: var(--dz-secondary)">32 colours</p>
+        <h2>…and the adult</h2>
+        <div class="body" style="margin-top: 12px">
+          <div class="gallery" data-build="colourGrid" data-age="adult"></div>
+        </div>
+        <aside class="notes">And all grown up. Scales, wings and underside each pick their colour on their own, so a real dragon mixes three of these.</aside>
+      </section>
+
+      <section class="slide slide--cream" data-name="patterns">
+        <p class="kicker" style="--c: var(--dz-warning)">Coat markings</p>
+        <h2>Same palette, new coats</h2>
+        <div class="body" style="margin-top: 8px">
+          <div class="gallery" data-build="patternGrid" style="grid-template-columns: 130px repeat(5, 1fr); gap: 0 10px; width: 1300px"></div>
+        </div>
+        <aside class="notes">On top of the colours, one dragon in four wears markings: leopard spots, zebra stripes or cow patches, each tinted to suit its scales.</aside>
+      </section>
+
+      <section class="slide slide--cream" data-name="heads">
+        <p class="kicker" style="--c: var(--dz-info)">Mix and match</p>
+        <h2>Heads and horns</h2>
+        <div class="body" style="margin-top: 8px">
+          <div class="gallery gallery--cards" data-build="partsGrid" data-parts="head:head:1.9,headgear:head:2.1" style="--cols: 5; width: 1300px"></div>
+        </div>
+        <aside class="notes">Five heads, from a toothy one to a viper, five headgears, from swept horns to antlers, and seven eye colours, gold the commonest.</aside>
+      </section>
+
+      <section class="slide slide--cream" data-name="parts">
+        <p class="kicker" style="--c: var(--dz-info)">Mix and match</p>
+        <h2>Tails, wings and legs</h2>
+        <div class="body" style="margin-top: 8px">
+          <div class="gallery gallery--cards" data-build="partsGrid" data-parts="tailTip:::0.5:2.1,hindWings:::-0.9:1.9,legShape:::-1.6:2.3" style="--cols: 6; width: 1400px; --aspect: 1.25"></div>
+        </div>
+        <aside class="notes">Six tail tips, rare hind wings, four leg shapes, plus seven kinds of feet and five wing fingers. Every part is generated, so a new part works on every dragon right away.</aside>
+      </section>
+
+      <section class="slide slide--cream" data-name="faces">
+        <p class="kicker" style="--c: var(--dz-primary)">Expressions</p>
+        <h2>Every feeling shows on its face</h2>
+        <p class="lede">Eyelids smile, droop and close, the eyes blink and glance around, and the mouth roars and pants. The mood comes straight from how the dragon is doing.</p>
+        <div class="body" style="margin-top: 18px">
+          <div class="gallery gallery--cards" data-build="faceGrid" style="--cols: 6; width: 1400px; --aspect: 1.15"></div>
+        </div>
+        <aside class="notes">
+          A happy dragon smiles with its lower lids, a sad one droops them, a tired or hungry one gets heavy eyelids. They blink every few seconds, glance about, and close their eyes to sleep. In races they roar, snap and pant. Owners read their dragon's mood at a glance, without a single number.
+        </aside>
+      </section>
+
+      <section class="slide" data-name="ages">
+        <p class="kicker" style="--c: var(--dz-success); color: var(--dz-navy)">Growing up</p>
+        <h2>Kid, teen, adult</h2>
+        <p class="lede">Every dragon hatches as a chubby kid, shoots up into a gangly teen and grows into a full adult. Care decides how strong it gets.</p>
+        <div class="body" style="align-items: flex-end; gap: 0">
+          <figure data-step="1" style="width: 360px; text-align: center">
+            <canvas data-dragon='{"age":"kid","zoom":1.9,"seed":"grow-2","genes":{"scales":4,"wings":0,"underside":7}}' style="width: 100%; aspect-ratio: 1"></canvas>
+            <h3 class="card-title" style="font: 600 32px var(--dz-font-display); margin: 0">Kid</h3>
+          </figure>
+          <figure data-step="2" style="width: 450px; text-align: center">
+            <canvas data-dragon='{"age":"teen","zoom":1.8,"seed":"grow-2","genes":{"scales":4,"wings":0,"underside":7}}' style="width: 100%; aspect-ratio: 1"></canvas>
+            <h3 style="font: 600 32px var(--dz-font-display); margin: 0">Teen</h3>
+          </figure>
+          <figure data-step="3" style="width: 560px; text-align: center">
+            <canvas data-dragon='{"age":"adult","zoom":1.7,"seed":"grow-2","genes":{"scales":4,"wings":0,"underside":7}}' style="width: 100%; aspect-ratio: 1"></canvas>
+            <h3 style="font: 600 32px var(--dz-font-display); margin: 0">Adult</h3>
+          </figure>
+        </div>
+        <aside class="notes">Kids all share the same round baby face; teens get their own head and big eyes; adults the full horns. Kids race at 82% of an adult's speed and teens at 90%, like 50cc, 100cc and 150cc.</aside>
+      </section>
+
+      <section class="slide slide--night" data-name="metal">
+        <p class="kicker" style="--c: var(--dz-gold); color: var(--dz-navy)">1 in 1,000</p>
+        <h2>Metallic coats</h2>
+        <p class="lede">Gold, silver, or a mix of the two, with a sheen that moves as they fly. And they're a little faster for it.</p>
+        <div class="body">
+          <div class="shots" style="--cols: 2; gap: 18px 22px">
+            <figure class="wide" data-step="1" style="--h: 268px"><img src="media/shots/elements/11-metal-gold.webp" alt="" /><figcaption>Gold · top speed</figcaption></figure>
+            <figure class="wide" data-step="1" style="--h: 268px"><img src="media/shots/elements/12-metal-silver.webp" alt="" /><figcaption>Silver · acceleration and handling</figcaption></figure>
+            <figure class="wide" data-step="2" style="--h: 268px"><img src="media/shots/elements/13-metal-goldSilver.webp" alt="" /><figcaption>Gold with silver wings</figcaption></figure>
+            <figure class="wide" data-step="2" style="--h: 268px"><img src="media/shots/elements/14-metal-silverGold.webp" alt="" /><figcaption>Silver with gold wings</figcaption></figure>
+          </div>
+        </div>
+        <aside class="notes">The rarest coat in the game: one dragon in a thousand. Gold adds a little top speed, silver a little acceleration and handling. It passes down at the altar, so a metal dragon is worth breeding from.</aside>
+      </section>
+
+      <section class="slide slide--bleed" data-name="metal-clip">
+        <figure class="wide wide--fill"><video src="media/shots/elements/metal.mp4" muted loop playsinline></video></figure>
+        <aside class="notes">Here's the gold one in motion, so you can see the sheen roll over the body.</aside>
+      </section>
+
+      <section class="slide slide--bleed" data-name="legendary">
+        <figure class="wide wide--fill"><img src="media/shots/elements/15-legendary.webp" alt="" /></figure>
+        <p class="kicker" style="position: absolute; left: 80px; top: 64px; --c: var(--dz-gold); color: var(--dz-navy); font-size: 26px">Legendary · 1 in 25,000</p>
+        <aside class="notes">And when the two meet: a gold coat with a fire mane. One dragon in 25,000. That's the one everybody wants to show off.</aside>
+      </section>
+
+      <section class="slide slide--night" data-name="manes">
+        <p class="kicker" style="--c: var(--dz-warning)">1 in 25</p>
+        <h2>Element manes</h2>
+        <p class="lede">A living mane of fire, leaves, sand, lightning or water, burning along the dragon's back.</p>
+        <div class="body">
+          <div class="shots" style="--cols: 3; gap: 18px">
+            <figure class="wide" data-step="1" style="--h: 250px"><img src="media/shots/elements/01-mane-fire.webp" alt="" /><figcaption>Fire</figcaption></figure>
+            <figure class="wide" data-step="1" style="--h: 250px"><img src="media/shots/elements/02-mane-nature.webp" alt="" /><figcaption>Nature</figcaption></figure>
+            <figure class="wide" data-step="1" style="--h: 250px"><img src="media/shots/elements/03-mane-earth.webp" alt="" /><figcaption>Earth</figcaption></figure>
+            <figure class="wide" data-step="1" style="--h: 250px"><img src="media/shots/elements/04-mane-storm.webp" alt="" /><figcaption>Storm</figcaption></figure>
+            <figure class="wide" data-step="1" style="--h: 250px"><img src="media/shots/elements/05-mane-water.webp" alt="" /><figcaption>Water</figcaption></figure>
+          </div>
+        </div>
+        <aside class="notes">One in 25 dragons is born with an element mane, matching the element it breathes.</aside>
+      </section>
+
+      <section class="slide slide--bleed" data-name="mane-clip">
+        <figure class="wide wide--fill"><video src="media/shots/elements/mane-fire.mp4" muted loop playsinline></video></figure>
+        <aside class="notes">And the fire mane, live.</aside>
+      </section>
+
+      <section class="slide slide--night" data-name="elements">
+        <p class="kicker" style="--c: var(--dz-primary)">Five elements</p>
+        <h2>Fire, nature, earth, storm, water</h2>
+        <p class="lede">Every dragon breathes one. Each beats the next, like rock, paper, scissors, so who you bring to a race matters.</p>
+        <div class="body">
+          <div class="shots" style="--cols: 3; gap: 18px">
+            <figure class="wide" data-step="1" style="--h: 250px"><img src="media/shots/elements/06-breath-fire.webp" alt="" /><figcaption>Fire beats nature</figcaption></figure>
+            <figure class="wide" data-step="1" style="--h: 250px"><img src="media/shots/elements/07-breath-nature.webp" alt="" /><figcaption>Nature beats earth</figcaption></figure>
+            <figure class="wide" data-step="1" style="--h: 250px"><img src="media/shots/elements/08-breath-earth.webp" alt="" /><figcaption>Earth beats storm</figcaption></figure>
+            <figure class="wide" data-step="1" style="--h: 250px"><img src="media/shots/elements/09-breath-storm.webp" alt="" /><figcaption>Storm beats water</figcaption></figure>
+            <figure class="wide" data-step="1" style="--h: 250px"><img src="media/shots/elements/10-breath-water.webp" alt="" /><figcaption>Water beats fire</figcaption></figure>
+          </div>
+        </div>
+        <aside class="notes">Breath arrives with the teen. In a race a hit slows the rival, knocks it back and dazes it, twice as hard when it's super effective.</aside>
+      </section>
+
+      <section class="slide" data-name="welcome">
+        <p class="kicker">Day one</p>
+        <h2>Say your name, pick your kid</h2>
+        <div class="split">
+          <div class="copy">
+            <ul class="points">
+              <li>The stable hand walks you through it in a 3D meadow.</li>
+              <li>You ride every dragon you own: tell the stable hand your name.</li>
+              <li>Three kids stand in a row. Pick one to raise, and get a gift egg too.</li>
+            </ul>
+          </div>
+          <div class="phones">
+            <figure class="phone" data-step="1"><img src="media/shots/stable/01-rider-maker.webp" alt="" /></figure>
+            <figure class="phone" data-step="2"><img src="media/shots/stable/02-pick-a-kid.webp" alt="" /></figure>
+          </div>
+        </div>
+        <aside class="notes">The first five minutes: you say your name, you pick your first dragon, and you're off to your first race in the Kids League.</aside>
+      </section>
+
+      <section class="slide" data-name="stable">
+        <p class="kicker">Home</p>
+        <h2>The stable yard</h2>
+        <div class="split">
+          <div class="copy">
+            <ul class="points">
+              <li>Your dragons live in a 3D yard: drag to walk around them, pinch to get close.</li>
+              <li>Pick another one and they swap places: one flies off, the next glides in.</li>
+              <li>Room for six eggs and dragons, so every slot is a choice.</li>
+            </ul>
+          </div>
+          <div class="phones">
+            <figure class="phone" data-step="1"><img src="media/shots/stable/03-stable-yard.webp" alt="" /></figure>
+            <figure class="phone" data-step="2"><video src="media/shots/stable/yard.mp4" muted loop playsinline></video></figure>
+          </div>
+        </div>
+        <aside class="notes">The stable is the landing screen. It shows the dragon in view with its name plate, its mood and the one thing it needs most right now.</aside>
+      </section>
+
+      <section class="slide" data-name="hatch">
+        <p class="kicker" style="--c: var(--dz-accent-dark)">Eggs</p>
+        <h2>Warm it, hatch it, grow it</h2>
+        <p class="lede">Warming an egg brings hatching closer and makes the kid a little stronger. Hatching and growing up are little shows of their own.</p>
+        <div class="body">
+          <div class="phones">
+            <figure class="phone" data-step="1" style="--h: 560px"><img src="media/shots/stable/04-egg.webp" alt="" /><figcaption>An egg in the yard</figcaption></figure>
+            <figure class="phone" data-step="2" style="--h: 560px"><img src="media/shots/stable/05b-hatch-stamp.webp" alt="" /><figcaption>Hatched!</figcaption></figure>
+            <figure class="phone" data-step="3" style="--h: 560px"><img src="media/shots/stable/06-evolve.webp" alt="" /><figcaption>Evolve</figcaption></figure>
+            <figure class="phone" data-step="4" style="--h: 560px"><img src="media/shots/stable/07-breath-reveal.webp" alt="" /><figcaption>Its first breath</figcaption></figure>
+          </div>
+        </div>
+        <aside class="notes">An egg incubates for eight hours; warming it once an hour skips ahead. Kids become teens after four hours and adults after eight more. When a stage is done the dragon waits for you to evolve it. As a teen, it shows you its breath for the first time.</aside>
+      </section>
+
+      <section class="slide" data-name="care">
+        <p class="kicker" style="--c: var(--dz-secondary)">Tamagotchi care</p>
+        <h2>A few minutes, a few times a day</h2>
+        <div class="split">
+          <div class="copy">
+            <ul class="points">
+              <li><strong>Kids</strong> need feeding, play and cleaning.</li>
+              <li><strong>Teens</strong> add exercise, <strong>adults</strong> affection.</li>
+              <li>Needs drop slowly, even while the game is closed, and reminders on the phone tell you when.</li>
+              <li>Good care makes a dragon stronger: a 1-star hatchling reaches 5 stars in about three days. Nothing ever dies.</li>
+            </ul>
+          </div>
+          <div class="phones">
+            <figure class="phone" data-step="1"><img src="media/shots/care/yard-hungry.webp" alt="" /></figure>
+            <figure class="phone" data-step="2"><img src="media/shots/stable/14-coach-marks.webp" alt="" /></figure>
+          </div>
+        </div>
+        <aside class="notes">Care is the heartbeat of the game. The yard shows one care tile for the lowest need, and each one opens a mini-game. Care also grows the bond, and the bond never fades.</aside>
+      </section>
+
+      <section class="slide" data-name="minigames-1">
+        <p class="kicker" style="--c: var(--dz-secondary)">Mini-games</p>
+        <h2>Every care action is a little game</h2>
+        <div class="body">
+          <div class="phones">
+            <figure class="phone" data-step="1" style="--h: 580px"><img src="media/shots/care/warm.webp" alt="" /><figcaption>Warm the egg</figcaption></figure>
+            <figure class="phone" data-step="2" style="--h: 580px"><img src="media/shots/care/feed.webp" alt="" /><figcaption>Snack toss</figcaption></figure>
+            <figure class="phone" data-step="3" style="--h: 580px"><img src="media/shots/care/volleyball.webp" alt="" /><figcaption>Volleyball</figcaption></figure>
+            <figure class="phone" data-step="4" style="--h: 580px"><img src="media/shots/care/fetch.webp" alt="" /><figcaption>Fetch</figcaption></figure>
+          </div>
+        </div>
+        <aside class="notes">Rub the egg in circles to keep it glowing just right. Toss snacks for the kid to catch. Play is volleyball or fetch: keep the ball up, or throw the stick and watch it chase.</aside>
+      </section>
+
+      <section class="slide" data-name="minigames-2">
+        <p class="kicker" style="--c: var(--dz-secondary)">Mini-games</p>
+        <h2>Scrub, rinse, work out, groom</h2>
+        <div class="body">
+          <div class="phones">
+            <figure class="phone" data-step="1" style="--h: 580px"><img src="media/shots/care/clean-scrub.webp" alt="" /><figcaption>Scrub</figcaption></figure>
+            <figure class="phone" data-step="2" style="--h: 580px"><img src="media/shots/care/clean.webp" alt="" /><figcaption>Rinse</figcaption></figure>
+            <figure class="phone" data-step="3" style="--h: 580px"><img src="media/shots/care/exercise.webp" alt="" /><figcaption>Workout</figcaption></figure>
+            <figure class="phone" data-step="4" style="--h: 580px"><img src="media/shots/care/groom.webp" alt="" /><figcaption>Groom</figcaption></figure>
+          </div>
+        </div>
+        <aside class="notes">Cleaning is scrub, then rinse. Teens add a workout to the beat, and adults like grooming: find the itchy spot. Grooming builds the bond the most.</aside>
+      </section>
+
+      <section class="slide" data-name="minigame-clips">
+        <p class="kicker" style="--c: var(--dz-secondary)">Mini-games</p>
+        <h2>In motion</h2>
+        <div class="body">
+          <div class="phones">
+            <figure class="phone" style="--h: 610px"><video src="media/shots/care/feed.mp4" muted loop playsinline></video></figure>
+            <figure class="phone" style="--h: 610px"><video src="media/shots/care/clean.mp4" muted loop playsinline></video></figure>
+          </div>
+        </div>
+        <aside class="notes">Short, touchy and satisfying: a care session is under a minute.</aside>
+      </section>
+
+      <section class="slide" data-name="profile">
+        <p class="kicker" style="--c: var(--dz-purple)">Get to know it</p>
+        <h2>Profile, traits and stats</h2>
+        <div class="body">
+          <div class="phones">
+            <figure class="phone" data-step="1" style="--h: 600px"><img src="media/shots/stable/09-profile-overview.webp" alt="" /><figcaption>Mood, age and stars</figcaption></figure>
+            <figure class="phone" data-step="2" style="--h: 600px"><img src="media/shots/stable/10-profile-traits.webp" alt="" /><figcaption>Element and looks</figcaption></figure>
+            <figure class="phone" data-step="3" style="--h: 600px"><img src="media/shots/stable/11-details-radar.webp" alt="" /><figcaption>Five racing stats</figcaption></figure>
+          </div>
+        </div>
+        <aside class="notes">Each racing stat comes from the body: a long torso for top speed, big wings for acceleration, a long tail for handling, bulk for weight and big horns for breath. You can see what your dragon is built for just by looking at it.</aside>
+      </section>
+
+      <section class="slide" data-name="rest">
+        <p class="kicker" style="--c: var(--dz-info)">Life goes on</p>
+        <h2>Naps, news and reminders</h2>
+        <div class="body">
+          <div class="phones">
+            <figure class="phone" data-step="1" style="--h: 600px"><img src="media/shots/stable/08-slumber.webp" alt="" /><figcaption>Asleep on its straw bed</figcaption></figure>
+            <figure class="phone" data-step="2" style="--h: 600px"><img src="media/shots/stable/13-while-you-were-away.webp" alt="" /><figcaption>While you were away</figcaption></figure>
+            <figure class="phone" data-step="3" style="--h: 600px"><img src="media/shots/stable/15-trophy-cabinet.webp" alt="" /><figcaption>Your trophy cabinet</figcaption></figure>
+          </div>
+        </div>
+        <aside class="notes">The game keeps going while you're away: races finish, eggs get ready, needs drop. When you come back, a sheet tells you what happened, and each line opens the screen that deals with it.</aside>
+      </section>
+
+      <section class="slide" data-name="altar">
+        <p class="kicker" style="--c: var(--dz-purple)">The Soul Altar</p>
+        <h2>New eggs from your best dragons</h2>
+        <div class="split">
+          <div class="copy">
+            <ul class="points" style="--c: var(--dz-purple)">
+              <li>Bring two to six adults to the stone circle. More parents, better odds of an egg.</li>
+              <li>Every part and colour comes whole from one parent, or <strong>mutates</strong> into something none of them has.</li>
+              <li>A metallic coat passes down too.</li>
+            </ul>
+          </div>
+          <div class="phones">
+            <figure class="phone" data-step="1"><img src="media/shots/league/04-altar-picker.webp" alt="" /></figure>
+            <figure class="phone" data-step="2"><img src="media/shots/stable/12-lineage.webp" alt="" /></figure>
+          </div>
+        </div>
+        <aside class="notes">Two parents give a 36% chance of an egg, six give 90%. The lineage screen shows where every trait came from, and celebrates every mutation.</aside>
+      </section>
+
+      <section class="slide" data-name="ritual">
+        <p class="kicker" style="--c: var(--dz-purple)">The ritual</p>
+        <h2>A show every time</h2>
+        <div class="body">
+          <div class="phones" style="gap: 20px">
+            <figure class="phone" data-step="1" style="--h: 540px"><img src="media/shots/league/05-altar-custodian.webp" alt="" /><figcaption>The custodian</figcaption></figure>
+            <figure class="phone" data-step="2" style="--h: 540px"><img src="media/shots/league/06-altar-landing.webp" alt="" /><figcaption>The parents land</figcaption></figure>
+            <figure class="phone" data-step="3" style="--h: 540px"><img src="media/shots/league/07-altar-breath.webp" alt="" /><figcaption>They breathe together</figcaption></figure>
+            <figure class="phone" data-step="4" style="--h: 540px"><img src="media/shots/league/08-altar-fireworks.webp" alt="" /><figcaption>Fireworks</figcaption></figure>
+            <figure class="phone" data-step="5" style="--h: 540px"><img src="media/shots/league/09-altar-egg.webp" alt="" /><figcaption>An egg!</figcaption></figure>
+          </div>
+        </div>
+        <aside class="notes">The custodian raises his staff, the parents land round the ring and breathe at the altar together, and their breaths meet in fireworks. Then an egg flashes onto the stone, or the lights fade and he consoles you.</aside>
+      </section>
+
+      <section class="slide" data-name="ritual-clip">
+        <p class="kicker" style="--c: var(--dz-purple)">The ritual</p>
+        <h2>Fireworks, then an egg</h2>
+        <div class="body">
+          <figure class="phone" style="--h: 610px"><video src="media/shots/league/altar.mp4" muted loop playsinline></video></figure>
+        </div>
+        <aside class="notes">Here it is live.</aside>
+      </section>
+
+      <section class="slide" data-name="leagues">
+        <p class="kicker" style="--c: var(--dz-warning)">Leagues</p>
+        <h2>Three leagues, three divisions</h2>
+        <div class="split">
+          <div class="copy">
+            <ul class="points" style="--c: var(--dz-warning)">
+              <li>Kids League, Teen League and the Main Event: every race is for one age.</li>
+              <li>Seasons of 16 races in Bronze, Silver and Gold. The top two go up, the bottom two go down.</li>
+              <li>Seven rival stables per division, each with its own riders and dragons.</li>
+            </ul>
+          </div>
+          <div class="phones">
+            <figure class="phone" data-step="1"><img src="media/shots/league/01-leagues.webp" alt="" /></figure>
+            <figure class="phone" data-step="2"><img src="media/shots/league/02b-league-table.webp" alt="" /></figure>
+          </div>
+        </div>
+        <aside class="notes">Age leagues keep every race fair. Your stable climbs from Bronze to Gold, and the Gold champion is the league champion.</aside>
+      </section>
+
+      <section class="slide" data-name="entry">
+        <p class="kicker" style="--c: var(--dz-warning)">Race day</p>
+        <h2>Pick your dragon, meet the field</h2>
+        <div class="split">
+          <div class="copy">
+            <ul class="points" style="--c: var(--dz-warning)">
+              <li>Eight starters: your dragon and seven rivals, in gate order.</li>
+              <li>Form is shown before the race: a rival can be in perfect shape, or off.</li>
+              <li>A race tires a dragon, so a season is a few check-ins, not a grind.</li>
+            </ul>
+          </div>
+          <div class="phones" style="--h: 600px">
+            <figure class="phone" data-step="1"><img src="media/shots/league/03-race-entry.webp" alt="" /></figure>
+            <figure class="phone" data-step="2"><img src="media/shots/league/03b-race-field.webp" alt="" /></figure>
+          </div>
+        </div>
+        <aside class="notes">One tap to enter. The favourite is marked, but upsets happen: the favourite wins about one race in five.</aside>
+      </section>
+
+      <section class="slide slide--bleed" data-name="race-clip">
+        <figure class="wide wide--fill"><video src="media/shots/race/directors-cut.mp4" muted loop playsinline></video></figure>
+        <aside class="notes">This is a race. Nobody is holding the camera: a director plans every cut as the race happens, looking three seconds ahead for the overtake, the fall and the photo finish.</aside>
+      </section>
+
+      <section class="slide slide--night" data-name="start">
+        <p class="kicker" style="--c: var(--dz-primary)">The broadcast</p>
+        <h2>3, 2, 1, Go</h2>
+        <p class="lede">Every race opens low on the grid, then the field crouches and leaps off the ground, kicking up dust.</p>
+        <div class="body">
+          <div class="shots" style="--cols: 2">
+            <figure class="wide" data-step="1" style="--h: 400px"><img src="media/shots/race/lead-in.webp" alt="" /></figure>
+            <figure class="wide" data-step="2" style="--h: 400px"><img src="media/shots/race/takeoff.webp" alt="" /></figure>
+          </div>
+        </div>
+        <aside class="notes">How a dragon leaves the ground depends on its legs and its weight, so even the start tells you something about the racers.</aside>
+      </section>
+
+      <section class="slide slide--night" data-name="cameras">
+        <p class="kicker" style="--c: var(--dz-primary)">Director's cut</p>
+        <h2>Directed like television</h2>
+        <div class="body">
+          <div class="shots" style="--cols: 3; gap: 16px">
+            <figure class="wide" data-step="1" style="--h: 250px"><img src="media/shots/race/trackside.webp" alt="" /><figcaption>Trackside</figcaption></figure>
+            <figure class="wide" data-step="1" style="--h: 250px"><img src="media/shots/race/flyby.webp" alt="" /><figcaption>Fly-by</figcaption></figure>
+            <figure class="wide" data-step="1" style="--h: 250px"><img src="media/shots/race/rider-cam.webp" alt="" /><figcaption>Onboard</figcaption></figure>
+            <figure class="wide" data-step="2" style="--h: 250px"><img src="media/shots/race/valley-castle.webp" alt="" /><figcaption>Valleys and castles</figcaption></figure>
+            <figure class="wide" data-step="2" style="--h: 250px"><img src="media/shots/race/canyon.webp" alt="" /><figcaption>Canyons</figcaption></figure>
+            <figure class="wide" data-step="2" style="--h: 250px"><img src="media/shots/race/pack.webp" alt="" /><figcaption>The pack</figcaption></figure>
+          </div>
+        </div>
+        <aside class="notes">Trackside, fly-by and onboard shots, with speed lines, vapour and blur. Valleys with forests, rivers and a real-scale castle, and canyons with arches and spires.</aside>
+      </section>
+
+      <section class="slide slide--night" data-name="breath-race">
+        <p class="kicker" style="--c: var(--dz-primary)">Breath</p>
+        <h2>Strategy in the air</h2>
+        <p class="lede">Slipstream slingshots a chaser past, a clean pass through a gate gives a burst, and a well-timed breath knocks a rival back.</p>
+        <div class="body">
+          <div class="shots" style="--cols: 2">
+            <figure class="wide" data-step="1" style="--h: 400px"><img src="media/shots/race/breath-fire.webp" alt="" /></figure>
+            <figure class="wide" data-step="2" style="--h: 400px"><img src="media/shots/race/breath-storm.webp" alt="" /></figure>
+          </div>
+        </div>
+        <aside class="notes">No stamina bar: a dragon flies at its top speed unless something slows it down. The race is about the line and the timing.</aside>
+      </section>
+
+      <section class="slide" data-name="reins">
+        <p class="kicker" style="--c: var(--dz-info)">Autopilot or the reins</p>
+        <h2>Watch it, or fly it yourself</h2>
+        <div class="split">
+          <div class="copy">
+            <ul class="points" style="--c: var(--dz-info)">
+              <li>Every race starts on <strong>Autopilot</strong>: sit back and watch the broadcast.</li>
+              <li><strong>Take the reins</strong> any time: one thumb to steer, one button to breathe.</li>
+              <li>A rider who flies the line well beats Autopilot. Hand it back whenever you like.</li>
+            </ul>
+          </div>
+          <div class="phones">
+            <figure class="phone" data-step="1" style="--h: 620px"><img src="media/shots/race/phone-on-air.webp" alt="" /></figure>
+            <figure class="phone" data-step="2" style="--h: 620px"><video src="media/shots/race/riding.mp4" muted loop playsinline></video></figure>
+          </div>
+        </div>
+        <aside class="notes">Racing is never forced: it's a show you can watch, or a game you can play. Leave mid-race and it flies on by itself, and you get the result when you're back.</aside>
+      </section>
+
+      <section class="slide slide--night" data-name="riding">
+        <p class="kicker" style="--c: var(--dz-info)">Riding</p>
+        <h2>Chase cam or the rider's eyes</h2>
+        <div class="body">
+          <div class="phones">
+            <figure class="phone" data-step="1" style="--h: 640px"><img src="media/shots/race/phone-riding.webp" alt="" /></figure>
+            <figure class="phone" data-step="2" style="--h: 640px"><img src="media/shots/race/phone-rider-eye.webp" alt="" /></figure>
+          </div>
+        </div>
+        <aside class="notes">Two cameras while riding: a chase camera behind and above, or right through the rider's goggles.</aside>
+      </section>
+
+      <section class="slide slide--night" data-name="finish">
+        <p class="kicker" style="--c: var(--dz-primary)">The finish</p>
+        <h2>Touchdown, then the podium</h2>
+        <div class="body">
+          <figure class="wide" data-step="1" style="--h: 560px"><img src="media/shots/race/landing.webp" alt="" /></figure>
+          <figure class="phone" data-step="2" style="--h: 560px"><img src="media/shots/race/phone-results.webp" alt="" /></figure>
+        </div>
+        <aside class="notes">The winner glides in to land in slow motion, the ground shaking and the dust flying. Then the results: times, gaps, points and the standings.</aside>
+      </section>
+
+      <section class="slide" data-name="ceremony">
+        <p class="kicker" style="--c: var(--dz-gold); color: var(--dz-navy)">End of the season</p>
+        <h2>The awards ceremony</h2>
+        <div class="split">
+          <div class="copy">
+            <ul class="points" style="--c: var(--dz-gold)">
+              <li>Every season ends on the podium: the cup comes down over the champion and confetti falls.</li>
+              <li>Medals for the top three, trophies for champions, and a prize egg to raise next.</li>
+              <li>Every past ceremony can be replayed.</li>
+            </ul>
+          </div>
+          <div class="phones" style="--h: 560px; gap: 20px">
+            <figure class="phone" data-step="1"><video src="media/shots/league/ceremony.mp4" muted loop playsinline></video></figure>
+            <figure class="phone" data-step="2"><img src="media/shots/league/10-ceremony.webp" alt="" /></figure>
+            <figure class="phone" data-step="3"><img src="media/shots/league/11-ceremony-results.webp" alt="" /></figure>
+          </div>
+        </div>
+        <aside class="notes">This closes the loop: the prize egg starts the next dragon, and the cycle begins again.</aside>
+      </section>
+
+      <section class="slide slide--cream" data-name="tokens">
+        <p class="kicker" style="--c: var(--dz-primary)">Design tokens</p>
+        <h2>Cozy by design</h2>
+        <div class="body body--top" id="tokens"></div>
+        <aside class="notes">One small set of tokens drives every screen: a warm palette, one rounded typeface in three weights, soft radii and soft warm shadows, no harsh borders. Playtesters picked this look over the original dark racing one.</aside>
+      </section>
+
+      <section class="slide" data-name="everywhere">
+        <p class="kicker" style="--c: var(--dz-success); color: var(--dz-navy)">Where it runs</p>
+        <h2>One game, every screen</h2>
+        <div class="body">
+          <div class="cards">
+            <div class="card" data-step="1"><h3>iPhone and Android</h3><p>Native apps with care reminders, saved to iCloud or the Google account.</p></div>
+            <div class="card" data-step="2"><h3>The web</h3><p>The same game in any browser, nothing to install.</p></div>
+            <div class="card" data-step="3"><h3>Light as a feather</h3><p>No downloaded art: every dragon, course and castle is generated on the device.</p></div>
+          </div>
+        </div>
+        <aside class="notes">Because everything is generated from seeds, the whole game is one small page, and every race replays exactly.</aside>
+      </section>
+
+      <section class="slide" data-name="outro" style="align-items: center; justify-content: center">
+        <img src="/brand/logo-full.png" alt="Dragons!" style="width: 980px" />
+        <p class="kicker" style="align-self: center; margin-top: 18px; font-size: 30px; padding: 12px 26px 10px">Thank you!</p>
+        <aside class="notes">That's Dragons!. Thank you.</aside>
+      </section>
+    </div>
+
+    <aside id="presenter">
+      <h3>This slide</h3>
+      <div id="presenter-title"></div>
+      <div id="presenter-notes"></div>
+      <div id="presenter-next"></div>
+    </aside>
+
+    <script type="module">
+      import { startDeck } from "./deck.js";
+      import { fillGallery } from "./gallerySlides.js";
+      import { tokenSheet } from "./tokenSheet.js";
+
+      for (const img of document.querySelectorAll("img, video"))
+        img.addEventListener("error", () => {
+          const note = document.createElement("div");
+          note.className = "missing";
+          note.textContent = img.getAttribute("src").split("/").pop();
+          img.replaceWith(note);
+        });
+
+      tokenSheet(document.getElementById("tokens"));
+      const slides = [...document.querySelectorAll(".slide")];
+      startDeck(Object.fromEntries(slides.map((slide) => [slide.dataset.name, fillGallery])));
+      for (const slide of slides) await fillGallery(slide);
+      window.talkReady = true;
+    </script>
+  </body>
+</html>

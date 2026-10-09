@@ -1,0 +1,18 @@
+.env
+.env.*
+!.env.example
+node_modules/
+shots/
+runtime/
+.DS_Store
+.claude/worktrees/
+
+# Built page and the mobile wrappers' copies of it
+dist/
+ios/web/
+android/app/src/main/assets/web/
+play-service-account.json
+xcuserdata/
+
+# A pitch deck's screenshots and clips, kept out of git
+tools/pitch/*/media

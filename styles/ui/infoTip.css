@@ -1,0 +1,80 @@
+.dz-info {
+  position: relative;
+  display: inline-grid;
+  flex: none;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  margin: 0 0 0 4px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--dz-info);
+  vertical-align: middle;
+  cursor: pointer;
+}
+.dz-info::before {
+  content: "";
+  position: absolute;
+  inset: -11px;
+}
+.dz-info .dz-icon {
+  --size: 20px;
+}
+.dz-info[aria-expanded="true"] {
+  box-shadow: 0 0 0 2px var(--dz-surface), 0 0 0 4px var(--dz-info);
+}
+
+.dz-info-bubble {
+  --arrow: 50%;
+  position: fixed;
+  z-index: 70;
+  width: max-content;
+  max-width: min(280px, calc(100vw - 24px));
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid var(--dz-outline);
+  border-radius: var(--dz-radius-md);
+  background: var(--dz-cream);
+  box-shadow: var(--dz-shadow-float);
+  color: var(--dz-ink);
+  font: var(--dz-text-body);
+  font-size: 15px;
+  pointer-events: none;
+  animation: dz-info-in var(--dz-dur-base) var(--dz-ease-out);
+}
+.dz-info-bubble[hidden] {
+  display: none;
+}
+.dz-info-bubble::after {
+  content: "";
+  position: absolute;
+  left: calc(var(--arrow) - 7px);
+  width: 12px;
+  height: 12px;
+  border: 1px solid var(--dz-outline);
+  background: var(--dz-cream);
+  transform: rotate(45deg);
+}
+.dz-info-bubble[data-side="below"]::after {
+  top: -8px;
+  border-right: 0;
+  border-bottom: 0;
+}
+.dz-info-bubble[data-side="above"]::after {
+  bottom: -8px;
+  border-top: 0;
+  border-left: 0;
+}
+@keyframes dz-info-in {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dz-info-bubble {
+    animation: none;
+  }
+}
