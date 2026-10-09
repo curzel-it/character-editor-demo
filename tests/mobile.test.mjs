@@ -1,3 +1,5 @@
+import { join } from "node:path";
+import { existsSync } from "node:fs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { resolve } from "node:path";
@@ -7,7 +9,7 @@ import { mergeTestflightEnv, parseEnv } from "../tools/testflight.mjs";
 
 const root = resolve(fileURLToPath(new URL("../", import.meta.url)));
 
-test("the iOS and Android projects share one build number", () => {
+test("the iOS and Android projects share one build number", { skip: !existsSync(join(root, "ios")) && "no mobile projects in this repository" }, () => {
   assert.ok(Number.isInteger(currentBuildNumber(root)));
 });
 
