@@ -154,7 +154,7 @@ export const fields = /** @type {Field[]} */ ([
     section: "Facial hair",
     label: "Facial hair",
     kind: "choice",
-    options: noneOr([["stubble", "Stubble"], ["moustache", "Moustache"], ["handlebar", "Handlebar"], ["goatee", "Goatee"], ["chinstrap", "Chinstrap"], ["beard", "Beard"], ["fullBeard", "Big beard"]]),
+    options: noneOr([["stubble", "Stubble"], ["moustache", "Moustache"], ["handlebar", "Handlebar"], ["walrus", "Walrus"], ["goatee", "Goatee"], ["chinstrap", "Chinstrap"], ["beard", "Beard"], ["fullBeard", "Big beard"]]),
     default: "none",
     focus: "face",
   },

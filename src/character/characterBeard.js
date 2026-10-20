@@ -16,6 +16,7 @@ const styles = {
   stubble: { paint: 0.4 },
   moustache: { tache: "plain" },
   handlebar: { tache: "handlebar" },
+  walrus: { tache: "walrus" },
   goatee: { tache: "plain", shell: { thick: 0.008, keep: (yaw) => Math.abs(yaw) < 0.34, top: (head) => head.mouth.pitch - 0.08 } },
   chinstrap: { shell: { thick: 0.005, keep: (yaw, pitch, top) => pitch < top - 0.32 || Math.abs(yaw) > 1.15 } },
   beard: { tache: "plain", paint: 0.25, shell: { thick: 0.011 } },
@@ -64,21 +65,22 @@ export function facialHair(head, spec) {
   if (style.tache) {
     for (const s of [-1, 1]) {
       const curl = style.tache === "handlebar";
+      const bushy = style.tache === "walrus";
       const path = [];
-      const count = curl ? 8 : 6;
+      const count = curl || bushy ? 8 : 6;
       for (let k = 0; k <= count; k++) {
         const t = k / count;
-        const yaw = s * mix(0.02, curl ? 0.42 : 0.3, t);
-        const pitch = head.mouth.pitch + 0.1 - 0.06 * t * t + (curl ? 0.2 * smooth(0.65, 1, t) : 0);
-        path.push(head.offset(yaw, pitch, 0.004 * size + (curl ? 0.012 * size * smooth(0.6, 1, t) : 0)));
+        const yaw = s * mix(0.02, curl ? 0.42 : bushy ? 0.48 : 0.3, t);
+        const pitch = head.mouth.pitch + (bushy ? 0.12 - 0.2 * t * t : 0.1 - 0.06 * t * t) + (curl ? 0.2 * smooth(0.65, 1, t) : 0);
+        path.push(head.offset(yaw, pitch, 0.004 * size + (curl ? 0.012 * size * smooth(0.6, 1, t) : 0) + (bushy ? 0.004 * size * Math.sin(Math.PI * (0.2 + 0.7 * t)) : 0)));
       }
-      const width = (t) => size * (curl ? 0.011 * (1 - t * 0.75) : 0.012 * Math.sin(Math.PI * (0.25 + 0.6 * t))) + 0.001;
+      const width = (t) => size * (curl ? 0.011 * (1 - t * 0.75) : bushy ? 0.026 * Math.sin(Math.PI * (0.3 + 0.55 * t)) : 0.012 * Math.sin(Math.PI * (0.25 + 0.6 * t))) + 0.001;
       parts.push(
         meshPart(
           `moustache-${s}`,
           "head",
           tubeSurface(
-            path.map((p, k) => ({ p, r: [width(k / count) * 0.55, width(k / count)] })),
+            path.map((p, k) => ({ p, r: [width(k / count) * (bushy ? 0.38 : 0.55), width(k / count)] })),
             { around: 8, up: head.normal(0, head.mouth.pitch + 0.1), color: () => hair },
           ),
         ),
