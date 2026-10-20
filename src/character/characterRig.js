@@ -63,7 +63,7 @@ export function characterJoints(spec) {
     head: [0.024 * s, headPivotY, 0],
   };
   j.headCentre = add(j.head, [0.012, headRise, 0]);
-  const hipOut = 0.088 * s * mix(0.92, 1.12, m.hips) * mix(0.96, 1.08, m.build);
+  const hipOut = 0.088 * s * mix(0.92, 1.12, m.hips) * mix(0.96, 1.08, m.build) * mix(0.84, 1, Math.min(1, (m.hips - 0.86) / 0.16));
   const upper = 0.275 * s,
     fore = 0.25 * s;
   const spread = 0.18;

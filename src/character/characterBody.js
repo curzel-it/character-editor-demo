@@ -59,6 +59,12 @@ function torsoStations(j, m, marks) {
   ];
 }
 
+/** How far the seat stands out behind the hips, flattening towards narrow hips. */
+const seatSize = (hips) => {
+  const t = (hips - 0.86) / 0.36;
+  return 0.2 * mix(0.6, 1.3, t) * mix(0.35, 1, Math.min(1, t / 0.45));
+};
+
 /** The bones the torso's skin follows at height `y`. */
 export const torsoWeights = (j) => (y) => {
   if (y < j.hips[1]) return { joints: ["hips", "hips"], weight: 1 };
@@ -119,20 +125,23 @@ function torso(j, m, outfit, skin, marks) {
   const drape = [Math.max(profile(stations, "rx", drapeFrom), 0.092 * m.thigh * 1.32 + 0.006), Math.max(profile(stations, "rz", drapeFrom), legOut + 0.004)];
   const rings = ys.map((y) => {
     const t = covered(y);
-    const hangs = !top.tucked && y < drapeFrom && y >= top.hem;
+    const blend = !top.tucked && y >= top.hem ? smooth(drapeFrom + 0.14 * s, drapeFrom, y) : 0;
+    const hangs = blend > 0;
     const { bust, tummy } = bulge(y);
-    const seat = 0.2 * mix(0.6, 1.3, (hips - 0.86) / 0.36) * Math.exp(-(((y - j.thighL[1] - 0.01 * s) / (0.07 * s)) ** 2));
+    const seat = seatSize(hips) * Math.exp(-(((y - j.thighL[1] - 0.01 * s) / (0.07 * s)) ** 2));
     const shoulderBlade = 0.06 * Math.exp(-(((y - j.chest[1] - 0.05 * s) / (0.06 * s)) ** 2));
     return {
       p: [profile(stations, "cx", y), y, 0],
-      r: hangs ? [Math.max(profile(stations, "rx", y), drape[0]) + t, Math.max(profile(stations, "rz", y), drape[1] * (1 + 0.02 * (drapeFrom - y) / s)) + t] : [profile(stations, "rx", y) + t, profile(stations, "rz", y) + t],
+      r: hangs
+        ? [Math.max(profile(stations, "rx", y), mix(profile(stations, "rx", y), drape[0], blend)) + t, Math.max(profile(stations, "rz", y), mix(profile(stations, "rz", y), drape[1] * (1 + 0.02 * Math.max(0, drapeFrom - y) / s), blend)) + t]
+        : [profile(stations, "rx", y) + t, profile(stations, "rz", y) + t],
       skin: weights(y),
       shape: (angle) => {
         const c = Math.cos(angle),
           sn = Math.sin(angle);
         const front = Math.max(0, c);
         const twin = 0.55 + 0.45 * Math.min(1, Math.abs(sn) * 2.2);
-        return 1 + bust * front ** 2.2 * twin + tummy * front ** 2 + (hangs ? seat * 0.6 : seat) * Math.max(0, -c) ** 2 + shoulderBlade * Math.max(0, -c) ** 3;
+        return 1 + bust * front ** 2.2 * twin + tummy * front ** 2 + mix(seat, seat * 0.6, blend) * Math.max(0, -c) ** 2 + shoulderBlade * Math.max(0, -c) ** 3;
       },
     };
   });
@@ -372,20 +381,28 @@ function skirt(skirtWear, j, m, rgb, trim, marks, id) {
   const hemY = j.thighL[1] - skirtWear.length * legLength;
   const hipOut = Math.abs(j.thighL[2]);
   const thigh = 0.092 * m.thigh;
-  const ys = samples(fromY, hemY, 0.02, [hemY + 0.025 * s]);
-  const torsoAt = (y) => {
-    const t = between(y, j.thighL[1] - 0.02 * s, marks.waistY);
-    return [mix(0.1, 0.09, t) * Math.pow(m.girth, 0.85), mix(0.158 * m.hips, 0.126 * m.waist, t) * Math.pow(m.girth, 0.7)];
+  const ys = samples(fromY, hemY, 0.012, [hemY + 0.025 * s]);
+  const stations = torsoStations(j, m, marks);
+  const legOut = hipOut + thigh;
+  const need = (y) => {
+    const at = Math.max(y, marks.crotchY);
+    const clear = y < j.thighL[1] + 0.02 * s ? legOut + 0.012 : 0;
+    return [Math.max(profile(stations, "rx", at), thigh + 0.01) + 0.012, Math.max(profile(stations, "rz", at), clear) + 0.01];
   };
-  const rings = ys.map((y) => {
+  const needs = ys.map(need);
+  const widest = needs.reduce((best, r, k) => (r[1] > needs[best][1] + 0.0005 ? k : best), 0);
+  const peakY = ys[widest];
+  const full = [Math.max(...needs.map((r) => r[0])), needs[widest][1]];
+  const seatPeak = j.thighL[1] + 0.01 * s;
+  const seatOf = (y) => seatSize(m.hips) * Math.exp(-(((Math.max(y, seatPeak) - seatPeak) / (0.07 * s)) ** 2)) * (1 - 0.5 * between(y, seatPeak, hemY));
+  const rings = ys.map((y, k) => {
     const below = between(y, fromY, hemY);
-    const [tx, tz] = torsoAt(Math.max(y, j.thighL[1] - 0.02 * s));
-    const legOut = hipOut + thigh;
-    const clear = y < j.thighL[1] + 0.02 * s ? Math.max(tz, legOut + 0.012) : tz;
-    const rz = Math.max(tz, clear) + 0.01 + skirtWear.flare * below ** 1.4;
-    const rx = Math.max(tx, thigh + 0.01) + 0.012 + skirtWear.flare * 0.8 * below ** 1.4;
+    const ease = Math.sin((Math.PI / 2) * between(y, fromY, peakY));
+    const flare = skirtWear.flare * between(y, peakY, hemY) ** 1.4;
+    const r = [0, 1].map((d) => Math.max(needs[k][d], (y > peakY ? mix(needs[0][d], full[d], ease) : full[d]) + flare * (d ? 1 : 0.8)));
+    const seat = seatOf(y);
     const weight = 1 - 0.55 * smooth(0.3, 1, below);
-    return { p: [0.004, y, 0], r: [rx, rz], skin: { joints: ["hips", "hips"], weight: 1 }, below, weight };
+    return { p: [0.004, y, 0], r, shape: (angle) => 1 + seat * 0.7 * Math.max(0, -Math.cos(angle)) ** 2, skin: { joints: ["hips", "hips"], weight: 1 }, below, weight };
   });
   const mesh = tubeSurface(rings, { around: 32, color: (ring) => (trim && ring >= rings.length - 2 ? trim : rgb), caps: false });
   const count = mesh.vertices.length / 3;

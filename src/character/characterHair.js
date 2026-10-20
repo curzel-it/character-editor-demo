@@ -334,11 +334,11 @@ const extras = {
 function curtain({ head, size, hair, deep, tips, j }, length, wavy) {
   const backX = j.chest[0] - 0.125 * Math.max(1, size * 0.95);
   const shoulderY = j.upperArmL[1];
-  const count = 6;
+  const count = 8;
   const out = [];
   for (let n = 0; n < count; n++) {
     const u = (n + 0.5) / count * 2 - 1;
-    const yaw = Math.PI - u * 1.05;
+    const yaw = Math.PI - u * 1.4;
     const root = head.offset(yaw, -0.05, -0.012 * size);
     const reach = length * (1 - 0.18 * Math.abs(u) ** 1.5) * (0.92 + 0.12 * (((n * 5) % 3) / 3));
     const spread = u * 0.11 * size;
