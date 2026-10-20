@@ -201,7 +201,7 @@ function shirtFront(rings, top) {
 }
 
 /** An arm from inside the shoulder to the wrist, painted with the sleeve. */
-function arm(side, j, m, outfit, skin) {
+function arm(side, j, m, outfit, skin, palm) {
   const { s } = m;
   const k = m.arm;
   const top = outfit.top;
@@ -218,7 +218,7 @@ function arm(side, j, m, outfit, skin) {
     { at: 0.5, p: elbow, r: 0.039 * k },
     { at: 0.66, p: lerp(elbow, wrist, 0.32), r: 0.04 * k * mix(1, 1.06, m.muscle) },
     { at: 0.86, p: lerp(elbow, wrist, 0.72), r: 0.033 * Math.pow(k, 0.7) },
-    { at: 1, p: wrist, r: 0.028 * Math.pow(k, 0.6) },
+    { at: 1, p: wrist, r: 0.027 * Math.pow(k, 0.6) },
   ];
   const sleeve = top.bareShoulders ? 0 : top.sleeve;
   const gauntlet = outfit.gloves?.kind === "gauntlets";
@@ -237,7 +237,11 @@ function arm(side, j, m, outfit, skin) {
     else skinW = { joints: [`forearm${side}`, `hand${side}`], weight: 0.75 };
     return { p, r, skin: skinW };
   });
+  const count = rings.length;
+  rings.push(...palm.rings.map(({ p, r }) => ({ p, r, skin: { joints: [`hand${side}`, `hand${side}`], weight: 1 } })));
   const color = (ring) => {
+    if (ring >= count) return palm.rings[ring - count].rgb;
+    if (ring === count - 1) return gauntlet ? outfit.gloves.rgb : palm.rings[0].rgb;
     const t = (ts[ring] + ts[Math.min(ts.length - 1, ring + 1)]) / 2;
     if (gauntlet && t > 0.74) return outfit.gloves.rgb;
     if (covered(t)) {
@@ -249,7 +253,7 @@ function arm(side, j, m, outfit, skin) {
   return meshPart(`body-arm-${side}`, `upperArm${side}`, tubeSurface(rings, { around: 14, color, up: [1, 0, 0] }));
 }
 
-/** A relaxed hand on the hand bone: palm and fingers as one mitten with a thumb, bare or gloved. */
+/** A relaxed hand: the palm and fingers as rings the arm's tube carries on through, plus a thumb and a glove's cuff on the hand bone. */
 function hand(side, j, m, outfit, skin) {
   const { s } = m;
   const wrist = j[`hand${side}`],
@@ -257,22 +261,20 @@ function hand(side, j, m, outfit, skin) {
   const z = Math.sign(wrist[2]);
   const down = unit(sub(wrist, elbow));
   const forward = unit(sub([1, 0, 0], scale(down, down[0])));
-  const inward = cross(down, forward).map((v) => v * z);
+  const inward = cross(down, forward).map((v) => -v * z);
   const size = s * mix(0.84, 0.98, m.build);
   const gloves = outfit.gloves;
   const along = (d, f = 0, i = 0) => add(add(add(wrist, scale(down, d * size)), scale(forward, f * size)), scale(inward, i * size));
   const palmRgb = gloves ? gloves.rgb : skin;
   const fingerRgb = gloves && gloves.kind !== "mitts" ? gloves.rgb : skin;
   const rings = [
-    { p: along(-0.012), r: [0.027 * size, 0.019 * size] },
-    { p: along(0.02), r: [0.034 * size, 0.02 * size] },
-    { p: along(0.055, 0.002), r: [0.039 * size, 0.019 * size] },
-    { p: along(0.085, 0.004, 0.004), r: [0.038 * size, 0.017 * size] },
-    { p: along(0.115, 0.004, 0.012), r: [0.034 * size, 0.015 * size] },
-    { p: along(0.138, 0.002, 0.022), r: [0.024 * size, 0.012 * size] },
-    { p: along(0.146, 0.0, 0.028), r: [0.01 * size, 0.008 * size] },
+    { p: along(0.022), r: [0.033 * size, 0.022 * size], rgb: palmRgb },
+    { p: along(0.055, 0.002), r: [0.039 * size, 0.019 * size], rgb: palmRgb },
+    { p: along(0.085, 0.004, 0.004), r: [0.038 * size, 0.017 * size], rgb: fingerRgb },
+    { p: along(0.115, 0.004, 0.012), r: [0.034 * size, 0.015 * size], rgb: fingerRgb },
+    { p: along(0.138, 0.002, 0.022), r: [0.024 * size, 0.012 * size], rgb: fingerRgb },
+    { p: along(0.146, 0.0, 0.028), r: [0.01 * size, 0.008 * size], rgb: fingerRgb },
   ];
-  const mitten = tubeSurface(rings, { around: 12, up: forward, color: (ring) => (ring >= 3 ? fingerRgb : palmRgb) });
   const thumb = tubeSurface(
     [
       { p: along(0.025, 0.022, 0.006), r: 0.013 * size },
@@ -282,10 +284,10 @@ function hand(side, j, m, outfit, skin) {
     ],
     { around: 8, color: () => fingerRgb },
   );
-  const parts = [meshPart(`body-hand-${side}`, `hand${side}`, mitten), meshPart(`body-thumb-${side}`, `hand${side}`, thumb)];
+  const parts = [meshPart(`body-thumb-${side}`, `hand${side}`, thumb)];
   if (gloves && gloves.kind !== "gauntlets")
     parts.push(meshPart(`glove-cuff-${side}`, `hand${side}`, tubeSurface([{ p: along(-0.03), r: [0.032 * size, 0.026 * size] }, { p: along(0.0), r: [0.033 * size, 0.026 * size] }], { around: 12, up: forward, color: () => shade(gloves.rgb, 0.85) })));
-  return parts;
+  return { rings, parts };
 }
 
 /** A leg from inside the hip to the ankle, painted with the bottom and the shoe's shaft. */
@@ -534,7 +536,8 @@ export function characterBody(j, m, outfit, spec, marks) {
   const skin = rgbOf(spec.skin);
   const parts = [...torso(j, m, outfit, skin, marks)];
   for (const side of ["L", "R"]) {
-    parts.push(arm(side, j, m, outfit, skin), ...hand(side, j, m, outfit, skin), leg(side, j, m, outfit, skin), shoe(side, j, m, outfit, skin));
+    const palm = hand(side, j, m, outfit, skin);
+    parts.push(arm(side, j, m, outfit, skin, palm), ...palm.parts, leg(side, j, m, outfit, skin), shoe(side, j, m, outfit, skin));
   }
   const top = outfit.top;
   if (top.skirt) parts.push(...skirt(top.skirt, j, m, top.main, top.accent, marks, "tunic"));
