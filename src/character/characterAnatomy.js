@@ -8,6 +8,7 @@ import { characterHair } from "./characterHair.js";
 import { facialHair } from "./characterBeard.js";
 import { outfitOf } from "./characterOutfit.js";
 import { characterBody } from "./characterBody.js";
+import { necktie } from "./characterTie.js";
 import { headwear, hatLine } from "./characterHeadwear.js";
 import { accessories } from "./characterAccessories.js";
 import { rgbOf } from "./characterColors.js";
@@ -56,6 +57,7 @@ export function createCharacter(input) {
     ...hair.parts,
     ...beard.parts,
     ...characterBody(j, m, outfit, spec, marks),
+    ...necktie(spec, j, m, outfit, marks),
     ...headwear(spec, head, hat, hair),
   ];
   const extra = accessories(spec, j, m, head, outfit);

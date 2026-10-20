@@ -1,4 +1,4 @@
-import { meshPart, tubeSurface, add, lerp, mix, scale, sub, unit, smooth, cross } from "./surface.js";
+import { meshPart, tubeSurface, gridSurface, add, lerp, mix, scale, sub, unit, smooth, cross } from "./surface.js";
 import { rgbOf, shade, mixRgb } from "./characterColors.js";
 
 /** @typedef {ReturnType<import("./characterOutfit.js").outfitOf>} Outfit */
@@ -59,44 +59,68 @@ function torsoStations(j, m, marks) {
   ];
 }
 
+/** The bones the torso's skin follows at height `y`. */
+export const torsoWeights = (j) => (y) => {
+  if (y < j.hips[1]) return { joints: ["hips", "hips"], weight: 1 };
+  if (y < j.spine[1]) return { joints: ["hips", "spine"], weight: 1 - between(y, j.hips[1], j.spine[1]) };
+  if (y < j.chest[1]) return { joints: ["spine", "chest"], weight: 1 - between(y, j.spine[1], j.chest[1]) };
+  if (y < j.neck[1] - 0.01) return { joints: ["chest", "chest"], weight: 1 };
+  if (y < j.head[1]) return { joints: ["neck", "chest"], weight: Math.min(1, 0.5 + between(y, j.neck[1] - 0.01, j.head[1])) };
+  return { joints: ["head", "neck"], weight: Math.min(1, 0.5 + between(y, j.head[1], j.head[1] + 0.04)) };
+};
+
+/** How thick the cloth stands off the torso at height `y`. */
+const clothAt = (outfit, s) => (y) => {
+  const top = outfit.top,
+    bottom = outfit.bottom;
+  let t = 0;
+  if (y >= top.hem && y <= top.neck - top.scoop) t = top.thick;
+  if (y <= bottom.waist) t = Math.max(t, bottom.thick) + (y >= top.hem ? 0.002 : 0);
+  if (top.hemBand && y >= top.hem && y <= top.hem + 0.03 * s) t += 0.003;
+  return t;
+};
+
+/** The bust and tummy swelling the front of the torso at height `y`, as a share of its radius at its front. */
+const frontBulge = (j, m, marks) => (y) => {
+  const { s, chest, belly } = m;
+  const bust = chest * 0.3 * Math.exp(-(((y - j.chest[1] - 0.045 * s) / (0.07 * s)) ** 2));
+  const tummy = belly * 0.18 * Math.exp(-(((y - marks.waistY + 0.02 * s) / (0.09 * s)) ** 2));
+  return { bust, tummy };
+};
+
+/** The outermost front of the dressed torso at height `y`, the x where cloth laid on the chest sits. */
+export function torsoFront(j, m, outfit, marks) {
+  const stations = torsoStations(j, m, marks);
+  const cloth = clothAt(outfit, m.s);
+  const bulge = frontBulge(j, m, marks);
+  return (y) => {
+    const { bust, tummy } = bulge(y);
+    return profile(stations, "cx", y) + (profile(stations, "rx", y) + cloth(y)) * (1 + bust * 0.55 + tummy);
+  };
+}
+
 /**
  * The torso and neck as one skinned tube from the crotch up into the head, painted with the top
  * and bottom and swollen by their cloth.
  */
 function torso(j, m, outfit, skin, marks) {
-  const { s, girth, hips, waist, belly, chest, muscle } = m;
-  const g = Math.pow(girth, 0.85);
+  const { s, hips } = m;
   const top = outfit.top,
     bottom = outfit.bottom;
-  const shoulderW = m.shoulders - 0.03 * s;
   const stations = torsoStations(j, m, marks);
-  const bustAt = j.chest[1] + 0.045 * s;
-  const neckline = (angle) => top.neck - top.scoop * Math.max(0, Math.cos(angle)) ** 2 - (top.vee ?? 0) * Math.max(0, 1 - Math.abs(Math.atan2(Math.sin(angle), Math.cos(angle))) / 0.42);
+  const bulge = frontBulge(j, m, marks);
+  const neckline = (angle) => top.neck - top.scoop * Math.max(0, Math.cos(angle)) ** 2 - (top.vee ?? 0) * Math.max(0, 1 - Math.abs(Math.atan2(Math.sin(angle), Math.cos(angle))) / (top.veeWidth ?? 0.42));
   const breaks = [top.hem, top.neck, bottom.waist, top.neck - top.scoop, top.hemBand ? top.hem + 0.03 * s : null, top.belt ? marks.waistY - 0.016 * s : null, top.belt ? marks.waistY + 0.016 * s : null].filter((b) => b !== null && b !== undefined);
   const ys = samples(marks.crotchY, j.head[1] + 0.06 * s, top.fine ? 0.0065 : 0.011, breaks);
-  const covered = (y) => {
-    let t = 0;
-    if (y >= top.hem && y <= top.neck - top.scoop) t = top.thick;
-    if (y <= bottom.waist) t = Math.max(t, bottom.thick) + (y >= top.hem ? 0.002 : 0);
-    if (top.hemBand && y >= top.hem && y <= top.hem + 0.03 * s) t += 0.003;
-    return t;
-  };
-  const weights = (y) => {
-    if (y < j.hips[1]) return { joints: ["hips", "hips"], weight: 1 };
-    if (y < j.spine[1]) return { joints: ["hips", "spine"], weight: 1 - between(y, j.hips[1], j.spine[1]) };
-    if (y < j.chest[1]) return { joints: ["spine", "chest"], weight: 1 - between(y, j.spine[1], j.chest[1]) };
-    if (y < j.neck[1] - 0.01) return { joints: ["chest", "chest"], weight: 1 };
-    if (y < j.head[1]) return { joints: ["neck", "chest"], weight: Math.min(1, 0.5 + between(y, j.neck[1] - 0.01, j.head[1])) };
-    return { joints: ["head", "neck"], weight: Math.min(1, 0.5 + between(y, j.head[1], j.head[1] + 0.04)) };
-  };
+  const covered = clothAt(outfit, s);
+  const weights = torsoWeights(j);
   const drapeFrom = j.thighL[1] + 0.055 * s;
   const legOut = Math.abs(j.thighL[2]) + 0.096 * m.thigh + 0.006;
   const drape = [Math.max(profile(stations, "rx", drapeFrom), 0.092 * m.thigh * 1.32 + 0.006), Math.max(profile(stations, "rz", drapeFrom), legOut + 0.004)];
   const rings = ys.map((y) => {
     const t = covered(y);
     const hangs = !top.tucked && y < drapeFrom && y >= top.hem;
-    const bust = chest * 0.3 * Math.exp(-(((y - bustAt) / (0.07 * s)) ** 2));
-    const tummy = belly * 0.18 * Math.exp(-(((y - marks.waistY + 0.02 * s) / (0.09 * s)) ** 2));
+    const { bust, tummy } = bulge(y);
     const seat = 0.2 * mix(0.6, 1.3, (hips - 0.86) / 0.36) * Math.exp(-(((y - j.thighL[1] - 0.01 * s) / (0.07 * s)) ** 2));
     const shoulderBlade = 0.06 * Math.exp(-(((y - j.chest[1] - 0.05 * s) / (0.06 * s)) ** 2));
     return {
@@ -120,7 +144,7 @@ function torso(j, m, outfit, skin, marks) {
       front = Math.cos(angle) > 0;
     const a = Math.abs(Math.atan2(Math.sin(angle), Math.cos(angle)));
     if (y > neckline(angle)) {
-      if (top.vee && top.inner && y < top.neck + 0.005 && front) return top.inner;
+      if (top.vee && top.inner && y < top.neck + 0.005 && front) return top.main;
       return skin;
     }
     if (top.bareShoulders && y > j.chest[1] + (front ? 0.03 : 0.07) * s) return skin;
@@ -132,12 +156,39 @@ function torso(j, m, outfit, skin, marks) {
       if (top.open && a < 0.46) return darker;
       if (top.hemBand && y < top.hem + 0.03 * s) return top.hemBand;
       if (top.pocket && a < 0.62 && y > top.hem + 0.04 * s && y < top.hem + 0.12 * s) return shade(top.main, 0.9);
+      if (top.placket && front && a < 0.035 && y > top.neck - top.placket) return shade(top.main, 0.9);
       return pattern(y - marks.waistY, angle) ? top.accent : top.main;
     }
     if (y <= bottom.waist) return bottom.rgb;
     return skin;
   };
-  return meshPart("body-torso", "hips", tubeSurface(rings, { around: top.fine ? 72 : 40, color }));
+  const body = meshPart("body-torso", "hips", tubeSurface(rings, { around: top.fine ? 72 : 40, color }));
+  return top.vee && top.inner ? [body, shirtFront(rings, top)] : [body];
+}
+
+/**
+ * The shirt showing in a V-neck: a panel laid just over the torso's own rings, its edges following
+ * the V exactly rather than the quads the torso is painted in.
+ */
+function shirtFront(rings, top) {
+  const bottom = top.neck - top.vee;
+  const inside = rings.map((ring, k) => ({ ring, k })).filter(({ ring }) => ring.p[1] >= bottom - 0.004 && ring.p[1] <= top.neck + 0.004);
+  const width = top.veeWidth ?? 0.42;
+  const grid = inside.map(({ ring, k }) => {
+    const prev = rings[Math.max(0, k - 1)].p,
+      next = rings[Math.min(rings.length - 1, k + 1)].p;
+    const axis = unit(sub(next, prev));
+    const v = unit(cross(axis, [1, 0, 0]));
+    const u = cross(v, axis);
+    const half = Math.max(0.006, width * Math.min(1, Math.max(0, (ring.p[1] - bottom) / top.vee)));
+    return Array.from({ length: 13 }, (_, i) => {
+      const angle = mix(-half, half, i / 12);
+      const grow = ring.shape(angle);
+      const out = (d) => (u[d] * Math.cos(angle) * (ring.r[0] + 0.0025) + v[d] * Math.sin(angle) * (ring.r[1] + 0.0025)) * grow;
+      return ring.p.map((c, d) => c + out(d));
+    });
+  });
+  return meshPart("shirt-front", "chest", gridSurface(grid, { wrap: false, color: () => top.inner, skin: (r) => inside[r].ring.skin }));
 }
 
 /** An arm from inside the shoulder to the wrist, painted with the sleeve. */
@@ -162,7 +213,7 @@ function arm(side, j, m, outfit, skin) {
   ];
   const sleeve = top.bareShoulders ? 0 : top.sleeve;
   const gauntlet = outfit.gloves?.kind === "gauntlets";
-  const breaks = [sleeve * 0.9 + 0.05, sleeve - 0.07, gauntlet ? 0.74 : null].filter((b) => b !== null);
+  const breaks = [sleeve * 0.9 + 0.05, sleeve - 0.07, top.cuffBand ? sleeve * 0.9 + 0.05 - top.cuffBand : null, gauntlet ? 0.74 : null].filter((b) => b !== null);
   const ts = samples(0, 1, 0.045, breaks);
   const covered = (t) => t <= sleeve * 0.9 + 0.05 && sleeve > 0;
   const rings = ts.map((t) => {
@@ -181,7 +232,7 @@ function arm(side, j, m, outfit, skin) {
     const t = (ts[ring] + ts[Math.min(ts.length - 1, ring + 1)]) / 2;
     if (gauntlet && t > 0.74) return outfit.gloves.rgb;
     if (covered(t)) {
-      if (top.cuff && t > sleeve * 0.9 + 0.05 - (sleeve === 1 ? 0.08 : 0.05)) return top.cuff;
+      if (top.cuff && t > sleeve * 0.9 + 0.05 - (top.cuffBand ?? (sleeve === 1 ? 0.08 : 0.05))) return top.cuff;
       return top.sleeveRgb ?? top.main;
     }
     return skin;
@@ -373,7 +424,7 @@ function trims(j, m, outfit, marks) {
     const y = top.neck - 0.006 * s;
     const rx = 0.058 * mix(1, m.girth, 0.4) + top.thick,
       rz = 0.063 * mix(1, m.girth, 0.45) + top.thick;
-    loopAt("collar", y, rx, rz, [0.012 * s, 0.006 * s], top.collar, j.neck[0] * 0.6, "chest");
+    loopAt("collar", y, rx, rz, top.collarPoints ? [0.013 * s, 0.0035 * s] : [0.012 * s, 0.006 * s], top.collar, j.neck[0] * 0.6, "chest");
   }
   if (top.hood) {
     const y = marks.neckBaseY - 0.005 * s;
@@ -416,12 +467,39 @@ function trims(j, m, outfit, marks) {
       for (let k = 6; k >= 0; k--) path.push(surface(mix(back, yTop, k / 6), -1));
       parts.push(meshPart(`strap-${side}`, "chest", tubeSurface(path.map((p) => ({ p, r: [0.004 * s, 0.011 * s] })), { around: 6, up: [0, 0, 1], color: () => top.main })));
     }
-  if (top.buttons && top.vee)
-    for (let k = 0; k < 4; k++) {
-      const y = top.hem + (0.035 + k * 0.045) * s;
-      if (y > top.neck - top.vee - 0.01) break;
-      const rx = profile(stations, "rx", y) + top.thick;
-      parts.push({ id: `button-${k}`, bone: "spine", shape: "ellipsoid", segments: 10, position: [profile(stations, "cx", y) + rx + 0.002, y, 0], rotation: [0, 0, 0], scale: [0.004 * s, 0.0065 * s, 0.0065 * s], color: top.buttons });
+  const front = torsoFront(j, m, outfit, marks);
+  if (top.buttons && (top.vee || top.placket)) {
+    const count = top.buttonCount ?? (top.vee ? 4 : 6);
+    const step = (top.buttonCount === 2 ? 0.075 : top.vee ? 0.05 : 0.058) * s;
+    const from = top.neck - (top.vee ?? 0) - (top.vee ? 0.025 : 0.035) * s;
+    const lowest = top.placket && !top.vee ? Math.max(top.hem + 0.03 * s, top.neck - top.placket) : top.hem + 0.03 * s;
+    const size = top.vee ? 1 : 0.7;
+    for (let k = 0; k < count; k++) {
+      const y = from - k * step;
+      if (y < lowest) break;
+      parts.push({ id: `button-${k}`, bone: y > j.chest[1] ? "chest" : "spine", shape: "ellipsoid", segments: 10, position: [front(y) + 0.002, y, 0], rotation: [0, 0, 0], scale: [0.004 * s * size, 0.0065 * s * size, 0.0065 * s * size], color: top.buttons });
+    }
+  }
+  if (top.lapels && top.vee) {
+    for (const zs of [-1, 1]) {
+      const path = [];
+      for (let k = 0; k <= 8; k++) {
+        const t = k / 8;
+        const y = mix(top.neck + 0.004 * s, top.neck - top.vee + 0.01 * s, t);
+        const edge = (top.veeWidth ?? 0.42) * (1 - (top.neck - y) / top.vee);
+        const angle = edge + mix(0.2, 0.05, t);
+        const rx = front(y) - profile(stations, "cx", y),
+          rz = profile(stations, "rz", y) + top.thick;
+        path.push({ p: [profile(stations, "cx", y) + Math.cos(angle) * rx + 0.003, y, zs * Math.sin(angle) * rz], r: [0.004 * s, mix(0.04, 0.014, t) * s] });
+      }
+      parts.push(meshPart(`lapel-${zs}`, "chest", tubeSurface(path, { around: 8, up: [Math.cos(0.3), 0, zs * Math.sin(0.3)], color: () => top.lapels })));
+    }
+  }
+  if (top.collarPoints)
+    for (const zs of [-1, 1]) {
+      const y = top.neck - 0.022 * s;
+      const x = profile(stations, "cx", y) + profile(stations, "rx", y) * 0.92 + 0.004;
+      parts.push({ id: `collar-point-${zs}`, bone: "chest", shape: "ellipsoid", segments: 10, position: [x, y, zs * 0.022 * s], rotation: [zs * 0.55, 0, -0.3], scale: [0.005 * s, 0.026 * s, 0.014 * s], color: top.collarPoints });
     }
   if (top.belt) loopAt("belt", marks.waistY, (0.088 + m.belly * 0.04) * g + top.thick + 0.004, 0.126 * m.waist * Math.pow(m.girth, 0.6) + top.thick + 0.004, [0.017 * s, 0.004], top.belt, 0.006, "spine");
   return parts;
@@ -437,7 +515,7 @@ function trims(j, m, outfit, marks) {
  */
 export function characterBody(j, m, outfit, spec, marks) {
   const skin = rgbOf(spec.skin);
-  const parts = [torso(j, m, outfit, skin, marks)];
+  const parts = [...torso(j, m, outfit, skin, marks)];
   for (const side of ["L", "R"]) {
     parts.push(arm(side, j, m, outfit, skin), ...hand(side, j, m, outfit, skin), leg(side, j, m, outfit, skin), shoe(side, j, m, outfit, skin));
   }

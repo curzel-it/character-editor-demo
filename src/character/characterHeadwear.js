@@ -22,6 +22,7 @@ const shells = {
   wizard: { line: rim(0.3, 0.14, -0.04), thick: 0.006 },
   bandana: { line: rim(0.34, 0.08, -0.26), thick: 0.0035 },
   horns: { line: rim(0.3, 0.02, -0.24), thick: 0.012 },
+  flatCap: { line: rim(0.36, 0.14, -0.06), thick: 0.008 },
 };
 
 /**
@@ -101,12 +102,18 @@ export function headwear(spec, head, hat) {
     const rimOut = (yaw) => out(yaw, hat.line(yaw));
     const kind = spec.hat;
     const panel = (t, yaw) => (kind === "helmet" || kind === "cap") && Math.abs(Math.sin(yaw * 3)) < 0.06 && t < 0.85 ? dark : rgb;
-    push(`hat-${kind}`, shellOver(head, hat.line, kind === "sunHat" ? (y, p) => out(y, p) + 0.022 * size * smooth(0.6, 1.3, p) : out, (t, yaw) => (kind === "bandana" && t > 0.85 ? dark : panel(t, yaw))));
+    const flat = (y, p) => out(y, p) + 0.03 * size * smooth(0.5, 1.2, p) * (0.55 + 0.45 * Math.max(0, Math.cos(y))) ** 1.5 + 0.02 * size * Math.max(0, Math.cos(y)) * smooth(0.3, 0.9, p) * (1 - smooth(1.1, 1.5, p));
+    push(`hat-${kind}`, shellOver(head, hat.line, kind === "sunHat" ? (y, p) => out(y, p) + 0.022 * size * smooth(0.6, 1.3, p) : kind === "flatCap" ? flat : out, (t, yaw) => (kind === "bandana" && t > 0.85 ? dark : panel(t, yaw))));
     if (kind === "cap" || kind === "helmet") {
       const front = head.offset(0, hat.line(0), rimOut(0));
       const n = unit(add(head.normal(0, hat.line(0)), [0.5, -0.4, 0]));
       sphere("hat-peak", add(front, scale(n, 0.04 * size)), [0.052, 0.007, kind === "cap" ? 0.085 : 0.07], kind === "cap" ? rgb : dark, aim(n));
       sphere("hat-button", head.offset(0, Math.PI / 2, out(0, Math.PI / 2)), [0.012, 0.008, 0.012], dark);
+    }
+    if (kind === "flatCap") {
+      const front = head.offset(0, hat.line(0), rimOut(0));
+      const n = unit(add(head.normal(0, hat.line(0)), [0.6, -0.55, 0]));
+      sphere("hat-peak", add(front, scale(n, 0.036 * size)), [0.05, 0.007, 0.085], rgb, aim(n));
     }
     if (kind === "beanie") {
       push("hat-cuff", band(head, (y) => hat.line(y) + 0.06, (y) => rimOut(y) + 0.008 * size, [0.012 * size, 0.034 * size], (t) => (Math.floor(t * 48) % 2 ? dark : shade(rgb, 0.85))));

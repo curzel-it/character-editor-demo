@@ -4,7 +4,8 @@ import { rgbOf, shade, mixRgb, luminance } from "./characterColors.js";
  * @typedef {{ sleeve: number, hem: number, neck: number, scoop: number, thick: number, cuff?: number[], hemBand?: number[],
  *   collar?: number[], open?: number, inner?: number[], skirt?: { length: number, flare: number, from: "waist" | "hips" },
  *   belt?: number[], hood?: boolean, pocket?: boolean, buttons?: number[], bareShoulders?: boolean, vee?: number,
- *   bib?: boolean, sleevePuff?: number, sleeveRgb?: number[] }} TopWear
+ *   bib?: boolean, sleevePuff?: number, sleeveRgb?: number[], collarPoints?: number[], placket?: number, tuck?: boolean, lapels?: number[],
+ *   buttonCount?: number, cuffBand?: number, veeWidth?: number }} TopWear
  * @typedef {{ length: number, thick: number, flare: number, cuff?: number[], jodhpur?: number, skirt?: { length: number, flare: number, from: "waist" | "hips" }, bib?: boolean, waist: number }} BottomWear
  */
 
@@ -58,6 +59,10 @@ export function outfitOf(spec, marks) {
     silks: { sleeve: 1, hem: hipY - 0.02 * s, neck: neckBaseY + 0.012 * s, scoop: 0, thick: 0.007, cuff: main, collar: accent, sleeveRgb: accent },
     vest: { sleeve: 1, hem: hipY - 0.01 * s, neck: neckBaseY + 0.01 * s, scoop: 0, thick: 0.009, cuff: shirt, sleeveRgb: shirt, vee: 0.13 * s, inner: shirt, buttons: accent, collar: shirt },
     dress: { sleeve: 0.22, hem: waistY - 0.03 * s, neck: neckBaseY - 0.01 * s, scoop: 0.03 * s, thick: 0.006, belt: accent, skirt: { length: 0.56, flare: 0.1, from: "waist" }, sleevePuff: 0.018 },
+    shirt: { sleeve: 1, hem: hipY - 0.012 * s, neck: neckBaseY + 0.014 * s, scoop: 0, thick: 0.005, cuff: shade(main, 0.92), collar: main, collarPoints: main, placket: 1, buttons: shade(main, 0.78), tuck: true },
+    polo: { sleeve: 0.4, hem: hipY - 0.012 * s, neck: neckBaseY + 0.01 * s, scoop: 0, thick: 0.006, cuff: accent, collar: darker, collarPoints: darker, placket: 0.09 * s, buttons: accent, tuck: true },
+    suit: { sleeve: 1, hem: hipY - 0.05 * s, neck: neckBaseY + 0.012 * s, scoop: 0, thick: 0.016, cuff: shirt, cuffBand: 0.03, vee: 0.2 * s, veeWidth: 0.6, inner: shirt, collar: shirt, collarPoints: shirt, lapels: shade(main, 1.22), buttons: shade(main, 0.62), buttonCount: 2 },
+    cardigan: { sleeve: 1, hem: hipY - 0.03 * s, neck: neckBaseY + 0.012 * s, scoop: 0, thick: 0.011, cuff: darker, hemBand: darker, vee: 0.16 * s, veeWidth: 0.55, inner: shirt, collar: shirt, collarPoints: shirt, buttons: accent, buttonCount: 4 },
   };
   const top = tops[spec.top] ?? tops.tee;
   const bottomRgb = rgbOf(spec.bottomColor);
@@ -66,18 +71,19 @@ export function outfitOf(spec, marks) {
     trousers: { length: 1, thick: 0.008, flare: 0.006, waist: pelvisTopY + 0.01 * s },
     jeans: { length: 0.97, thick: 0.008, flare: 0.004, cuff: shade(bottomRgb, 1.25), waist: pelvisTopY },
     shorts: { length: 0.36, thick: 0.012, flare: 0.016, waist: pelvisTopY + 0.01 * s },
-    skirt: { length: 0, thick: 0, flare: 0, skirt: { length: 0.4, flare: 0.08, from: "waist" }, waist: waistY },
-    longSkirt: { length: 0, thick: 0, flare: 0, skirt: { length: 0.88, flare: 0.13, from: "waist" }, waist: waistY },
+    skirt: { length: 0.3, thick: 0, flare: 0, skirt: { length: 0.4, flare: 0.08, from: "waist" }, waist: waistY },
+    longSkirt: { length: 0.78, thick: 0, flare: 0, skirt: { length: 0.88, flare: 0.13, from: "waist" }, waist: waistY },
     breeches: { length: 0.62, thick: 0.006, flare: 0, jodhpur: 0.022, waist: pelvisTopY + 0.01 * s },
     leggings: { length: 1, thick: 0.002, flare: 0, waist: pelvisTopY + 0.01 * s },
     overalls: { length: 1, thick: 0.01, flare: 0.006, bib: true, waist: pelvisTopY },
+    pencilSkirt: { length: 0.4, thick: 0, flare: 0, skirt: { length: 0.5, flare: -0.012, from: "waist" }, waist: waistY },
   };
-  const bottom = spec.top === "dress" ? { length: 0, thick: 0, flare: 0, waist: waistY } : (bottoms[spec.bottom] ?? bottoms.trousers);
+  const bottom = spec.top === "dress" ? { length: 0.3, thick: 0, flare: 0, waist: waistY, rgb: main } : (bottoms[spec.bottom] ?? bottoms.trousers);
   const patternId = spec.top === "silks" && spec.pattern === "plain" ? "sash" : spec.pattern;
-  const tucked = Boolean(bottom.bib) || (bottom.skirt && !top.skirt && top.hem < bottom.waist);
+  const tucked = Boolean(bottom.bib) || (bottom.skirt && !top.skirt && top.hem < bottom.waist) || (top.tuck && bottom.length > 0);
   return {
     top: { ...top, ...(tucked ? { hem: Math.max(top.hem, bottom.waist - 0.005), hemBand: undefined, tucked: true } : {}), main, accent, pattern: patternOf(patternId), fine: ["chevron", "sash", "dots"].includes(patternId) },
-    bottom: { ...bottom, rgb: bottomRgb },
+    bottom: { ...bottom, rgb: bottom.rgb ?? bottomRgb },
     shoes: shoeOf(spec),
     gloves: spec.gloves === "none" ? null : { kind: spec.gloves, rgb: rgbOf(spec.glovesColor) },
   };
