@@ -62,6 +62,7 @@ Altar, enter them in age-restricted leagues and watch every race as a live broad
 
 ## Coding Style and Guidelines
 
+- Work on main; use git worktrees only for parallel subagents, merge each into main as soon as it is done and remove it, never leave one orphaned
 - One feature one file
 - Usage of JSDocs for type check is greatly appreciated
 - Keep comments to a BARE MINIMUM with no headers, no dangling facts, no empty openers and clean, readable, simple prose when necessary
